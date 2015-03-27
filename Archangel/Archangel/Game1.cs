@@ -19,9 +19,9 @@ namespace Archangel
     // - I'm leaving the enumerations in until I've finished the logic, then they will be changed to ints with heavy comments to make the drawing simpler
 
     // Change Log (first initial+date- summary of changes) - Change logs start upon first upload March 18, 2015
+    // T 3/25/15- added clientBounds variable for checking if something is offscreen, initialized it
     public class Game1 : Game
     {
-        // teeeest
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -29,6 +29,7 @@ namespace Archangel
         Texture2D[] groundPlayerSprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
         Texture2D[] flyingPlayerSprites;
         Texture2D platformSprite;
+        public static Rectangle clientBounds; // Lets other methods know window bounds
 
 
         public Game1()
@@ -47,7 +48,7 @@ namespace Archangel
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            clientBounds = Window.ClientBounds; // Lets other methods know window bounds
             base.Initialize();
         }
 

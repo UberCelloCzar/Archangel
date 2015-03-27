@@ -15,8 +15,11 @@ namespace Archangel
     // GamePiece defines necessary objects for child classes Platform and MoveableGamePiece
 
     // Change Log
+    // T 3/26/15- added spritebatch variable for drawing
     public abstract class GameObject
     {
+        protected SpriteBatch spriteBatch; // For drawing
+
         private Rectangle objPos;  // Rectangle position of object's hitbox and sprite (x,y,width,height)
         public Rectangle spritePos
         {

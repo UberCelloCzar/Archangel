@@ -26,8 +26,8 @@ namespace Archangel
 
         protected Rectangle resetPos; // Rectangle to hold position for sprite reset upon death of character
         
-        public Player(int X, int Y, Texture2D[] loadSprite) // Sets x,y, and sprite for character
-            : base(X, Y, loadSprite)
+        public Player(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, and sprite for character
+            : base(X, Y, dir, spd, loadSprite)
         {
             charHealth = 3; // Default health
             livesLeft = 3; // Default lives

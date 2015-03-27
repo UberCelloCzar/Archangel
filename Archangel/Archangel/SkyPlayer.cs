@@ -15,14 +15,13 @@ namespace Archangel
     // Contains necessary code and methods for the player object while flying through the air
 
     // Change Log
+    // T 3/26/15- removed enumeration, changed initDir to an int
     class SkyPlayer:Player
     {
-        public enum CharState { faceRight, moveRight, faceLeft, moveLeft, faceUp, moveUp, faceDown, moveDown, slash1, charge1, dead } // Enumeration for movement and sprite updates, public until I remember a better protection method
-        private CharState charState; // One state for each sprite (one per frame for animations)
-        private CharState initDir; // Holds initial direction of player
+        private int initDir; // Stores initial direction
 
-        public SkyPlayer(int X, int Y, CharState dir, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
-            : base(X, Y, loadSprite)
+        public SkyPlayer(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
+            : base(X, Y, dir, spd, loadSprite)
         {
             initDir = dir; // Sets direction to return to upon death
         }
@@ -36,7 +35,7 @@ namespace Archangel
                 lives--; // Take away a life
                 charHealth = 3; // Reset health and position and direction
                 spritePos = resetPos;
-                charState = initDir;
+                direction = initDir;
             }
         }
 

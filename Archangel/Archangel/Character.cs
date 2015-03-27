@@ -26,8 +26,8 @@ namespace Archangel
 
         protected Texture2D[] spriteArray; // I went for protected on this array for all the sprites to avoid any weird errors properties might generate
 
-        public Character(int X, int Y, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
-            : base(X, Y, loadSprite[0]) // 0 will be the default starting direction image for the chracter
+        public Character(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
+            : base(X, Y, dir, spd, loadSprite) // 0 will be the default starting direction image for the chracter
         {
             spriteArray = loadSprite; // Bring in all the sprites to draw with
         }

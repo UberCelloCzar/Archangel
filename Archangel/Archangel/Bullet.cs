@@ -15,20 +15,15 @@ namespace Archangel
     // Contains all things necessary for child classes defined by bullet type
 
     // Change Log
-    public abstract class Bullet:MovableGameObject
+    // T 3/25/15- added update method and logic, changed constructor to accept texture array, removed abstract keyword
+    // T 3/26/15- added draw and fixed cnstructor to accept speed and damage
+    public class Bullet:MovableGameObject
     {
         private int dealtDamage; // Variable for bullet's damage and properties
         public int damage
         {
             get { return dealtDamage; }
             set { dealtDamage = value; }
-        }
-
-        private int facedDirection; // Direction of bullet and properties
-        public int direction // up=0,right=1,down=2,left=3
-        {
-            get { return facedDirection; } 
-            set { facedDirection = value; }
         }
 
         private bool active; 
@@ -38,11 +33,39 @@ namespace Archangel
             set { active = value; }
         }
 
-        public Bullet(int X, int Y, int dir, Texture2D loadSprite) // Creates bullet at xy with direction for loaded sprite
-            : base(X, Y, loadSprite)
+        public Bullet(int X, int Y, int dir, int spd, int dmg, Texture2D[] loadSprite) // Creates bullet at xy with direction for loaded sprite
+            : base(X, Y, dir, spd, loadSprite)
         {
             active = false; // Start out inactive
-            facedDirection = dir; // Start with specified direction
+        }
+
+        public override void Update() // Moves bullet in faced direction
+        {
+            if (active) // But only if active
+            {
+                switch (direction) // Move based on the direction
+                {
+                    case 0: spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height); // Right
+                        break;
+                    case 1: spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spriteArray[1].Width, spriteArray[1].Height); // Left
+                        break;
+                    case 2: spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spriteArray[2].Width, spriteArray[2].Height); // Up
+                        break;
+                    case 3: spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spriteArray[3].Width, spriteArray[3].Height); // Down
+                        break;
+                }
+
+
+                if (spritePos.X+spritePos.Width < 0 || spritePos.X >= Game1.clientBounds.Width || spritePos.Y+spritePos.Height < 0 || spritePos.Y >= Game1.clientBounds.Height) // Check to see if off the edge
+                {
+                    active = false; // The spritePos width and height are usable here because we just changed them to the correct values
+                }
+            }
+        }
+
+        public override void Draw() // Draws the bullet
+        {
+            spriteBatch.Draw(spriteArray[direction], spritePos, Color.White);
         }
     }
 }
