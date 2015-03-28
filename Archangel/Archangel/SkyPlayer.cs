@@ -16,6 +16,7 @@ namespace Archangel
 
     // Change Log
     // T 3/26/15- removed enumeration, changed initDir to an int
+    // T 3/27/15- added draw and update code
     class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
@@ -41,7 +42,47 @@ namespace Archangel
 
         public override void Update()
         {
-            
+            base.Update();
+
+            switch (direction) // Move the sprites
+            {
+                case 1: // Moving right
+                    spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    break;
+                case 3: // Move left
+                    spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    break;
+                case 5: // Moving up
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
+                    break;
+                case 7: // Move down
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+                    break;
+            }
+
+            // Return to positions
+            if (direction == 3 && spritePos.X < 0) // If moving left and it puts you beyond the bounds
+            {
+                spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+            }
+            else if (direction == 1 && spritePos.X > (Game1.clientBounds.Width)) // If moving right and it puts you beyond the bounds
+            {
+                spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+            }
+
+            if (direction == 5 && spritePos.Y < 0) // If moving up and it puts you beyond the bounds
+            {
+                spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+            }
+            else if (direction == 7 && spritePos.Y > (Game1.clientBounds.Height)) // If moving down and it puts you beyond the bounds
+            {
+                spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
+            }
+        }
+
+        public override void Draw() // Draw the character's sprite
+        {
+            base.Draw();
         }
     }
 }

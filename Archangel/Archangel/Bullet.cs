@@ -65,7 +65,7 @@ namespace Archangel
 
         public override void Draw() // Draws the bullet
         {
-            spriteBatch.Draw(spriteArray[direction], spritePos, Color.White);
+            base.Draw();
         }
     }
 }
