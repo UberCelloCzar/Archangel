@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using System.Threading;
 
 namespace Archangel
 {
@@ -15,16 +16,20 @@ namespace Archangel
     // Contains all methods and code for enemies and enemy AI
 
     // Change Log
-
+    // T 3/28/15- fixed constructor, added draw and update code
+    // T 3/30/15- added fire method and updated constructor for it
     class Enemy:Character
     {
-        public enum CharState { faceLeft, moveLeft, faceRight, moveRight, faceUp, moveUp, faceDown, moveDown, dead } // Enumeration for movement and sprite updates, public until I remember a better protection method
-        private CharState charState; // One state for each sprite (one per frame for animations)
 
-        public Enemy(int X, int Y, CharState dir, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
-            : base (X, Y, loadSprite)
+        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
+            : base (X, Y, dir, spd, loadSprite)
         {
-            charState = dir; // Initial direction
+            bullets = new Bullet[50]; // Initialize bullet array
+            for (int i = 0; i < bullets.Length; i++)
+            {
+                bullets[i] = new Bullet(0, 0, 0, 5, 1, bulletSprite);
+            }
+            direction = dir; // Initial direction
             charHealth = 2; // Enemy health
         }
 
@@ -34,13 +39,55 @@ namespace Archangel
 
             if (charHealth <= 0) // Deactivate enemy when killed
             {
-                charState = CharState.dead; // Changes state to show death sprite, actual disappearance is in update method with finite state machine logic
+                direction = 8; // Changes state to show death sprite, disappearance is after takehit method is called in calling class
+                Thread.Sleep(200);
             }
         }
 
         public override void Update()
         {
-            
+            // Add code here if you want to have enemy move in any direction other than the passed in direction
+
+            switch (direction) // Move the sprites
+            {
+                case 1: // Moving right
+                    spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    break;
+                case 3: // Move left
+                    spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    break;
+                case 5: // Moving up
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
+                    break;
+                case 7: // Move down
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+                    break;
+            }
+        }
+
+        public override void Draw() // Draws the ememies
+        {
+            base.Draw();
+        }
+
+        public override void Fire()
+        {
+            int i; // Must be able to use the found bullet
+            for (i = 0; i < bullets.Length; i++)
+            {
+                if (!bullets[i].isActive) // Find and use an inactive bullet
+                {
+                    break;
+                }
+                if (i == bullets.Length - 1) // If all bullets are active (ideally not possible)
+                {
+                    throw new Exception(); // I don't want to add code for a new type of exception, so just be general
+                } // NOTE: I want to catch this in a try-catch block when fire is called, wherever that will be
+
+            }
+            bullets[i].direction = direction; // Move the bullet to the character's position and direction (middle of the character sprite)
+            bullets[i].spritePos = new Rectangle(spriteArray[direction].Bounds.Left + spriteArray[direction].Width / 2, spriteArray[direction].Bounds.Top + spriteArray[direction].Height / 2, spriteArray[direction].Width, spriteArray[direction].Height);
+            bullets[i].isActive = true;
         }
     }
 }

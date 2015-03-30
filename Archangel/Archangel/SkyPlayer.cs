@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using System.Threading;
 
 namespace Archangel
 {
@@ -17,13 +18,19 @@ namespace Archangel
     // Change Log
     // T 3/26/15- removed enumeration, changed initDir to an int
     // T 3/27/15- added draw and update code
+    // T 3/29/15- added bullets to the draw, added fire method, initialized bullet array in the constructor
     class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
 
-        public SkyPlayer(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
-            : base(X, Y, dir, spd, loadSprite)
+        public SkyPlayer(int X, int Y, int dir, int spd, Texture2D[] charSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
+            : base(X, Y, dir, spd, charSprite)
         {
+            bullets = new Bullet[50]; // Initialize bullet array
+            for (int i = 0; i < bullets.Length; i++)
+            {                                                          
+                bullets[i] = new Bullet(0, 0, 0, 5, 1, bulletSprite);
+            }
             initDir = dir; // Sets direction to return to upon death
         }
 
@@ -35,8 +42,11 @@ namespace Archangel
             {
                 lives--; // Take away a life
                 charHealth = 3; // Reset health and position and direction
+                direction = 8; // Dead sprite
+                Thread.Sleep(200);
                 spritePos = resetPos;
                 direction = initDir;
+
             }
         }
 
@@ -83,6 +93,33 @@ namespace Archangel
         public override void Draw() // Draw the character's sprite
         {
             base.Draw();
+            for (int i = 0; i < bullets.Length; i++) // Draw active bullets
+            {
+                if (bullets[i].isActive)
+                {
+                    bullets[i].Draw();
+                }
+            }
+        }
+
+        public override void Fire()
+        {
+            int i; // Must be able to use the found bullet
+            for (i = 0; i < bullets.Length; i++)
+            {
+                if (!bullets[i].isActive) // Find and use an inactive bullet
+                {
+                    break;
+                }
+                if (i == bullets.Length-1) // If all bullets are active (ideally not possible)
+                {
+                    throw new Exception(); // I don't want to add code for a new type of exception, so just be general
+                } // NOTE: I want to catch this in a try-catch block when fire is called, wherever that will be
+
+            }
+            bullets[i].direction = direction; // Move the bullet to the character's position and direction (middle of the character sprite)
+            bullets[i].spritePos = new Rectangle(spriteArray[direction].Bounds.Left + spriteArray[direction].Width / 2, spriteArray[direction].Bounds.Top + spriteArray[direction].Height / 2, spriteArray[direction].Width, spriteArray[direction].Height);
+            bullets[i].isActive = true;
         }
     }
 }

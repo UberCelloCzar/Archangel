@@ -15,6 +15,8 @@ namespace Archangel
     // Contains necessary items for enemies and player objects
 
     // Change Log
+    // T 3/28/15- added fire method
+    // T 3/29/15- added bullet array
     public abstract class Character:MovableGameObject
     {
         private int health; // HP for character and properties
@@ -24,10 +26,17 @@ namespace Archangel
             set { health = value; }
         }
 
+        private Bullet[] blt; // Array of bullets and properties
+        public Bullet[] bullets
+        {
+            get { return blt; }
+            set { blt = value; }
+        }
+
         protected Texture2D[] spriteArray; // I went for protected on this array for all the sprites to avoid any weird errors properties might generate
 
         public Character(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
-            : base(X, Y, dir, spd, loadSprite) // 0 will be the default starting direction image for the chracter
+            : base(X, Y, dir, spd, loadSprite)
         {
             spriteArray = loadSprite; // Bring in all the sprites to draw with
         }
@@ -36,5 +45,7 @@ namespace Archangel
         {
             charHealth -= dmg;
         }
+
+        public abstract void Fire() { } // Requires a fire method
     }
 }

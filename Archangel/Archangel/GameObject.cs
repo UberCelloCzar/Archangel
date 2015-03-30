@@ -40,6 +40,6 @@ namespace Archangel
             spritePos = new Rectangle(X, Y, sprite.Width, sprite.Height); // Load image/hitbox position
         }
 
-        public void Draw(){} // Requires on screen objects to have a render method
+        public abstract void Draw(){} // Requires on screen objects to have a render method
     }
 }

@@ -15,13 +15,12 @@ namespace Archangel
     // Contains methods and code for the player object when landed on ground and in turret control mode
 
     // Change Log
+    // T 3/229/15- fixed constuctor, removed enumeration
     class GroundPlayer:Player
     {
-        public enum CharState { faceUp, moveRight1, moveLeft1, fire1, dead } // Enumeration for movement and sprite updates, public until I remember a better protection method
-        private CharState charState; // One state for each sprite (one per frame for animations)
 
-        public GroundPlayer(int X, int Y, Texture2D[] loadSprite) // Sets x,y, and sprite for character
-            : base(X, Y, loadSprite) { }
+        public GroundPlayer(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, and sprite for character
+            : base(X, Y, dir, spd, loadSprite) { }
 
         public override void TakeHit(int dmg)
         {
@@ -32,7 +31,7 @@ namespace Archangel
                 lives--; // Take away a life
                 charHealth = 3; // Reset health and position and direction
                 spritePos = resetPos;
-                charState = CharState.faceUp;
+                direction = 5;
             }
         }
 

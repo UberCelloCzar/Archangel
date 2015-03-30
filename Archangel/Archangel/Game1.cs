@@ -20,6 +20,7 @@ namespace Archangel
 
     // Change Log (first initial+date- summary of changes) - Change logs start upon first upload March 18, 2015
     // T 3/25/15- added clientBounds variable for checking if something is offscreen, initialized it
+    // T 3/28+30/15- added more texture variables
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -29,7 +30,11 @@ namespace Archangel
         Texture2D[] groundPlayerSprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
         Texture2D[] flyingPlayerSprites;
         Texture2D platformSprite;
+        Texture2D[] playerSmallBullet;
+        Texture2D[] enemySmallBullet;
         public static Rectangle clientBounds; // Lets other methods know window bounds
+        SkyPlayer skyPlayer; // Player and enemies
+        Enemy[] enemyArray;
 
 
         public Game1()
@@ -84,7 +89,7 @@ namespace Archangel
                 Exit();
 
             // TODO: Add your update logic here
-
+            
             base.Update(gameTime);
         }
 

@@ -35,11 +35,12 @@ namespace Archangel
 
         /// <Logic>
         /// for bullet: right=0,left=1,up=2,down=3
-        /// for character: faceRight=0,moveRight=1,faceLeft=2,moveLeft=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7
-        /// for enemies: faceLeft=0,moveLeft=1,faceRight=2,moveRight=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7
+        /// for sky player: faceRight=0,moveRight=1,faceLeft=2,moveLeft=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8
+        /// for ground player: faceUp=0, moveRight=1,moveLeft=2,dead=3
+        /// for enemies: faceLeft=0,moveLeft=1,faceRight=2,moveRight=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8
         /// </Logic>
         private int facedDirection; 
-        protected int direction // Direction object is facing and/or moving in
+        public int direction // Direction object is facing and/or moving in
         {
             get { return facedDirection; }
             set { facedDirection = value; }
@@ -47,7 +48,7 @@ namespace Archangel
         
 
         public MovableGameObject(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y,and sprite for object
-            : base(X, Y, loadSprite[0])
+            : base(X, Y, loadSprite[dir])
         {
             spriteImages = loadSprite; // Initializes array of sprites
             facedDirection = dir; // Initialize direction
