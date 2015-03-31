@@ -17,6 +17,7 @@ namespace Archangel
     // Change Log
     // T 3/28/15- added fire method
     // T 3/29/15- added bullet array
+    // T 3/31/15- added fireRate and cooldown for firing, added color variable for hit showing
     public abstract class Character:MovableGameObject
     {
         private int health; // HP for character and properties
@@ -24,6 +25,15 @@ namespace Archangel
         {
             get { return health; }
             set { health = value; }
+        }
+
+        protected Color color = Color.White; // Will turn red momentarily when hit
+
+        private int fireRate; // Wait time after firing
+        public int cooldown
+        {
+            get { return fireRate; }
+            set { fireRate = value; }
         }
 
         private Bullet[] blt; // Array of bullets and properties

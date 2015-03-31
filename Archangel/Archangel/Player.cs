@@ -16,6 +16,7 @@ namespace Archangel
 
     // Change Log
     // T 3/27/15- added key press array holder, added update and code
+    // T 3/31/15- added fire code to input system
     public abstract class Player:Character
     {
         private int livesLeft; // Lives character has and properties
@@ -32,6 +33,7 @@ namespace Archangel
         public Player(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, and sprite for character
             : base(X, Y, dir, spd, loadSprite)
         {
+            cooldown = 0; // Let the player shoot
             charHealth = 3; // Default health
             livesLeft = 3; // Default lives
             resetPos = new Rectangle(X, Y, loadSprite[0].Width, loadSprite[0].Height); // Sets position to return to when player dies
@@ -92,6 +94,14 @@ namespace Archangel
             {
                 direction = 6;
             }
+
+            if (kstate.IsKeyDown(Keys.Space) && cooldown == 0) // Fire, then go into cooldown
+            {
+                Fire();
+                cooldown = 10; // Start the cooldown
+            }
+
+            cooldown--; // Increment cooldown to allow firing again
         }
     }
 }

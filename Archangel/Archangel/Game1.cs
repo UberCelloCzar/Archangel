@@ -54,6 +54,7 @@ namespace Archangel
         {
             // TODO: Add your initialization logic here
             clientBounds = Window.ClientBounds; // Lets other methods know window bounds
+            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet); // Create the player
             base.Initialize();
         }
 

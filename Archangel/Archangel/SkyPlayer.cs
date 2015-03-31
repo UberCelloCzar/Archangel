@@ -46,7 +46,6 @@ namespace Archangel
                 Thread.Sleep(200);
                 spritePos = resetPos;
                 direction = initDir;
-
             }
         }
 

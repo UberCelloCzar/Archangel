@@ -18,6 +18,7 @@ namespace Archangel
     // Change Log
     // T 3/28/15- fixed constructor, added draw and update code
     // T 3/30/15- added fire method and updated constructor for it
+    // T 3/31/15- added fire code to Update
     class Enemy:Character
     {
 
@@ -63,6 +64,14 @@ namespace Archangel
                     spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
                     break;
             }
+
+            if (cooldown == 0) // Fire at a set rate until AI is implemented
+            {
+                Fire();
+                cooldown = 10; // Go into cooldown
+            }
+
+            cooldown--; // Countdown to fire again
         }
 
         public override void Draw() // Draws the ememies

@@ -17,6 +17,7 @@ namespace Archangel
     // Change Log
     // T 3/25/15- added update method and logic, changed constructor to accept texture array, removed abstract keyword
     // T 3/26/15- added draw and fixed cnstructor to accept speed and damage
+    // T 3/31/15- added old position variable for raycasting
     public class Bullet:MovableGameObject
     {
         private int dealtDamage; // Variable for bullet's damage and properties
@@ -31,6 +32,13 @@ namespace Archangel
         {
             get { return active; }
             set { active = value; }
+        }
+
+        private Vector2 oldPosition; // Holds last position of bullet for raycasting
+        public Vector2 oldPos
+        {
+            get { return oldPosition; }
+            set { oldPosition = value; }
         }
 
         public Bullet(int X, int Y, int dir, int spd, int dmg, Texture2D[] loadSprite) // Creates bullet at xy with direction for loaded sprite
