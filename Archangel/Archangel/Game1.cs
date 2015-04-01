@@ -35,13 +35,17 @@ namespace Archangel
         public static Rectangle clientBounds; // Lets other methods know window bounds
         SkyPlayer skyPlayer; // Player and enemies
         Enemy[] enemyArray;
+        HeadsUpDisplay hud;
+        Player player;
+        SpriteFont mainfont;
 
 
-        public Game1()
-            : base()
+        public Game1():base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
+            hud = new HeadsUpDisplay(skyPlayer);
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace Archangel
         {
             // TODO: Add your initialization logic here
             clientBounds = Window.ClientBounds; // Lets other methods know window bounds
-            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet); // Create the player
+            //skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet); // Create the player
             base.Initialize();
         }
 
@@ -68,6 +72,7 @@ namespace Archangel
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            mainfont = Content.Load<SpriteFont>("mainFont");
         }
 
         /// <summary>
@@ -100,9 +105,14 @@ namespace Archangel
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Goldenrod);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            hud.DrawHUD(spriteBatch, mainfont);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -1,0 +1,10 @@
+Tip: Use the arrow keys to move
+Tip: Press F to fire
+Tip: Press S to slash
+Tip: Press D to dash
+Tip: Press A to toggle flight
+Tip: When you are low on Stamina, make your way to a platform and toggle off flight to recover.
+Tip: While on a platform, you can shoot heavy artillery up at foes.
+Tip: Slash enemy bullets to reflect them!
+Tip: Instead of moving down, try deactivating flight to go down long distances.
+Tip: Don't die!

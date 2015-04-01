@@ -37,10 +37,12 @@
   <ItemGroup>
     <Compile Include="Bullet.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="Encounters.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GroundPlayer.cs" />
+    <Compile Include="HeadsUpDisplay.cs" />
     <Compile Include="MovableGameObject.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="Player.cs" />
@@ -70,10 +72,16 @@
       <Link>SDL.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\SkyeLines.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Content\" />
+    <Content Include="Content\mainFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
