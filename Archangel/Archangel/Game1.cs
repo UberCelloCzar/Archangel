@@ -16,36 +16,32 @@ namespace Archangel
 
     // General Notes:
     // - Not all properties may be necessary in final product, I just included full getsets just in case most places
-    // - I'm leaving the enumerations in until I've finished the logic, then they will be changed to ints with heavy comments to make the drawing simpler
 
     // Change Log (first initial+date- summary of changes) - Change logs start upon first upload March 18, 2015
     // T 3/25/15- added clientBounds variable for checking if something is offscreen, initialized it
     // T 3/28+30/15- added more texture variables
+    // T 3/31/15- fixed all draw methods to accept the Game1 spriteBatch
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D[] enemySprites;
-        Texture2D[] groundPlayerSprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
+        Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
         Texture2D[] flyingPlayerSprites;
-        Texture2D platformSprite;
         Texture2D[] playerSmallBullet;
         Texture2D[] enemySmallBullet;
         public static Rectangle clientBounds; // Lets other methods know window bounds
         SkyPlayer skyPlayer; // Player and enemies
-        Enemy[] enemyArray;
+        List<Enemy> enemyList;
         HeadsUpDisplay hud;
-        Player player;
         SpriteFont mainfont;
+        GameLogic gameLogic; // Logic handler
 
 
         public Game1():base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
-            hud = new HeadsUpDisplay(skyPlayer);
         }
 
         /// <summary>
@@ -58,7 +54,9 @@ namespace Archangel
         {
             // TODO: Add your initialization logic here
             clientBounds = Window.ClientBounds; // Lets other methods know window bounds
-            //skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet); // Create the player
+            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
+            hud = new HeadsUpDisplay(skyPlayer);
+            gameLogic = new GameLogic();
             base.Initialize();
         }
 
@@ -95,7 +93,6 @@ namespace Archangel
                 Exit();
 
             // TODO: Add your update logic here
-            
             base.Update(gameTime);
         }
 

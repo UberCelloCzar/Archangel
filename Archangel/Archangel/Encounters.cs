@@ -12,10 +12,21 @@ using System.IO;
 
 namespace Archangel
 {
+    // Cheshire Games, Bierre, March 31, 2015
+    // Contains code to read in maps and creates enemies
+
+    // Change Log
+    // T 3/31/15- changed enemyList into a private with properties
     class Encounters
     {
         // attributes
-        List<Enemy> enemies;
+        private List<Enemy> enemyList;
+        public List<Enemy> enemies
+        {
+            get { return enemyList; }
+            set { enemyList = value; }
+        }
+
         SkyPlayer player;
         bool skirmishOver;
 

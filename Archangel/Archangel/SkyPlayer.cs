@@ -89,9 +89,9 @@ namespace Archangel
             }
         }
 
-        public override void Draw() // Draw the character's sprite
+        public override void Draw(SpriteBatch spriteBatch) // Draw the character's sprite
         {
-            base.Draw();
+            base.Draw(spriteBatch);
             for (int i = 0; i < bullets.Length; i++) // Draw active bullets
             {
                 if (bullets[i].isActive)

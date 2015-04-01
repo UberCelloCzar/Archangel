@@ -39,5 +39,7 @@ namespace Archangel
         {
 
         }
+
+        public void Draw(SpriteBatch spriteBatch) { }
     }
 }

@@ -57,7 +57,7 @@ namespace Archangel
 
         public abstract void Update() { } // Requires a movement method for all children
 
-        public override void Draw() // Draw the sprites
+        public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {
             spriteBatch.Draw(spriteArray[direction], spritePos, Color.White);
         }

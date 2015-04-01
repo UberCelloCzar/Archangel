@@ -15,7 +15,8 @@ namespace Archangel
     // Contains necessary methods and code for the functional sword
 
     // Change Log
-    class Sword:MovableGameObject
+    // T 3/31/15- Changed to inherit from gameobject, nulled the sprites
+    class Sword:GameObject
     {
         private int dealtDamage; // Variable for bullet's damage and properties
         public int damage
@@ -24,12 +25,11 @@ namespace Archangel
             set { dealtDamage = value; }
         }
 
-        public Sword(int X, int Y, Texture2D loadSprite) // Creates sword at X Y with the loaded sprite
-            : base(X, Y, loadSprite)
+        public Sword(int X, int Y) // Creates sword hitbox at X Y 
+            : base(X, Y, null)
         {
             
         }
-        public abstract void Update() { } // Movement stub
-        //Not sure what to do with this yet, I'll think it over on spring break
+        public void Draw(SpriteBatch spriteBatch) { } // Draw stub
     }
 }

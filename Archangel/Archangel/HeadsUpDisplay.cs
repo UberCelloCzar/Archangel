@@ -12,6 +12,10 @@ using System.IO;
 
 namespace Archangel
 {
+    // Cheshire Games, Bierre, March 31, 2015
+    // Contains all the code for the heads up display
+
+    // Change Log
     class HeadsUpDisplay
     {
         // attributes

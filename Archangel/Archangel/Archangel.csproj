@@ -40,6 +40,7 @@
     <Compile Include="Encounters.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameLogic.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GroundPlayer.cs" />
     <Compile Include="HeadsUpDisplay.cs" />

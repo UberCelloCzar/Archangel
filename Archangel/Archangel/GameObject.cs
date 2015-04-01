@@ -16,10 +16,9 @@ namespace Archangel
 
     // Change Log
     // T 3/26/15- added spritebatch variable for drawing
+    // T 3/31/15- removed spriteBatch in favor of bringing in the one from Game1 when calling the Draw
     public abstract class GameObject
     {
-        protected SpriteBatch spriteBatch; // For drawing
-
         private Rectangle objPos;  // Rectangle position of object's hitbox and sprite (x,y,width,height)
         public Rectangle spritePos
         {
@@ -33,13 +32,12 @@ namespace Archangel
             get { return sprite; }
         }
 
-
         public GameObject(int X, int Y, Texture2D loadSprite) // Constructor runs to set up new game object
         {
             sprite = loadSprite; // Load image into texture
             spritePos = new Rectangle(X, Y, sprite.Width, sprite.Height); // Load image/hitbox position
         }
 
-        public abstract void Draw(){} // Requires on screen objects to have a render method
+        public abstract void Draw(SpriteBatch spriteBatch) {} // Requires on screen objects to have a render method
     }
 }

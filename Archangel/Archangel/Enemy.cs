@@ -74,9 +74,9 @@ namespace Archangel
             cooldown--; // Countdown to fire again
         }
 
-        public override void Draw() // Draws the ememies
+        public override void Draw(SpriteBatch spriteBatch) // Draws the ememies
         {
-            base.Draw();
+            base.Draw(spriteBatch);
         }
 
         public override void Fire()

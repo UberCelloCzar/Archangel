@@ -17,5 +17,6 @@ namespace Archangel
     // Change Log
     class Platform:GameObject
     {
+        public void Draw(SpriteBatch spriteBatch) { }
     }
 }
