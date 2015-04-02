@@ -15,8 +15,8 @@ namespace Archangel
     // Contains code for the "platforms", mostly to be fleshed out later as part of the turret movement switch
 
     // Change Log
-    class Platform:GameObject
-    {
-        public void Draw(SpriteBatch spriteBatch) { }
-    }
+    //class Platform:GameObject
+    //{
+        //public void Draw(SpriteBatch spriteBatch) { }
+    //}
 }

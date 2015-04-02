@@ -16,7 +16,7 @@ namespace Archangel
 
     // Change Log
     // T 3/229/15- fixed constuctor, removed enumeration
-    class GroundPlayer:Player
+    /*class GroundPlayer:Player
     {
 
         public GroundPlayer(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, and sprite for character
@@ -41,5 +41,5 @@ namespace Archangel
         }
 
         public void Draw(SpriteBatch spriteBatch) { }
-    }
+    }*/
 }

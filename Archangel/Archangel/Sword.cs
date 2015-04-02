@@ -16,7 +16,7 @@ namespace Archangel
 
     // Change Log
     // T 3/31/15- Changed to inherit from gameobject, nulled the sprites
-    class Sword:GameObject
+    /*class Sword:GameObject
     {
         private int dealtDamage; // Variable for bullet's damage and properties
         public int damage
@@ -31,5 +31,5 @@ namespace Archangel
             
         }
         public void Draw(SpriteBatch spriteBatch) { } // Draw stub
-    }
+    }*/
 }

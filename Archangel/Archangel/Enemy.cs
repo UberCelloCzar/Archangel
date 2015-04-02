@@ -19,7 +19,7 @@ namespace Archangel
     // T 3/28/15- fixed constructor, added draw and update code
     // T 3/30/15- added fire method and updated constructor for it
     // T 3/31/15- added fire code to Update
-    class Enemy:Character
+    public class Enemy:Character
     {
 
         public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character

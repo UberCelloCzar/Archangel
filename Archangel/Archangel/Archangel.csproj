@@ -78,7 +78,20 @@
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\Enemy Bullet 1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Enemy Pose 1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Main Character Pose 1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Player Bullet 1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\mainFont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

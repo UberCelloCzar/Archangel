@@ -21,22 +21,30 @@ namespace Archangel
     // T 3/25/15- added clientBounds variable for checking if something is offscreen, initialized it
     // T 3/28+30/15- added more texture variables
     // T 3/31/15- fixed all draw methods to accept the Game1 spriteBatch
+    // B 4/1/15 - Added basic sprites to content folder, updated draw method and SpriteBatch
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
-        Texture2D[] flyingPlayerSprites;
-        Texture2D[] playerSmallBullet;
-        Texture2D[] enemySmallBullet;
+        //Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
+        //Texture2D[] flyingPlayerSprites;
+        //Texture2D[] playerSmallBullet;
+        //Texture2D[] enemySmallBullet;
         public static Rectangle clientBounds; // Lets other methods know window bounds
-        SkyPlayer skyPlayer; // Player and enemies
-        List<Enemy> enemyList;
-        HeadsUpDisplay hud;
+        //SkyPlayer skyPlayer; // Player and enemies
+        //List<Enemy> enemyList;
+        //HeadsUpDisplay hud;
         SpriteFont mainfont;
         GameLogic gameLogic; // Logic handler
-
+        Texture2D player;
+        Texture2D enemy;
+        Texture2D playerBullet;
+        Texture2D enemyBullet;
+        static double doubleScale = 0.25;
+        float floatScale = (float)doubleScale;
+        KeyboardState kState;
+        Vector2 playerPos = new Vector2(0, 20);
 
         public Game1():base()
         {
@@ -54,9 +62,10 @@ namespace Archangel
         {
             // TODO: Add your initialization logic here
             clientBounds = Window.ClientBounds; // Lets other methods know window bounds
-            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
-            hud = new HeadsUpDisplay(skyPlayer);
+            //skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
+            //hud = new HeadsUpDisplay(skyPlayer);
             gameLogic = new GameLogic();
+            
             base.Initialize();
         }
 
@@ -71,6 +80,14 @@ namespace Archangel
 
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
+            //enemySprites[0] = Content.Load<Texture2D>("Enemy Pose 1");
+            /*flyingPlayerSprites[0] = Content.Load<Texture2D>("Main Character Pose 1");
+            playerSmallBullet[0] = Content.Load<Texture2D>("Player Bullet 1");
+            enemySmallBullet[0] = Content.Load<Texture2D>("Enemy Bullet 1");*/
+            player = Content.Load<Texture2D>("Main Character Pose 1");
+            enemy = Content.Load<Texture2D>("Enemy Pose 1");
+            playerBullet = Content.Load<Texture2D>("Player Bullet 1");
+            enemyBullet = Content.Load<Texture2D>("Enemy Bullet 1");
         }
 
         /// <summary>
@@ -93,6 +110,24 @@ namespace Archangel
                 Exit();
 
             // TODO: Add your update logic here
+            kState = Keyboard.GetState();
+
+            if (kState.IsKeyDown(Keys.Up) == true && playerPos.Y >= -50)
+            {
+                playerPos.Y-=3;
+            }
+            if (kState.IsKeyDown(Keys.Down) == true && playerPos.Y <= 350)
+            {
+                playerPos.Y+=3;
+            }
+            if (kState.IsKeyDown(Keys.Left) == true && playerPos.X >= -50)
+            {
+                playerPos.X-=3;
+            }
+            if (kState.IsKeyDown(Keys.Right) == true && playerPos.X <= 200)
+            {
+                playerPos.X+=3;
+            }
             base.Update(gameTime);
         }
 
@@ -107,8 +142,11 @@ namespace Archangel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            hud.DrawHUD(spriteBatch, mainfont);
-
+            //hud.DrawHUD(spriteBatch, mainfont);
+            spriteBatch.Draw(player, playerPos, new Rectangle(0,20,player.Width, player.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(enemy, new Vector2(500, 20), new Rectangle(0, 20, enemy.Width, enemy.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(playerBullet, new Vector2(280, 95), new Rectangle(0, 0, playerBullet.Width, playerBullet.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(enemyBullet, new Vector2(480, 95), new Rectangle(0, 0, enemyBullet.Width, enemyBullet.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
             spriteBatch.End();
 
             base.Draw(gameTime);

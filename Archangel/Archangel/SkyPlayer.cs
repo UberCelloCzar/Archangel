@@ -19,7 +19,7 @@ namespace Archangel
     // T 3/26/15- removed enumeration, changed initDir to an int
     // T 3/27/15- added draw and update code
     // T 3/29/15- added bullets to the draw, added fire method, initialized bullet array in the constructor
-    class SkyPlayer:Player
+    public class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
 
@@ -96,7 +96,7 @@ namespace Archangel
             {
                 if (bullets[i].isActive)
                 {
-                    bullets[i].Draw();
+                    bullets[i].Draw(spriteBatch);
                 }
             }
         }

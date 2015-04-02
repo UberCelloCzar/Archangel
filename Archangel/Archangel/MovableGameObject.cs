@@ -17,8 +17,9 @@ namespace Archangel
     // Change Log
     // T 3/26/15- added sprite array and properties, changed constructor to reflect this, moved direction and properties to here, added speed to constructor
                   // NOTE: changed all constructors in child classes to reflect changes to this one
+    // B 4/1/15 - made a slight change to the constructor
     public abstract class MovableGameObject:GameObject
-    {
+    { 
         private int speed; // Variable for object speed and properties
         protected int objSpeed
         {
@@ -46,7 +47,7 @@ namespace Archangel
             set { facedDirection = value; }
         }
         
-
+        // NOTE: This does not compile due to a null reference exception - B 4/1/15
         public MovableGameObject(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y,and sprite for object
             : base(X, Y, loadSprite[dir])
         {
@@ -55,7 +56,7 @@ namespace Archangel
             speed = spd; // Initialize movement speed
         }
 
-        public abstract void Update() { } // Requires a movement method for all children
+        public abstract void Update(); // Requires a movement method for all children
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {

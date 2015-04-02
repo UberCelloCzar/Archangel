@@ -16,15 +16,15 @@ namespace Archangel
     // Contains all the code for the heads up display
 
     // Change Log
-    class HeadsUpDisplay
+    public class HeadsUpDisplay
     {
         // attributes
         SpriteBatch spriteBatch;
         SpriteFont mainfont;
         Vector2 vect2;
         //Player player;
-        int health = 100 /*(pass in player object) health = player.charHealth*/;
-        int stamina = 100 /* player.charStamina */;
+        int health = 100; //(pass in player object) health = player.charHealth
+        int stamina = 100; // player.charStamina
         string skyesays;
         int thought = 4;
         int linenum;

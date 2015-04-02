@@ -51,11 +51,11 @@ namespace Archangel
             spriteArray = loadSprite; // Bring in all the sprites to draw with
         }
 
-        public void TakeHit(int dmg) // Using passed damage, calculate new health; add code to lose a life in child class for player
+        public virtual void TakeHit(int dmg) // Using passed damage, calculate new health; add code to lose a life in child class for player
         {
             charHealth -= dmg;
         }
 
-        public abstract void Fire() { } // Requires a fire method
+        public abstract void Fire(); // Requires a fire method
     }
 }
