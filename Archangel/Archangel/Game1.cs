@@ -27,14 +27,14 @@ namespace Archangel
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        //Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
-        //Texture2D[] flyingPlayerSprites;
-        //Texture2D[] playerSmallBullet;
-        //Texture2D[] enemySmallBullet;
+        Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
+        Texture2D[] flyingPlayerSprites;
+        Texture2D[] playerSmallBullet;
+        Texture2D[] enemySmallBullet;
         public static Rectangle clientBounds; // Lets other methods know window bounds
-        //SkyPlayer skyPlayer; // Player and enemies
-        //List<Enemy> enemyList;
-        //HeadsUpDisplay hud;
+        SkyPlayer skyPlayer; // Player and enemies
+        List<Enemy> enemyList;
+        HeadsUpDisplay hud;
         SpriteFont mainfont;
         GameLogic gameLogic; // Logic handler
         Texture2D player;
@@ -61,9 +61,11 @@ namespace Archangel
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            clientBounds = Window.ClientBounds; // Lets other methods know window bounds
-            //skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
-            //hud = new HeadsUpDisplay(skyPlayer);
+            clientBounds = Window.ClientBounds; // Lets other methods know window bounds\
+            enemySprites = new Texture2D[8];
+            flyingPlayerSprites = new Texture2D[8];
+            playerSmallBullet = new Texture2D[4];
+            enemySmallBullet = new Texture2D[4];
             gameLogic = new GameLogic();
             
             base.Initialize();
@@ -80,14 +82,12 @@ namespace Archangel
 
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
-            //enemySprites[0] = Content.Load<Texture2D>("Enemy Pose 1");
-            /*flyingPlayerSprites[0] = Content.Load<Texture2D>("Main Character Pose 1");
+            enemySprites[0] = Content.Load<Texture2D>("Enemy Pose 1");
+            flyingPlayerSprites[0] = Content.Load<Texture2D>("Main Character Pose 1");
             playerSmallBullet[0] = Content.Load<Texture2D>("Player Bullet 1");
-            enemySmallBullet[0] = Content.Load<Texture2D>("Enemy Bullet 1");*/
-            player = Content.Load<Texture2D>("Main Character Pose 1");
-            enemy = Content.Load<Texture2D>("Enemy Pose 1");
-            playerBullet = Content.Load<Texture2D>("Player Bullet 1");
-            enemyBullet = Content.Load<Texture2D>("Enemy Bullet 1");
+            enemySmallBullet[0] = Content.Load<Texture2D>("Enemy Bullet 1");
+            skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
+            hud = new HeadsUpDisplay(skyPlayer);
         }
 
         /// <summary>
@@ -110,24 +110,7 @@ namespace Archangel
                 Exit();
 
             // TODO: Add your update logic here
-            kState = Keyboard.GetState();
-
-            if (kState.IsKeyDown(Keys.Up) == true && playerPos.Y >= -50)
-            {
-                playerPos.Y-=3;
-            }
-            if (kState.IsKeyDown(Keys.Down) == true && playerPos.Y <= 350)
-            {
-                playerPos.Y+=3;
-            }
-            if (kState.IsKeyDown(Keys.Left) == true && playerPos.X >= -50)
-            {
-                playerPos.X-=3;
-            }
-            if (kState.IsKeyDown(Keys.Right) == true && playerPos.X <= 200)
-            {
-                playerPos.X+=3;
-            }
+            
             base.Update(gameTime);
         }
 
@@ -142,11 +125,9 @@ namespace Archangel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            //hud.DrawHUD(spriteBatch, mainfont);
-            spriteBatch.Draw(player, playerPos, new Rectangle(0,20,player.Width, player.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
-            spriteBatch.Draw(enemy, new Vector2(500, 20), new Rectangle(0, 20, enemy.Width, enemy.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
-            spriteBatch.Draw(playerBullet, new Vector2(280, 95), new Rectangle(0, 0, playerBullet.Width, playerBullet.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
-            spriteBatch.Draw(enemyBullet, new Vector2(480, 95), new Rectangle(0, 0, enemyBullet.Width, enemyBullet.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
+            hud.DrawHUD(spriteBatch, mainfont);
+            //spriteBatch.Draw(player, playerPos, new Rectangle(0,20,player.Width, player.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
