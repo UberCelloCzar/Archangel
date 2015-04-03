@@ -21,7 +21,7 @@ namespace Archangel
     class Encounters
     {
         // attributes
-        private List<Enemy> enemyList;
+        private List<Enemy> enemyList = new List<Enemy>();
         public List<Enemy> enemies
         {
             get { return enemyList; }
@@ -40,8 +40,15 @@ namespace Archangel
         private void CreateEnemy(string enemyinfo, Texture2D [] enemysprites, Texture2D [] bulletsprites, HeadsUpDisplay hud)
         {
             int y = 0;
+            string[] info = new string[4];
             int[] elem = new int[4];
-            foreach (string enemyStr in enemyinfo.Split(','))
+            info = enemyinfo.Split(',');
+            for (int i = 0; i <= 4; i++)
+            {
+                int.TryParse(info[i], out elem[i]);
+            }
+            enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites));
+            /*foreach (string enemyStr in info)
             {
                 try
                 {
@@ -50,7 +57,7 @@ namespace Archangel
                     int enemyYpos = elem[1];
                     int enemyState = elem[2];
                     int enemySpeed = elem[3];
-                    if (y == 2)
+                    if (y == 3)
                     {
                         enemies.Add(new Enemy(enemyXpos, enemyYpos, enemyState, enemySpeed, enemysprites, bulletsprites));
                     }
@@ -64,7 +71,7 @@ namespace Archangel
                 {
                     hud.Skyesays = "...Huh, no enemies, I guess. Sweet!";
                 }
-            }
+            }*/
         }
 
         // read encounter layout

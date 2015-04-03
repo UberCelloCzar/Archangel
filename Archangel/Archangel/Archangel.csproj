@@ -72,6 +72,7 @@
       <Link>SDL.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\encounter1.txt" />
     <Content Include="Content\SkyeLines.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

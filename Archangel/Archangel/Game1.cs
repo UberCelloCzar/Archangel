@@ -97,7 +97,8 @@ namespace Archangel
             skyPlayer = new SkyPlayer(20, 20, 0, 3, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             encounter = new Encounters();
-            enemies = encounter.enemies; // Populate the enemy list
+            
+            
         }
 
         /// <summary>
@@ -121,6 +122,8 @@ namespace Archangel
 
             // TODO: Add your update logic here
 
+            encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
+            enemies = encounter.enemies; // Populate the enemy list
             try
             {
                 skyPlayer.Update(); // Update the player
@@ -198,9 +201,9 @@ namespace Archangel
             }
                 for (int i = 0; i < enemies.Count; i++) // Draw enemies
                 {
-                    enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method of the character class
+                    enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
                 }
-
+            spriteBatch.DrawString(mainfont, encounter.enemies.Count.ToString(), new Vector2(300, 300), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
