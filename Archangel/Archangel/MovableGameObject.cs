@@ -18,6 +18,7 @@ namespace Archangel
     // T 3/26/15- added sprite array and properties, changed constructor to reflect this, moved direction and properties to here, added speed to constructor
                   // NOTE: changed all constructors in child classes to reflect changes to this one
     // B 4/1/15 - made a slight change to the constructor
+    // T 4/2/15- added color variable and used it in the draw for a red flash when characters are hit
     public abstract class MovableGameObject:GameObject
     { 
         private int speed; // Variable for object speed and properties
@@ -26,6 +27,8 @@ namespace Archangel
             get { return speed; }
             set { speed = value; }
         }
+
+        protected Color color = Color.White; // Will turn red momentarily when hit
 
         private Texture2D[] spriteImages; // Holds all the sprites for a given object
         protected Texture2D[] spriteArray
@@ -60,7 +63,8 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {
-            spriteBatch.Draw(spriteArray[direction], spritePos, Color.White);
+            spriteBatch.Draw(spriteArray[direction], spritePos, color);
+            color = Color.White; // Reset the color
         }
     }
 }

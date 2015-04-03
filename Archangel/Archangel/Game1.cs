@@ -22,6 +22,7 @@ namespace Archangel
     // T 3/28+30/15- added more texture variables
     // T 3/31/15- fixed all draw methods to accept the Game1 spriteBatch
     // B 4/1/15 - Added basic sprites to content folder, updated draw method and SpriteBatch
+    // T 4/2/15- added collision detection, drawing, and updates; removed GameLogic class, added loop to populate sprite arrays for testing
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -33,14 +34,9 @@ namespace Archangel
         Texture2D[] enemySmallBullet;
         public static Rectangle clientBounds; // Lets other methods know window bounds
         SkyPlayer skyPlayer; // Player and enemies
-        List<Enemy> enemyList;
+        List<Enemy> enemies;
         HeadsUpDisplay hud;
         SpriteFont mainfont;
-        GameLogic gameLogic; // Logic handler
-        Texture2D player;
-        Texture2D enemy;
-        Texture2D playerBullet;
-        Texture2D enemyBullet;
         static double doubleScale = 0.25;
         float floatScale = (float)doubleScale;
         KeyboardState kState;
@@ -61,12 +57,11 @@ namespace Archangel
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            clientBounds = Window.ClientBounds; // Lets other methods know window bounds\
-            enemySprites = new Texture2D[8];
-            flyingPlayerSprites = new Texture2D[8];
+            clientBounds = Window.ClientBounds; // Lets other methods know window bounds
+            enemySprites = new Texture2D[9];
+            flyingPlayerSprites = new Texture2D[9]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
-            gameLogic = new GameLogic();
             
             base.Initialize();
         }
@@ -82,12 +77,19 @@ namespace Archangel
 
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
-            enemySprites[0] = Content.Load<Texture2D>("Enemy Pose 1");
-            flyingPlayerSprites[0] = Content.Load<Texture2D>("Main Character Pose 1");
-            playerSmallBullet[0] = Content.Load<Texture2D>("Player Bullet 1");
-            enemySmallBullet[0] = Content.Load<Texture2D>("Enemy Bullet 1");
+
+            for (int i = 0; i < 9; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
+            {
+                enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
+                flyingPlayerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
+                if (i < 4)
+                {
+                    playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
+                    enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
+                }
+            }
             skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
-            hud = new HeadsUpDisplay(skyPlayer);
+            hud = new HeadsUpDisplay();
         }
 
         /// <summary>
@@ -110,7 +112,55 @@ namespace Archangel
                 Exit();
 
             // TODO: Add your update logic here
-            
+
+            try
+            {
+                skyPlayer.Update(); // Update the player
+            }
+            catch (IndexOutOfRangeException noBullets) // Catch the throw up if no active bullets are found on a fire attempt
+            {
+                hud.Skyesays = "You out of bullets! Wait for them to replenish before trying to fire.";
+            }
+
+            for (int i = 0; i < enemies.Count; i++) // Update all the enemies
+            {
+                try
+                {
+                    enemies[i].Update(); // NOTE: bullet updates are in the update method in the Character class
+                }
+                catch (IndexOutOfRangeException noBullets) 
+                {
+                    hud.Skyesays = "An enemy is out of bullets!"; // Catch the throw up if no active bullets are found on a fire attempt
+                }
+                if (enemies[i].deathTimer >= 5)
+                {
+                    enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
+                }
+            }
+
+            // Collision detection
+            for (int i = 0; i < enemies.Count; i++) // For each enemy
+            {
+                for (int z = 0; z < skyPlayer.bullets.Length; z++) // For each player bullet
+                {
+                    if (skyPlayer.bullets[z].isActive && enemies[i].spritePos.Intersects(skyPlayer.bullets[z].spritePos)) // If the bullet is active
+                    {
+                        enemies[i].TakeHit(skyPlayer.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
+                        skyPlayer.bullets[z].isActive = false;
+                    }
+                }
+
+                for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
+                {
+                    if (enemies[i].bullets[z].isActive && skyPlayer.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // 
+                    {
+                        skyPlayer.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                        enemies[i].bullets[z].isActive = false;
+                    }
+                }
+            }
+            // End Collision detection
+
             base.Update(gameTime);
         }
 
@@ -125,9 +175,15 @@ namespace Archangel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            hud.DrawHUD(spriteBatch, mainfont);
+            hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
             //spriteBatch.Draw(player, playerPos, new Rectangle(0,20,player.Width, player.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
-            
+
+            skyPlayer.Draw(spriteBatch); // Draw player
+            for (int i = 0; i < enemies.Count; i++) // Draw enemies
+            {
+                enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method of the character class
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

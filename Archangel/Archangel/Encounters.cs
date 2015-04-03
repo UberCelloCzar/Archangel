@@ -17,6 +17,7 @@ namespace Archangel
 
     // Change Log
     // T 3/31/15- changed enemyList into a private with properties
+    // T 4/2/15- changed parameters and calls to use the Game1 hud object
     class Encounters
     {
         // attributes
@@ -38,7 +39,7 @@ namespace Archangel
         }
 
         // create enemies
-        private void CreateEnemy(string enemyinfo, Texture2D [] enemysprites, Texture2D [] bulletsprites)
+        private void CreateEnemy(string enemyinfo, Texture2D [] enemysprites, Texture2D [] bulletsprites, HeadsUpDisplay hud)
         {
             int y = 0;
             int[] elem = new int[4];
@@ -59,19 +60,17 @@ namespace Archangel
                 }
                 catch (IndexOutOfRangeException ioe)
                 {
-                    HeadsUpDisplay hud = new HeadsUpDisplay(player);
                     hud.Skyesays = "Their formation is off...";
                 }
                 catch (FormatException foe)
                 {
-                    HeadsUpDisplay hud = new HeadsUpDisplay(player);
                     hud.Skyesays = "...Huh, no enemies, I guess. Sweet!";
                 }
             }
         }
 
         // read encounter layout
-        public void ReadEncounter(Texture2D[] enemysprites, Texture2D[] bulletsprites)
+        public void ReadEncounter(Texture2D[] enemysprites, Texture2D[] bulletsprites, HeadsUpDisplay hud)
         {
             try
             {
@@ -88,12 +87,11 @@ namespace Archangel
                 string line = "";
                 while ((line = input.ReadLine()) != null) // read enemy data
                 {
-                    CreateEnemy(line, enemysprites, bulletsprites);
+                    CreateEnemy(line, enemysprites, bulletsprites, hud);
                 }
             }
             catch (IOException ioe)
             {
-                HeadsUpDisplay hud = new HeadsUpDisplay(player);
                 hud.Skyesays = "...Huh, no enemies, I guess. Awesome!";
             }
         }

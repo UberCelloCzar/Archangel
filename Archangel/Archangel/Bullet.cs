@@ -18,6 +18,7 @@ namespace Archangel
     // T 3/25/15- added update method and logic, changed constructor to accept texture array, removed abstract keyword
     // T 3/26/15- added draw and fixed cnstructor to accept speed and damage
     // T 3/31/15- added old position variable for raycasting
+    // T 4/2/15- removed all raycasting tools (bullet is too big for that and too slow for it to matter)
     public class Bullet:MovableGameObject
     {
         private int dealtDamage; // Variable for bullet's damage and properties
@@ -27,18 +28,11 @@ namespace Archangel
             set { dealtDamage = value; }
         }
 
-        private bool active; 
+        private bool active;
         public bool isActive
         {
             get { return active; }
             set { active = value; }
-        }
-
-        private Vector2 oldPosition; // Holds last position of bullet for raycasting
-        public Vector2 oldPos
-        {
-            get { return oldPosition; }
-            set { oldPosition = value; }
         }
 
         public Bullet(int X, int Y, int dir, int spd, int dmg, Texture2D[] loadSprite) // Creates bullet at xy with direction for loaded sprite
@@ -49,25 +43,21 @@ namespace Archangel
 
         public override void Update() // Moves bullet in faced direction
         {
-            if (active) // But only if active
+            switch (direction) // Move based on the direction
             {
-                switch (direction) // Move based on the direction
-                {
-                    case 0: spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height); // Right
+                case 0: spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height); // Right
                         break;
-                    case 1: spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spriteArray[1].Width, spriteArray[1].Height); // Left
+                case 1: spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spriteArray[1].Width, spriteArray[1].Height); // Left
                         break;
-                    case 2: spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spriteArray[2].Width, spriteArray[2].Height); // Up
+                case 2: spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spriteArray[2].Width, spriteArray[2].Height); // Up
                         break;
-                    case 3: spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spriteArray[3].Width, spriteArray[3].Height); // Down
+                case 3: spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spriteArray[3].Width, spriteArray[3].Height); // Down
                         break;
-                }
+            }
 
-
-                if (spritePos.X+spritePos.Width < 0 || spritePos.X >= Game1.clientBounds.Width || spritePos.Y+spritePos.Height < 0 || spritePos.Y >= Game1.clientBounds.Height) // Check to see if off the edge
-                {
-                    active = false; // The spritePos width and height are usable here because we just changed them to the correct values
-                }
+            if (spritePos.X + spritePos.Width < 0 || spritePos.X >= Game1.clientBounds.Width || spritePos.Y + spritePos.Height < 0 || spritePos.Y >= Game1.clientBounds.Height) // Check to see if off the edge
+            {
+                isActive = false; // The spritePos width and height are usable here because we just changed them to the correct values
             }
         }
 

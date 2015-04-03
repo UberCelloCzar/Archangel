@@ -18,6 +18,7 @@ namespace Archangel
     // T 3/28/15- added fire method
     // T 3/29/15- added bullet array
     // T 3/31/15- added fireRate and cooldown for firing, added color variable for hit showing
+    // T 4/2/15- added Draw and Update to hand bullet moving and drawing code to both enemies and player, moved fire method to here, moved color method up to movablegameobject
     public abstract class Character:MovableGameObject
     {
         private int health; // HP for character and properties
@@ -26,8 +27,6 @@ namespace Archangel
             get { return health; }
             set { health = value; }
         }
-
-        protected Color color = Color.White; // Will turn red momentarily when hit
 
         private int fireRate; // Wait time after firing
         public int cooldown
@@ -54,8 +53,49 @@ namespace Archangel
         public virtual void TakeHit(int dmg) // Using passed damage, calculate new health; add code to lose a life in child class for player
         {
             charHealth -= dmg;
+            color = Color.Red; // Flash red for a frame when hit
         }
 
-        public abstract void Fire(); // Requires a fire method
+        public void Fire() // Fires a bullet
+        {
+            int i; // Must be able to use the found bullet
+            for (i = 0; i < bullets.Length; i++)
+            {
+                if (!bullets[i].isActive) // Find and use an inactive bullet
+                {
+                    break;
+                }
+                if (i == bullets.Length - 1) // If all bullets are active (ideally not possible)
+                {
+                    throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up
+                }
+
+            }
+            bullets[i].direction = direction; // Move the bullet to the character's position and direction (middle of the character sprite)
+            bullets[i].spritePos = new Rectangle(spriteArray[direction].Bounds.Left + spriteArray[direction].Width / 2, spriteArray[direction].Bounds.Top + spriteArray[direction].Height / 2, spriteArray[direction].Width, spriteArray[direction].Height);
+            bullets[i].isActive = true;
+        }
+
+        public override void Update()
+        {
+            for (int i = 0; i < bullets.Length; i++) // Update active bullets
+            {
+                if (bullets[i].isActive)
+                {
+                    bullets[i].Update();
+                }
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            for (int i = 0; i < bullets.Length; i++) // Draw active bullets
+            {
+                if (bullets[i].isActive)
+                {
+                    bullets[i].Draw(spriteBatch);
+                }
+            }
+        }
     }
 }

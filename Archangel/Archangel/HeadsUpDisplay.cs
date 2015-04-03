@@ -16,13 +16,13 @@ namespace Archangel
     // Contains all the code for the heads up display
 
     // Change Log
+    // T 4/2/15- Moved around parameters and player.health so health updates with game
     public class HeadsUpDisplay
     {
         // attributes
         SpriteBatch spriteBatch;
         SpriteFont mainfont;
         Vector2 vect2;
-        //Player player;
         int health = 100; //(pass in player object) health = player.charHealth
         int stamina = 100; // player.charStamina
         string skyesays;
@@ -49,15 +49,17 @@ namespace Archangel
             }
         }
 
-        public HeadsUpDisplay(SkyPlayer player)
+        public HeadsUpDisplay()
         {
             SkyeThink();
-            health = player.charHealth;
-            //stamina = player.charStamina;
         }
 
-        public void DrawHUD(SpriteBatch sb, SpriteFont sf)
+        public void DrawHUD(SpriteBatch sb, SpriteFont sf, SkyPlayer skyPlayer)
         {
+            player = skyPlayer;
+            health = player.charHealth; // I moved these here so player health changes on the HUD when it changes in the game
+            //stamina = player.charStamina;
+
             spriteBatch = sb;
             mainfont = sf;
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(10, 9), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
