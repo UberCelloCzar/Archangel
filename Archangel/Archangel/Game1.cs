@@ -25,6 +25,7 @@ namespace Archangel
     // T 4/2/15- added collision detection, drawing, and updates; removed GameLogic class, added loop to populate sprite arrays for testing
     // B 4/2/15 - Added code to populate the sprite arrays, intantiated enemyList and sprite arrays, created an Encounters object to load an encounter
                      // T (B+T) 4/2/15- Fixed Merge issues
+    // T 4/3/15- changed all relevant classes to implement an inactive bullet queue,
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -150,6 +151,7 @@ namespace Archangel
                     {
                         enemies[i].TakeHit(skyPlayer.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
                         skyPlayer.bullets[z].isActive = false;
+                        skyPlayer.ReloadBullet(z); // Add the bullet back to the inactive queue
                     }
                 }
 
@@ -159,6 +161,7 @@ namespace Archangel
                     {
                         skyPlayer.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
                         enemies[i].bullets[z].isActive = false;
+                        enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
                     }
                 }
             }

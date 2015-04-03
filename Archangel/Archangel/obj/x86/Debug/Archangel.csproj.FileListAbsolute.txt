@@ -17,3 +17,5 @@ C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.exe
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
+C:\Users\Ubercelloboy\Documents\Archangel\Archangel\obj\x86\Debug\Archangel.exe
+C:\Users\Ubercelloboy\Documents\Archangel\Archangel\obj\x86\Debug\Archangel.pdb

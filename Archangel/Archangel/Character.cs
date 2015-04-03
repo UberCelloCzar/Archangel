@@ -42,12 +42,25 @@ namespace Archangel
             set { blt = value; }
         }
 
+        private int[] bltq; // Queue of inactive bullets
+        public int[] bulletQueue
+        {
+            get { return bltq; }
+            set { bltq = value; }
+        }
+
+        private int head; // Pointers to head and tail of queue
+        private int tail;
+        private int bul; // Current bullet
+
         protected Texture2D[] spriteArray; // I went for protected on this array for all the sprites to avoid any weird errors properties might generate
 
         public Character(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
             : base(X, Y, dir, spd, loadSprite)
         {
             spriteArray = loadSprite; // Bring in all the sprites to draw with
+            head = 0;
+            tail = 0; // Initialize queue tracers
         }
 
         public virtual void TakeHit(int dmg) // Using passed damage, calculate new health; add code to lose a life in child class for player
@@ -58,22 +71,37 @@ namespace Archangel
 
         public void Fire() // Fires a bullet
         {
-            int i; // Must be able to use the found bullet
-            for (i = 0; i < bullets.Length; i++)
+            if (NoBullets) // If all bullets are active (ideally not possible)
             {
-                if (!bullets[i].isActive) // Find and use an inactive bullet
-                {
-                    break;
-                }
-                if (i == bullets.Length - 1) // If all bullets are active (ideally not possible)
-                {
-                    throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up
-                }
-
+                throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up
             }
-            bullets[i].direction = direction; // Move the bullet to the character's position and direction (middle of the character sprite)
-            bullets[i].spritePos = new Rectangle(spriteArray[direction].Bounds.Left + spriteArray[direction].Width / 2, spriteArray[direction].Bounds.Top + spriteArray[direction].Height / 2, spriteArray[direction].Width, spriteArray[direction].Height);
-            bullets[i].isActive = true;
+
+            bul = bulletQueue[head];
+            bullets[bul].direction = direction; // Move the bullet to the character's position and direction (middle of the character sprite)
+            bullets[bul].spritePos = new Rectangle(spriteArray[direction].Bounds.Left + spriteArray[direction].Width / 2, spriteArray[direction].Bounds.Top + spriteArray[direction].Height / 2, spriteArray[direction].Width, spriteArray[direction].Height);
+            bullets[bul].isActive = true;
+            bulletQueue[head] = 69;
+            head++;
+            if (head>bulletQueue.Length-1)
+            {
+                head = 0;
+            }
+        }
+
+        public bool NoBullets
+        {
+            get
+            {
+                for (int i = 0; i < bulletQueue.Length; i++)
+                {
+                    if (bulletQueue[i] != 69)
+                    {
+                        head = i;
+                        return false; // If at least one bullet is inactive, say so
+                    }
+                }
+                return true; // Otherwise, say there are no bullets
+            }
         }
 
         public override void Update()
@@ -83,7 +111,21 @@ namespace Archangel
                 if (bullets[i].isActive)
                 {
                     bullets[i].Update();
+                    if (!bullets[i].isActive) // If the bullet went out of bounds, add it back to the inactive queue
+                    {
+                        ReloadBullet(i);
+                    }
                 }
+            }
+        }
+
+        public void ReloadBullet(int i) // Adds the index i of a freshly inactive bullet back to the inactive queue and moves the tail
+        {
+            bulletQueue[tail] = i;
+            tail++;
+            if (tail > bulletQueue.Length - 1)
+            {
+                tail = 0;
             }
         }
 

@@ -36,6 +36,12 @@ namespace Archangel
                 bullets[i] = new Bullet(0, 0, 0, 5, 1, bulletSprite);
             }
 
+            bulletQueue = new int[50];
+            for (int i = 0; i < bullets.Length; i++)
+            {
+                bulletQueue[i] = i; // Initialize the queue
+            }
+
             cooldown = 2; // Don't let them fire immediately
             direction = dir; // Initial direction
             charHealth = 2; // Enemy health
