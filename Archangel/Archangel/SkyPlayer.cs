@@ -66,6 +66,7 @@ namespace Archangel
 
             // INPUT
             kstate = Keyboard.GetState(); // Get pressed keys
+            Keys[] pressedKeys = kstate.GetPressedKeys();
 
             if (direction == 1 && !kstate.IsKeyDown(Keys.Right)) // If direction is moveRight and right key is not down, revert to facing right
             {

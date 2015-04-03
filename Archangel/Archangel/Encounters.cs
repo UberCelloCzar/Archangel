@@ -28,14 +28,12 @@ namespace Archangel
             set { enemyList = value; }
         }
 
-        SkyPlayer player;
         bool skirmishOver;
 
         // constructor
-        public Encounters(SkyPlayer player)
+        public Encounters()
         {
             enemies = new List<Enemy>();
-            this.player = player;
         }
 
         // create enemies

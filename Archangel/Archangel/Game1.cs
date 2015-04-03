@@ -23,6 +23,8 @@ namespace Archangel
     // T 3/31/15- fixed all draw methods to accept the Game1 spriteBatch
     // B 4/1/15 - Added basic sprites to content folder, updated draw method and SpriteBatch
     // T 4/2/15- added collision detection, drawing, and updates; removed GameLogic class, added loop to populate sprite arrays for testing
+    // B 4/2/15 - Added code to populate the sprite arrays, intantiated enemyList and sprite arrays, created an Encounters object to load an encounter
+                     // T (B+T) 4/2/15- Fixed Merge issues
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -39,8 +41,7 @@ namespace Archangel
         SpriteFont mainfont;
         static double doubleScale = 0.25;
         float floatScale = (float)doubleScale;
-        KeyboardState kState;
-        Vector2 playerPos = new Vector2(0, 20);
+        Encounters encounter;
 
         public Game1():base()
         {
@@ -90,6 +91,8 @@ namespace Archangel
             }
             skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
+            encounter = new Encounters();
+            enemies = encounter.enemies; // Populate the enemy list
         }
 
         /// <summary>
@@ -160,7 +163,7 @@ namespace Archangel
                 }
             }
             // End Collision detection
-
+            
             base.Update(gameTime);
         }
 

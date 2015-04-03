@@ -19,6 +19,7 @@ namespace Archangel
                   // NOTE: changed all constructors in child classes to reflect changes to this one
     // B 4/1/15 - made a slight change to the constructor
     // T 4/2/15- added color variable and used it in the draw for a red flash when characters are hit
+    // B 4/2/15 - changed the Draw method to include scaling
     public abstract class MovableGameObject:GameObject
     { 
         private int speed; // Variable for object speed and properties
@@ -63,8 +64,8 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {
-            spriteBatch.Draw(spriteArray[direction], spritePos, color);
-            color = Color.White; // Reset the color
+            spriteBatch.Draw(spriteArray[direction], new Vector2(spritePos.X, spritePos.Y), spritePos, color, 0, new Vector2(), this.FloatScale, SpriteEffects.None, 0);
+            color = Color.White; // Reset the colo
         }
     }
 }

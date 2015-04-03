@@ -27,7 +27,7 @@ namespace Archangel
             set { livesLeft = value; }
         }
 
-        protected KeyboardState kstate = Keyboard.GetState(); // Hold pressed keys
+        protected KeyboardState kstate; // Hold pressed keys
 
         protected Rectangle resetPos; // Rectangle to hold position for sprite reset upon death of character
         
@@ -38,6 +38,11 @@ namespace Archangel
             charHealth = 3; // Default health
             livesLeft = 3; // Default lives
             resetPos = new Rectangle(X, Y, loadSprite[0].Width, loadSprite[0].Height); // Sets position to return to when player dies
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
         }
     }
 }
