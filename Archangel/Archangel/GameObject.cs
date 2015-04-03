@@ -21,13 +21,7 @@ namespace Archangel
     public abstract class GameObject
     {
         private Rectangle objPos;  // Rectangle position of object's hitbox and sprite (x,y,width,height)
-        private static double doubleScale = 1 / 12;
-        private float floatScale = (float)doubleScale;
-
-        public float FloatScale
-        {
-            get { return floatScale; }
-        }
+        public float floatScale;
 
         public Rectangle spritePos
         {
@@ -43,8 +37,9 @@ namespace Archangel
 
         public GameObject(int X, int Y, Texture2D loadSprite) // Constructor runs to set up new game object
         {
+            floatScale = .25f;
             sprite = loadSprite; // Load image into texture
-            spritePos = new Rectangle(X, Y, sprite.Width, sprite.Height); // Load image/hitbox position
+            spritePos = new Rectangle(X, Y, (int) floatScale*sprite.Width, (int) floatScale*sprite.Height); // Load image/hitbox position
         }
 
         public abstract void Draw(SpriteBatch spriteBatch); // Requires on screen objects to have a render method

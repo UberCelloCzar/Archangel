@@ -49,11 +49,9 @@ namespace Archangel
             set { bltq = value; }
         }
 
-        private int head; // Pointers to head and tail of queue
-        private int tail;
-        private int bul; // Current bullet
-
-        protected Texture2D[] spriteArray; // I went for protected on this array for all the sprites to avoid any weird errors properties might generate
+        public int head; // Pointers to head and tail of queue
+        public int tail;
+        protected int bul; // Current bullet
 
         public Character(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
             : base(X, Y, dir, spd, loadSprite)
@@ -69,16 +67,15 @@ namespace Archangel
             color = Color.Red; // Flash red for a frame when hit
         }
 
-        public void Fire() // Fires a bullet
+        public virtual void Fire() // Fires a bullet
         {
             if (NoBullets) // If all bullets are active (ideally not possible)
             {
                 throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up
             }
 
-            bul = bulletQueue[head];
-            bullets[bul].direction = direction; // Move the bullet to the character's position and direction (middle of the character sprite)
-            bullets[bul].spritePos = new Rectangle(spriteArray[direction].Bounds.Left + spriteArray[direction].Width / 2, spriteArray[direction].Bounds.Top + spriteArray[direction].Height / 2, spriteArray[direction].Width, spriteArray[direction].Height);
+            bul = bulletQueue[head]; // Move the bullet to the character's position
+            bullets[bul].spritePos = new Rectangle(spritePos.Center.X, spritePos.Center.Y, spritePos.Width, spritePos.Height);
             bullets[bul].isActive = true;
             bulletQueue[head] = 69;
             head++;
@@ -96,7 +93,6 @@ namespace Archangel
                 {
                     if (bulletQueue[i] != 69)
                     {
-                        head = i;
                         return false; // If at least one bullet is inactive, say so
                     }
                 }

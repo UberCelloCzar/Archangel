@@ -55,7 +55,7 @@ namespace Archangel
                         break;
             }
 
-            if (spritePos.X + spritePos.Width < 0 || spritePos.X >= Game1.clientBounds.Width || spritePos.Y + spritePos.Height < 0 || spritePos.Y >= Game1.clientBounds.Height) // Check to see if off the edge
+            if (spritePos.X + spritePos.Width < 0 || spritePos.X >= Game1.clientWidth || spritePos.Y + spritePos.Height < 0 || spritePos.Y >= Game1.clientHeight) // Check to see if off the edge
             {
                 isActive = false; // The spritePos width and height are usable here because we just changed them to the correct values
             }

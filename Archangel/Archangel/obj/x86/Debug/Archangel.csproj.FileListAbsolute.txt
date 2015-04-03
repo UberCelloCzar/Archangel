@@ -19,3 +19,16 @@ C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Deb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
 C:\Users\Ubercelloboy\Documents\Archangel\Archangel\obj\x86\Debug\Archangel.exe
 C:\Users\Ubercelloboy\Documents\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\SDL.dll
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SkyeLines.txt
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Bullet 1.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 1.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 1.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Player Bullet 1.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\mainFont.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Archangel.exe
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Archangel.pdb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Lidgren.Network.dll
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\MonoGame.Framework.dll
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\OpenTK.dll
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll

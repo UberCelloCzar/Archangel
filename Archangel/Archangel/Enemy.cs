@@ -94,7 +94,7 @@ namespace Archangel
                 {
                     throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
                 }
-                cooldown = 10; // Go into cooldown
+                cooldown = 50; // Go into cooldown
             }
 
             cooldown--; // Countdown to fire again
@@ -108,6 +108,22 @@ namespace Archangel
         public override void Fire()
         {
             base.Fire();
+            if (direction == 0 || direction == 1) // Move the bullet to the character's direction (middle of the character sprite)
+            {
+                bullets[bul].direction = 1; // Left
+            }
+            else if (direction == 2 || direction == 3)
+            {
+                bullets[bul].direction = 0; // Right
+            }
+            else if (direction == 4 || direction == 5)
+            {
+                bullets[bul].direction = 2; // Up
+            }
+            else
+            {
+                bullets[bul].direction = 3; // Down
+            }
         }
     }
 }

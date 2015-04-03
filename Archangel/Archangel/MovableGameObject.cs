@@ -51,7 +51,6 @@ namespace Archangel
             set { facedDirection = value; }
         }
         
-        // NOTE: This does not compile due to a null reference exception - B 4/1/15
         public MovableGameObject(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y,and sprite for object
             : base(X, Y, loadSprite[dir])
         {
@@ -64,8 +63,9 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {
-            spriteBatch.Draw(spriteArray[direction], new Vector2(spritePos.X, spritePos.Y), spritePos, color, 0, new Vector2(), this.FloatScale, SpriteEffects.None, 0);
-            color = Color.White; // Reset the colo
+            //spriteBatch.Draw(spriteArray[direction],
+            spriteBatch.Draw(spriteArray[direction], new Vector2(spritePos.X, spritePos.Y), null, color, 0, Vector2.Zero, floatScale, SpriteEffects.None, 0);
+            color = Color.White; // Reset the color
         }
     }
 }

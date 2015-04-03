@@ -31,7 +31,7 @@ namespace Archangel
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
             {                                                          
-                bullets[i] = new Bullet(0, 0, 0, 7, 1, bulletSprite);
+                bullets[i] = new Bullet(0, 0, 0, 3, 1, bulletSprite);
             }
 
             bulletQueue = new int[50];
@@ -149,7 +149,7 @@ namespace Archangel
             {
                 spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
             }
-            else if (direction == 1 && spritePos.X > (Game1.clientBounds.Width)) // If moving right and it puts you beyond the bounds
+            else if (direction == 1 && spritePos.X > (Game1.clientWidth)) // If moving right and it puts you beyond the bounds
             {
                 spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
             }
@@ -158,7 +158,7 @@ namespace Archangel
             {
                 spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
             }
-            else if (direction == 7 && spritePos.Y > (Game1.clientBounds.Height)) // If moving down and it puts you beyond the bounds
+            else if (direction == 7 && spritePos.Y > (Game1.clientHeight)) // If moving down and it puts you beyond the bounds
             {
                 spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
             }
@@ -173,7 +173,7 @@ namespace Archangel
                 {
                     throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
                 }
-                cooldown = 10; // Go into cooldown
+                cooldown = 15; // Go into cooldown
             }
 
             cooldown--; // Increment cooldown to allow firing again
@@ -187,6 +187,22 @@ namespace Archangel
         public override void Fire()
         {
             base.Fire();
+            if (direction == 0 || direction == 1) // Move the bullet to the character's direction (middle of the character sprite)
+            {
+                bullets[bul].direction = 0; // Right
+            }
+            else if (direction == 2 || direction == 3)
+            {
+                bullets[bul].direction = 1; // Left
+            }
+            else if (direction == 4 || direction == 5)
+            {
+                bullets[bul].direction = 2; // Up
+            }
+            else
+            {
+                bullets[bul].direction = 3; // Down
+            }
         }
     }
 }
