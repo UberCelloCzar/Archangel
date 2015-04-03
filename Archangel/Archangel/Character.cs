@@ -57,5 +57,10 @@ namespace Archangel
         }
 
         public abstract void Fire(); // Requires a fire method
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+        }
     }
 }

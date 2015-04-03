@@ -22,6 +22,7 @@ namespace Archangel
     // T 3/28+30/15- added more texture variables
     // T 3/31/15- fixed all draw methods to accept the Game1 spriteBatch
     // B 4/1/15 - Added basic sprites to content folder, updated draw method and SpriteBatch
+    // B 4/2/15 - Added code to populate the sprite arrays, intantiated enemyList and sprite arrays, created an Encounters object to load an encounter
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -33,19 +34,11 @@ namespace Archangel
         Texture2D[] enemySmallBullet;
         public static Rectangle clientBounds; // Lets other methods know window bounds
         SkyPlayer skyPlayer; // Player and enemies
-        List<Enemy> enemyList;
+        List<Enemy> enemyList = new List<Enemy>();
         HeadsUpDisplay hud;
         SpriteFont mainfont;
         GameLogic gameLogic; // Logic handler
-        Texture2D player;
-        Texture2D enemy;
-        Texture2D playerBullet;
-        Texture2D enemyBullet;
-        static double doubleScale = 0.25;
-        float floatScale = (float)doubleScale;
-        KeyboardState kState;
-        Vector2 playerPos = new Vector2(0, 20);
-
+        Encounters encounter;
         public Game1():base()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -82,12 +75,29 @@ namespace Archangel
 
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
-            enemySprites[0] = Content.Load<Texture2D>("Enemy Pose 1");
-            flyingPlayerSprites[0] = Content.Load<Texture2D>("Main Character Pose 1");
-            playerSmallBullet[0] = Content.Load<Texture2D>("Player Bullet 1");
-            enemySmallBullet[0] = Content.Load<Texture2D>("Enemy Bullet 1");
+            for (int i = 0; i < enemySprites.Length; i++)
+            { 
+                enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1"); 
+            }
+            for (int i = 0; i < flyingPlayerSprites.Length; i++)
+            {
+                flyingPlayerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
+            }
+            for (int i = 0; i < playerSmallBullet.Length; i++)
+            {
+                playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
+            }
+            for (int i = 0; i < enemySmallBullet.Length; i++)
+            {
+                enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
+            }
             skyPlayer = new SkyPlayer(90, 0, 0, 1, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay(skyPlayer);
+            encounter = new Encounters(skyPlayer);
+            foreach (Enemy enemy in encounter.enemies)
+            {
+                enemyList.Add(enemy);
+            }
         }
 
         /// <summary>
@@ -110,6 +120,8 @@ namespace Archangel
                 Exit();
 
             // TODO: Add your update logic here
+            skyPlayer.Update();
+            
             
             base.Update(gameTime);
         }
@@ -124,10 +136,10 @@ namespace Archangel
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
+            
             hud.DrawHUD(spriteBatch, mainfont);
             //spriteBatch.Draw(player, playerPos, new Rectangle(0,20,player.Width, player.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
-            
+            skyPlayer.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

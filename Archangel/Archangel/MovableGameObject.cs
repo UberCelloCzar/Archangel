@@ -18,6 +18,7 @@ namespace Archangel
     // T 3/26/15- added sprite array and properties, changed constructor to reflect this, moved direction and properties to here, added speed to constructor
                   // NOTE: changed all constructors in child classes to reflect changes to this one
     // B 4/1/15 - made a slight change to the constructor
+    // B 4/2/15 - changed the Draw method to include scaling
     public abstract class MovableGameObject:GameObject
     { 
         private int speed; // Variable for object speed and properties
@@ -60,7 +61,7 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {
-            spriteBatch.Draw(spriteArray[direction], spritePos, Color.White);
+            spriteBatch.Draw(spriteArray[direction], new Vector2(spritePos.X, spritePos.Y), spritePos, Color.White, 0, new Vector2(), this.FloatScale, SpriteEffects.None, 0);
         }
     }
 }
