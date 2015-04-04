@@ -63,7 +63,7 @@ namespace Archangel
 
         public virtual void TakeHit(int dmg) // Using passed damage, calculate new health; add code to lose a life in child class for player
         {
-            charHealth -= dmg;
+            charHealth = charHealth - dmg;
             color = Color.Red; // Flash red for a frame when hit
         }
 
@@ -75,7 +75,7 @@ namespace Archangel
             }
 
             bul = bulletQueue[head]; // Move the bullet to the character's position
-            bullets[bul].spritePos = new Rectangle(spritePos.Center.X, spritePos.Center.Y, spritePos.Width, spritePos.Height);
+            bullets[bul].spritePos = new Rectangle(spritePos.Center.X, spritePos.Center.Y, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
             bullets[bul].isActive = true;
             bulletQueue[head] = 69;
             head++;

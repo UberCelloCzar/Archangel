@@ -23,7 +23,7 @@ namespace Archangel
     public class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
-        private int deadTime; // Timer for death sprite
+        public int deadTime; // Timer for death sprite
 
         public SkyPlayer(int X, int Y, int dir, int spd, Texture2D[] charSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
             : base(X, Y, dir, spd, charSprite)

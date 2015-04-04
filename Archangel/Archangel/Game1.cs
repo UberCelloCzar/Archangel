@@ -196,12 +196,12 @@ namespace Archangel
 
             hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
             skyPlayer.Draw(spriteBatch); // Draw player
-                spriteBatch.DrawString(mainfont, enemies.Count.ToString(), new Vector2(200,200), Color.Blue);
+                spriteBatch.DrawString(mainfont, skyPlayer.charHealth.ToString(), new Vector2(500,500), Color.Blue);
                 for (int i = 0; i < enemies.Count; i++) // Draw enemies
                 {
                     enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
                 }
-            spriteBatch.DrawString(mainfont, encounter.enemies.Count.ToString(), new Vector2(100, 100), Color.Red);
+            spriteBatch.DrawString(mainfont, skyPlayer.direction.ToString(), new Vector2(700, 500), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
