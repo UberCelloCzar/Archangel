@@ -63,7 +63,7 @@ namespace Archangel
 
         public virtual void TakeHit(int dmg) // Using passed damage, calculate new health; add code to lose a life in child class for player
         {
-            charHealth = charHealth - dmg;
+            health = health - dmg;
             color = Color.Red; // Flash red for a frame when hit
         }
 
