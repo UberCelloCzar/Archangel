@@ -63,8 +63,7 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the sprites
         {
-            //spriteBatch.Draw(spriteArray[direction],
-            spriteBatch.Draw(spriteArray[direction], new Vector2(spritePos.X, spritePos.Y), null, color, 0, Vector2.Zero, floatScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(spriteArray[direction], spritePos, color);
             color = Color.White; // Reset the color
         }
     }

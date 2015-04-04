@@ -25,7 +25,7 @@ namespace Archangel
     // T 4/2/15- added collision detection, drawing, and updates; removed GameLogic class, added loop to populate sprite arrays for testing
     // B 4/2/15 - Added code to populate the sprite arrays, intantiated enemyList and sprite arrays, created an Encounters object to load an encounter
                      // T (B+T) 4/2/15- Fixed Merge issues
-    // T 4/3/15- changed all relevant classes to implement an inactive bullet queue, fixed draw issues, fixed collision issues
+    // T 4/3/15- changed all relevant classes to implement an inactive bullet queue, fixed draw issues, fixed collision issues, fixed more issues, removed floatscale
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -97,8 +97,8 @@ namespace Archangel
             skyPlayer = new SkyPlayer(20, 20, 0, 3, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             encounter = new Encounters();
-            
-            
+            encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
+            enemies = encounter.enemies; // Populate the enemy list
         }
 
         /// <summary>
@@ -122,53 +122,59 @@ namespace Archangel
 
             // TODO: Add your update logic here
 
-            encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
-            enemies = encounter.enemies; // Populate the enemy list
-            try
+            if (enemies.Count <= 0)
             {
-                skyPlayer.Update(); // Update the player
+                encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
+                enemies = encounter.enemies; // Populate the enemy list
             }
-            catch (IndexOutOfRangeException noBullets) // Catch the throw up if no active bullets are found on a fire attempt
-            {
-                hud.Skyesays = "You're out of bullets! Wait for them to replenish before trying to fire.";
-            }
-
-            for (int i = 0; i < enemies.Count; i++) // Update all the enemies
+            if (enemies.Count > 0)
             {
                 try
                 {
-                    enemies[i].Update(); // NOTE: bullet updates are in the update method in the Character class
+                    skyPlayer.Update(); // Update the player
                 }
-                catch (IndexOutOfRangeException noBullets) 
+                catch (IndexOutOfRangeException noBullets) // Catch the throw up if no active bullets are found on a fire attempt
                 {
-                    hud.Skyesays = "An enemy is out of bullets!"; // Catch the throw up if no active bullets are found on a fire attempt
+                    hud.Skyesays = "You're out of bullets! Wait for them to replenish before trying to fire.";
                 }
-                if (enemies[i].deathTimer >= 5)
-                {
-                    enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
-                }
-            }
 
-            // Collision detection
-            for (int i = 0; i < enemies.Count; i++) // For each enemy
-            {
-                for (int z = 0; z < skyPlayer.bullets.Length; z++) // For each player bullet
+                for (int i = 0; i < enemies.Count; i++) // Update all the enemies
                 {
-                    if (skyPlayer.bullets[z].isActive && enemies[i].spritePos.Intersects(skyPlayer.bullets[z].spritePos)) // If the bullet is active
+                    try
                     {
-                        enemies[i].TakeHit(skyPlayer.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
-                        skyPlayer.bullets[z].isActive = false;
-                        skyPlayer.ReloadBullet(z); // Add the bullet back to the inactive queue
+                        enemies[i].Update(); // NOTE: bullet updates are in the update method in the Character class
+                    }
+                    catch (IndexOutOfRangeException noBullets)
+                    {
+                        hud.Skyesays = "An enemy is out of bullets!"; // Catch the throw up if no active bullets are found on a fire attempt
+                    }
+                    if (enemies[i].deathTimer >= 5)
+                    {
+                        enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
                     }
                 }
 
-                for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
+                // Collision detection
+                for (int i = 0; i < enemies.Count; i++) // For each enemy
                 {
-                    if (enemies[i].bullets[z].isActive && skyPlayer.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // 
+                    for (int z = 0; z < skyPlayer.bullets.Length; z++) // For each player bullet
                     {
-                        skyPlayer.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
-                        enemies[i].bullets[z].isActive = false;
-                        enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                        if (skyPlayer.bullets[z].isActive && enemies[i].spritePos.Intersects(skyPlayer.bullets[z].spritePos)) // If the bullet is active
+                        {
+                            enemies[i].TakeHit(skyPlayer.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
+                            skyPlayer.bullets[z].isActive = false;
+                            skyPlayer.ReloadBullet(z); // Add the bullet back to the inactive queue
+                        }
+                    }
+
+                    for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
+                    {
+                        if (enemies[i].bullets[z].isActive && skyPlayer.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // 
+                        {
+                            skyPlayer.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                            enemies[i].bullets[z].isActive = false;
+                            enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                        }
                     }
                 }
             }
@@ -189,21 +195,13 @@ namespace Archangel
             spriteBatch.Begin();
 
             hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
-            //spriteBatch.Draw(player, playerPos, new Rectangle(0,20,player.Width, player.Height), Color.White, 0, new Vector2(), floatScale, SpriteEffects.None, 0);
-            int z;
             skyPlayer.Draw(spriteBatch); // Draw player
-            for (int i = 0; i < 50; i++)
-            {
-                z = 10+(50*i);
-                spriteBatch.DrawString(mainfont, skyPlayer.bullets[i].direction.ToString(), new Vector2(z,40), Color.Blue);
-                spriteBatch.DrawString(mainfont, skyPlayer.bullets[i].isActive.ToString(), new Vector2(z, 70), Color.Blue);
-                spriteBatch.DrawString(mainfont, skyPlayer.bulletQueue[i].ToString(), new Vector2(z, 100), Color.Blue);
-            }
+                spriteBatch.DrawString(mainfont, enemies.Count.ToString(), new Vector2(200,200), Color.Blue);
                 for (int i = 0; i < enemies.Count; i++) // Draw enemies
                 {
                     enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
                 }
-            spriteBatch.DrawString(mainfont, encounter.enemies.Count.ToString(), new Vector2(300, 300), Color.Red);
+            spriteBatch.DrawString(mainfont, encounter.enemies.Count.ToString(), new Vector2(100, 100), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);

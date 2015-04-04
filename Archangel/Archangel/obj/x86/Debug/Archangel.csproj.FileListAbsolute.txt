@@ -32,3 +32,4 @@ C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\Windows
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\MonoGame.Framework.dll
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\OpenTK.dll
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter1.txt

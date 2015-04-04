@@ -43,11 +43,12 @@ namespace Archangel
             string[] info = new string[4];
             int[] elem = new int[4];
             info = enemyinfo.Split(',');
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 int.TryParse(info[i], out elem[i]);
             }
             enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites));
+
             /*foreach (string enemyStr in info)
             {
                 try
@@ -83,10 +84,8 @@ namespace Archangel
                 Random rand = new Random();
                 string file = "encounter" + rand.Next(1, 2) + ".txt"; // increase upper bound as more encounters are made
                 StreamReader input = new StreamReader(file);
-
                 string freqline = input.ReadLine(); // used to determine how often platforms appear. The lower the number, the more frequent. Lowest = 2
 
-                freqline = input.ReadLine();
                 // pass that into the platform spawn method here
 
                 string line = "";
