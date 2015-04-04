@@ -94,7 +94,7 @@ namespace Archangel
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
             }
-            skyPlayer = new SkyPlayer(20, 20, 0, 3, flyingPlayerSprites, playerSmallBullet);
+            skyPlayer = new SkyPlayer(20, 500, 0, 5, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             encounter = new Encounters();
             encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
@@ -122,6 +122,10 @@ namespace Archangel
 
             // TODO: Add your update logic here
 
+            if (skyPlayer.lives <= 0)
+            {
+                Environment.Exit(69);
+            }
             if (enemies.Count <= 0)
             {
                 encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
@@ -196,12 +200,10 @@ namespace Archangel
 
             hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
             skyPlayer.Draw(spriteBatch); // Draw player
-                spriteBatch.DrawString(mainfont, skyPlayer.charHealth.ToString(), new Vector2(500,500), Color.Blue);
-                for (int i = 0; i < enemies.Count; i++) // Draw enemies
-                {
-                    enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
-                }
-            spriteBatch.DrawString(mainfont, skyPlayer.direction.ToString(), new Vector2(700, 500), Color.Red);
+            for (int i = 0; i < enemies.Count; i++) // Draw enemies
+            {
+                enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

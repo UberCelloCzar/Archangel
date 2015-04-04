@@ -38,6 +38,7 @@ namespace Archangel
         public Bullet(int X, int Y, int dir, int spd, int dmg, Texture2D[] loadSprite) // Creates bullet at xy with direction for loaded sprite
             : base(X, Y, dir, spd, loadSprite)
         {
+            damage = dmg; // Do damage plz
             active = false; // Start out inactive
         }
 

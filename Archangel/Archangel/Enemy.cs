@@ -33,7 +33,7 @@ namespace Archangel
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
             {
-                bullets[i] = new Bullet(0, 0, 0, 5, 1, bulletSprite);
+                bullets[i] = new Bullet(0, 0, 0, 10, 1, bulletSprite);
             }
 
             bulletQueue = new int[50];
@@ -94,7 +94,7 @@ namespace Archangel
                 {
                     throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
                 }
-                cooldown = 50; // Go into cooldown
+                cooldown = 80; // Go into cooldown
             }
 
             cooldown--; // Countdown to fire again

@@ -31,7 +31,7 @@ namespace Archangel
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
             {                                                          
-                bullets[i] = new Bullet(0, 0, 0, 3, 1, bulletSprite);
+                bullets[i] = new Bullet(0, 0, 0, 10, 1, bulletSprite);
             }
 
             bulletQueue = new int[50];
