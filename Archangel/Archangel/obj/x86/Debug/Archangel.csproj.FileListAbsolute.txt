@@ -33,3 +33,6 @@ C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\Windows
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\OpenTK.dll
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter1.txt
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter1.txt
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter2.txt
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter3.txt

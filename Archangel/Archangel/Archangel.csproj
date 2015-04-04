@@ -75,6 +75,12 @@
     <Content Include="Content\encounter1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\encounter2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\encounter3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\SkyeLines.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
