@@ -36,3 +36,22 @@ C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\Windows
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter1.txt
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter2.txt
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter3.txt
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.exe
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\SDL.dll
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter1.txt
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter2.txt
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter3.txt
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SkyeLines.txt
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\mainFont.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Bullet 1.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 1.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 1.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Player Bullet 1.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Archangel.exe
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Archangel.pdb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Lidgren.Network.dll
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\MonoGame.Framework.dll
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\OpenTK.dll
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.csprojResolveAssemblyReference.cache

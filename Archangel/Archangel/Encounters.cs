@@ -82,7 +82,7 @@ namespace Archangel
             {
                 // create Streamreader and read in random encounter file
                 Random rand = new Random();
-                string file = "encounter" + rand.Next(1, 2) + ".txt"; // increase upper bound as more encounters are made
+                string file = "encounter" + rand.Next(1, 4) + ".txt"; // increase upper bound as more encounters are made
                 StreamReader input = new StreamReader(file);
                 string freqline = input.ReadLine(); // used to determine how often platforms appear. The lower the number, the more frequent. Lowest = 2
 
