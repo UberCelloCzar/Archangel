@@ -19,6 +19,7 @@ namespace Archangel
     // T 3/30/15- added fire method and updated constructor for it
     // T 3/31/15- added fire code to Update
     // T 4/2/15- moved fire method to Character, added death timer and mechanic
+    // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing
     public class Enemy:Character
     {
         private int deadTime; // Timer for how long enemy is drawn as dead before disappearing
@@ -108,22 +109,27 @@ namespace Archangel
         public override void Fire()
         {
             base.Fire();
-            if (direction == 0 || direction == 1) // Move the bullet to the character's direction (middle of the character sprite)
+            if (direction == 2 || direction == 3) // Move the bullet to the character's direction and gun's position
             {
-                bullets[bul].direction = 1; // Left
-            }
-            else if (direction == 2 || direction == 3)
-            {
+                bullets[bul].spritePos = new Rectangle(spritePos.X - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 0; // Right
             }
             else if (direction == 4 || direction == 5)
             {
+                bullets[bul].spritePos = new Rectangle(spritePos.X - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 2; // Up
+            }
+            else if (direction == 6 || direction == 7)
+            {
+                bullets[bul].spritePos = new Rectangle(spritePos.X - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].direction = 3; // Down
             }
             else
             {
-                bullets[bul].direction = 3; // Down
+                bullets[bul].spritePos = new Rectangle(spritePos.X - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].direction = 1; // Left
             }
+            bullets[bul].isActive = true;
         }
     }
 }

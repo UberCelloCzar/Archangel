@@ -19,6 +19,7 @@ namespace Archangel
     // T 3/29/15- added bullet array
     // T 3/31/15- added fireRate and cooldown for firing, added color variable for hit showing
     // T 4/2/15- added Draw and Update to hand bullet moving and drawing code to both enemies and player, moved fire method to here, moved color method up to movablegameobject
+    // T 4/3/15- implemented an inactive bullet queue in this and all child classes
     public abstract class Character:MovableGameObject
     {
         private int health; // HP for character and properties
@@ -49,8 +50,8 @@ namespace Archangel
             set { bltq = value; }
         }
 
-        public int head; // Pointers to head and tail of queue
-        public int tail;
+        protected int head; // Pointers to head and tail of queue
+        private int tail;
         protected int bul; // Current bullet
 
         public Character(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, direction, and sprite for character
@@ -75,8 +76,6 @@ namespace Archangel
             }
 
             bul = bulletQueue[head]; // Move the bullet to the character's position
-            bullets[bul].spritePos = new Rectangle(spritePos.Center.X, spritePos.Center.Y, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
-            bullets[bul].isActive = true;
             bulletQueue[head] = 69;
             head++;
             if (head>bulletQueue.Length-1)
