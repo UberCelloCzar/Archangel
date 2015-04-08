@@ -1,8 +1,8 @@
 Use the arrow keys to move
-Press F to fire
-Press S to slash
+Press SPACE to fire
+Press F to slash
 Press D to dash
-Press A to toggle flight
+Press SHIFT to toggle flight when on a platform
 Land and/or deactivate flight to recover stamina.
 While on a platform, you can shoot heavy artillery up at foes.
 Slash enemy bullets to reflect them!

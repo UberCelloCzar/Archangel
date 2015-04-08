@@ -26,6 +26,7 @@ namespace Archangel
     // B 4/2/15 - Added code to populate the sprite arrays, intantiated enemyList and sprite arrays, created an Encounters object to load an encounter
                      // T (B+T) 4/2/15- Fixed Merge issues
     // T 4/3/15- changed all relevant classes to implement an inactive bullet queue, fixed draw issues, fixed collision issues, fixed more issues, removed floatscale
+    // T 4/7/15- added sword code to update
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -37,7 +38,7 @@ namespace Archangel
         Texture2D[] enemySmallBullet;
         public static int clientWidth; // Lets other methods know window bounds
         public static int clientHeight;
-        SkyPlayer skyPlayer; // Player and enemies
+        SkyPlayer skyPlayer; // Player and enemies and hud and map reader
         List<Enemy> enemies;
         HeadsUpDisplay hud;
         SpriteFont mainfont;
@@ -65,10 +66,10 @@ namespace Archangel
             clientWidth = graphics.PreferredBackBufferWidth; // Lets other methods know window bounds
             clientHeight = graphics.PreferredBackBufferHeight;
             enemySprites = new Texture2D[9];
-            flyingPlayerSprites = new Texture2D[9]; // Initialize arrays
+            flyingPlayerSprites = new Texture2D[14]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
-            
+
             base.Initialize();
         }
 
@@ -84,10 +85,13 @@ namespace Archangel
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
 
-            for (int i = 0; i < 9; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
+            for (int i = 0; i < 14; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
-                enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
                 flyingPlayerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
+                if (i < 9)
+                {
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
+                }
                 if (i < 4)
                 {
                     playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
@@ -173,11 +177,26 @@ namespace Archangel
 
                     for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
                     {
-                        if (enemies[i].bullets[z].isActive && skyPlayer.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // 
+                        if (skyPlayer.direction > 8)
+                        {
+                            if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(skyPlayer.swordBox))
+                            {
+                                enemies[i].bullets[z].Reflect(); // Reflect the bullet if the sword hitbox is up and the bullet hits it
+                            }
+                        }
+                        else if (enemies[i].bullets[z].isActive && skyPlayer.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
                         {
                             skyPlayer.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
                             enemies[i].bullets[z].isActive = false;
                             enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                        }
+                    }
+
+                    if (skyPlayer.direction > 8) // If the sword is active, check the hitbox
+                    {
+                        if (enemies[i].spritePos.Intersects(skyPlayer.swordBox) && skyPlayer.slashFrames == 2) // Only hit once. Pick a frame.
+                        {
+                            enemies[i].TakeHit(1); // Sword damage
                         }
                     }
                 }

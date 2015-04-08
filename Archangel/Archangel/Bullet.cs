@@ -19,6 +19,7 @@ namespace Archangel
     // T 3/26/15- added draw and fixed cnstructor to accept speed and damage
     // T 3/31/15- added old position variable for raycasting
     // T 4/2/15- removed all raycasting tools (bullet is too big for that and too slow for it to matter)
+    // T 4/7/15- added a reflect method for the sword
     public class Bullet:MovableGameObject
     {
         private int dealtDamage; // Variable for bullet's damage and properties
@@ -65,6 +66,25 @@ namespace Archangel
         public override void Draw(SpriteBatch spriteBatch) // Draws the bullet
         {
             base.Draw(spriteBatch);
+        }
+
+        public void Reflect() // Changes the direction of the bullet to the opposite of the direction it was traveling
+        {
+            switch (direction)
+            {
+                case 0:
+                    direction = 1; // Right switches to left
+                    break;
+                case 1:
+                    direction = 0; // Left switches to right
+                    break;
+                case 2:
+                    direction = 3; // Up switches to down
+                    break;
+                case 3:
+                    direction = 2; // Down switches to up
+                    break;
+            }
         }
     }
 }

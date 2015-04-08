@@ -20,11 +20,32 @@ namespace Archangel
     // T 3/27/15- added draw and update code
     // T 3/29/15- added bullets to the draw, added fire method, initialized bullet array in the constructor
     // T 4/2/15- moved fire method to Character, added deadTime and death mechanic, moved intput into this update method
-    // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing
+    // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing, added variables and code in update and draw for sword
     public class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
-        public int deadTime; // Timer for death sprite
+        private int deadTime; // Timer for death sprite
+        private int slashTime; // Timer for slash cooldown
+
+        private int damage; // Holds damage for the sword
+        public int swordDamage
+        {
+            get { return damage; }
+            set { damage = value; }
+        }
+
+        private Rectangle sBox; // Position of the hitbox for the sword
+        public Rectangle swordBox
+        {
+            get { return sBox; }
+            set { sBox = value; }
+        }
+
+        private int slashFrame; // Is the character slashing
+        public int slashFrames
+        {
+            get { return slashFrame; }
+        }
 
         public SkyPlayer(int X, int Y, int dir, int spd, Texture2D[] charSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
             : base(X, Y, dir, spd, charSprite)
@@ -43,6 +64,8 @@ namespace Archangel
 
             deadTime = 0;
             initDir = dir; // Sets direction to return to upon death
+            slashFrame = 0; // Counts up the frames in the animation
+            slashTime = 0;
         }
 
         public override void TakeHit(int dmg)
@@ -60,7 +83,7 @@ namespace Archangel
         public override void Update()
         {
             base.Update();
-            if (direction == 8 && deadTime == 5)
+            if (direction == 8 && deadTime == 15)
             {
                 direction = 0;
                 spritePos = resetPos; // Reset after the player has sufficiently suffered for their failure
@@ -70,6 +93,33 @@ namespace Archangel
             {
                 deadTime++;
                 return; // Don't let the player move while viewing their death
+            }
+
+            if (direction > 8) // If the slash animation isn't over, don't let the user screw it up
+            {
+                if (slashFrame >= 10) // If the animation is over, go back to the original state and reset the animation counter (this is 5 frames by the way, it starts at 0)
+                {
+                    slashFrame = 0; // Reset the # of frames
+                    switch (direction)
+                    {
+                        case 10:
+                            direction = 2; // Left
+                            break;
+                        case 11:
+                            direction = 4; // Right
+                            break;
+                        case 12:
+                            direction = 6; // Up
+                            break;
+                        default:
+                            direction = 0; // Down
+                            break;
+                    }
+                }
+                else
+                {
+                    return; // Otherwise, wait for the animation to finish
+                }
             }
 
             // INPUT
@@ -164,7 +214,34 @@ namespace Archangel
                 spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
             }
 
-            if (kstate.IsKeyDown(Keys.Space) && cooldown <= 0) // Fire, then go into cooldown
+            // Slashing
+            if (kstate.IsKeyDown(Keys.F) && slashTime <= 0 && direction < 8) // Wait for cooldown to end
+            {
+                if (direction == 2 || direction == 3) // Pop up a hitbox in front of the character and put them in the appropriate slashing state
+                {
+                    sBox = new Rectangle(spritePos.X, spritePos.Y, 20, 50);
+                    direction = 10; // Left
+                }
+                else if (direction == 4 || direction == 5)
+                {
+                    sBox = new Rectangle(spritePos.X, spritePos.Y, 50, 20);
+                    direction = 11; // Up
+                }
+                else if (direction == 6 || direction == 7)
+                {
+                    sBox = new Rectangle(spritePos.Left, spritePos.Bottom - 20, 50, 20);
+                    direction = 12; // Down
+                }
+                else
+                {
+                    sBox = new Rectangle(spritePos.Right - 20, spritePos.Top, 20, 50);
+                    direction = 9; // Right
+                }
+                slashTime = 15; // Go into cooldown
+            }
+
+            // Firing
+            if (kstate.IsKeyDown(Keys.Space) && cooldown <= 0 && direction < 8) // Fire, then go into cooldown
             {
                 try
                 {
@@ -177,12 +254,38 @@ namespace Archangel
                 cooldown = 15; // Go into cooldown
             }
 
-            cooldown--; // Increment cooldown to allow firing again
+            slashTime--;
+            cooldown--; // Increment cooldowns to allow firing and slashing again
         }
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the character's sprite
         {
-            base.Draw(spriteBatch);
+            if (direction <= 8) // When not slashing, do the simple draw, subject to change if/when we add animations
+            {
+                base.Draw(spriteBatch);
+            }
+            else
+            {
+                base.Draw(spriteBatch);
+                switch (direction) // Draw the slashes
+                {
+                        // This is how animation works in C#: we have the entry in the sprite array contain a row of the frames, the rectangle is the source rectangle from the image- so frame # times the width of a single frame is the distance from the left at which the source box is located
+                    case 10:
+                        spriteBatch.Draw(spriteArray[9], new Vector2(spritePos.X, spritePos.Y), new Rectangle(slashFrame * 20, 0, 20, 10), color, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                        break; // Left
+                    case 11:
+                        spriteBatch.Draw(spriteArray[11], new Vector2(spritePos.X, spritePos.Y), new Rectangle(slashFrame * 10, 0, 10, 20), color);
+                        break; // Up
+                    case 12:
+                        spriteBatch.Draw(spriteArray[11], new Vector2(spritePos.X, spritePos.Y), new Rectangle(slashFrame * 10, 0, 10, 20), color, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                        break; // Down
+                    default:
+                        spriteBatch.Draw(spriteArray[9], new Vector2(spritePos.X, spritePos.Y), new Rectangle(slashFrame * 20, 0, 20, 10), color);
+                        break; // Right
+                }
+                slashFrame++; // Move to the next frame
+                color = Color.White; // And reset the color
+            }
         }
 
         public override void Fire() // Fires a bullet

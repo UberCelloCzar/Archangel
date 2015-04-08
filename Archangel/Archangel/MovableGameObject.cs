@@ -20,6 +20,7 @@ namespace Archangel
     // B 4/1/15 - made a slight change to the constructor
     // T 4/2/15- added color variable and used it in the draw for a red flash when characters are hit
     // B 4/2/15 - changed the Draw method to include scaling
+    // T 4/3/15- removed scaling in favor of scaling the sprites before use
     public abstract class MovableGameObject:GameObject
     { 
         private int speed; // Variable for object speed and properties
@@ -40,7 +41,7 @@ namespace Archangel
 
         /// <Logic>
         /// for bullet: right=0,left=1,up=2,down=3
-        /// for sky player: faceRight=0,moveRight=1,faceLeft=2,moveLeft=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8
+        /// for sky player: faceRight=0,moveRight=1,faceLeft=2,moveLeft=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8,rightSlash=9,leftSlash=10,upSlash=11,downSlash=12
         /// for ground player: faceUp=0, moveRight=1,moveLeft=2,dead=3
         /// for enemies: faceLeft=0,moveLeft=1,faceRight=2,moveRight=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8
         /// </Logic>

@@ -18,6 +18,7 @@ namespace Archangel
     // T 3/26/15- added spritebatch variable for drawing
     // T 3/31/15- removed spriteBatch in favor of bringing in the one from Game1 when calling the Draw
     // B 4/2/15 - Created a scale attribute to use when scaling sprites in the draw method in child classes
+    // T 4/3/15- removed scaling in favor of scaling sprites before use
     public abstract class GameObject
     {
         private Rectangle objPos;  // Rectangle position of object's hitbox and sprite (x,y,width,height)
