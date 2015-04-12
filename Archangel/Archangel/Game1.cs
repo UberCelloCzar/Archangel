@@ -27,11 +27,13 @@ namespace Archangel
                      // T (B+T) 4/2/15- Fixed Merge issues
     // T 4/3/15- changed all relevant classes to implement an inactive bullet queue, fixed draw issues, fixed collision issues, fixed more issues, removed floatscale
     // T 4/7/15- added sword code to update
+    // B 4/12/15 - Changed character speed from 5 to 10.
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Texture2D platform; // Texture2D for the platform
         Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
         Texture2D[] flyingPlayerSprites;
         Texture2D[] playerSmallBullet;
@@ -98,7 +100,7 @@ namespace Archangel
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
             }
-            skyPlayer = new SkyPlayer(20, 500, 0, 5, flyingPlayerSprites, playerSmallBullet);
+            skyPlayer = new SkyPlayer(20, 500, 0, 10, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             encounter = new Encounters();
             encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
