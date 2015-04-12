@@ -21,15 +21,11 @@ namespace Archangel
     // T 3/29/15- added bullets to the draw, added fire method, initialized bullet array in the constructor
     // T 4/2/15- moved fire method to Character, added deadTime and death mechanic, moved intput into this update method
     // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing, added variables and code in update and draw for sword
-    // B 4/12/15 - created attributes to determine whether or not the player regains or loses stamina, added stamina calculations to the update method
-
     public class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
         private int deadTime; // Timer for death sprite
         private int slashTime; // Timer for slash cooldown
-        private bool inAir = true; // tells whether or not the player is currently flying
-        private bool onPlatform = false; // tells whether on not the player is on a platform
 
         private int damage; // Holds damage for the sword
         public int swordDamage
@@ -49,18 +45,6 @@ namespace Archangel
         public int slashFrames
         {
             get { return slashFrame; }
-        }
-
-        public bool InAir
-        {
-            get { return inAir; }
-            set { inAir = value; }
-        }
-
-        public bool OnPlatform
-        {
-            get { return onPlatform; }
-            set { onPlatform = value; }
         }
 
         public SkyPlayer(int X, int Y, int dir, int spd, Texture2D[] charSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
@@ -99,39 +83,6 @@ namespace Archangel
         public override void Update()
         {
             base.Update();
-            //stamina code begins here
-            for (int i = 0; i < spriteArray.Length; i++)
-            {
-                if (this.Stamina == 0) // if stamina becomes zero, the player is no longer considered "in the air".
-                {
-                    inAir = false;
-                }
-                if (inAir == false && spriteArray[i].Bounds.Bottom != spritePos.Top) // if the player has not landed by the time they run out of stamina, they lose a life
-                {
-                    this.lives--;
-                }
-                if (spriteArray[i].Bounds.Bottom == spritePos.Top && this.Stamina != 100) // if the player has landed by the time they run out of stamina, they become "landed"
-                {
-                    onPlatform = true;
-                    inAir = false;
-                }
-                else
-                {
-                    inAir = true;
-                }
-            }
-
-            if (onPlatform == true && stamina <= 100)
-            {
-                stamina += .1;
-            }
-
-            if (inAir == true && stamina >= 0)
-            {
-                stamina -= .05;
-            }
-            // stamina code ends here
-
             if (direction == 8 && deadTime == 15)
             {
                 direction = 0;
