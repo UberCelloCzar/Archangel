@@ -22,7 +22,17 @@ namespace Archangel
     // T 4/7/15- added a reflect method for the sword
     public class Bullet:MovableGameObject
     {
+        bool reflected;
         private int dealtDamage; // Variable for bullet's damage and properties
+
+        public bool Reflected
+        {
+            get { return reflected; }
+            set
+            {
+                reflected = value;
+            }
+        }
         public int damage
         {
             get { return dealtDamage; }
@@ -41,6 +51,7 @@ namespace Archangel
         {
             damage = dmg; // Do damage plz
             active = false; // Start out inactive
+            reflected = false;
         }
 
         public override void Update() // Moves bullet in faced direction
@@ -59,6 +70,7 @@ namespace Archangel
 
             if (spritePos.X + spritePos.Width < 0 || spritePos.X >= Game1.clientWidth || spritePos.Y + spritePos.Height < 0 || spritePos.Y >= Game1.clientHeight) // Check to see if off the edge
             {
+                reflected = false;
                 isActive = false; // The spritePos width and height are usable here because we just changed them to the correct values
             }
         }
@@ -70,6 +82,7 @@ namespace Archangel
 
         public void Reflect() // Changes the direction of the bullet to the opposite of the direction it was traveling
         {
+            reflected = true;
             switch (direction)
             {
                 case 0:

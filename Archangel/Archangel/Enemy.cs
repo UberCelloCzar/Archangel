@@ -23,14 +23,23 @@ namespace Archangel
     public class Enemy:Character
     {
         private int deadTime; // Timer for how long enemy is drawn as dead before disappearing
+        HeadsUpDisplay hudref;
+        SkyPlayer player;
+        int initialX;
+        int initialY;
+        int move;
         public int deathTimer
         {
             get { return deadTime; }
         }
 
-        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
+        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, SkyPlayer player) // Sets x,y, direction, and sprite for character
             : base (X, Y, dir, spd, loadSprite)
         {
+            initialX = X;
+            initialY = Y;
+            hudref = hud;
+            this.player = player;
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
             {
@@ -45,7 +54,7 @@ namespace Archangel
 
             cooldown = 2; // Don't let them fire immediately
             direction = dir; // Initial direction
-            charHealth = 2; // Enemy health
+            charHealth = 3; // Enemy health
         }
 
         public override void TakeHit(int dmg) // Enemy takes a hit and possibly dies
@@ -55,6 +64,14 @@ namespace Archangel
             if (charHealth <= 0) // Deactivate enemy when killed
             {
                 direction = 8; // Changes state to show death sprite, disappearance is after takehit method is called in calling class
+                hudref.Skyfrequency++;
+                player.score = player.score + 100;
+                if (hudref.Skyfrequency >= 2)
+                {
+                    hudref.Thought = 3;
+                    hudref.SkyeTalk();
+                    hudref.Skyfrequency = 0;
+                }
             }
         }
 
@@ -69,7 +86,45 @@ namespace Archangel
 
             // Add code here if you want to have enemy move in any direction other than the passed in direction
 
-            switch (direction) // Move the sprites
+            if (player.spritePos.X < this.spritePos.X)
+            {
+                //if (cooldown > 0 && (Math.Sqrt(Math.Pow((this.spritePos.X - initialX), 2) + Math.Pow((this.spritePos.Y * this.spritePos.Y), 2)) < 20))
+                //if (cooldown > 0 && ((this.spritePos.X - initialX) < 20))
+                //{
+                //    direction = 1; // seek right
+                //}
+                //else
+                //{
+                    direction = 0; //right
+                //}
+                if (player.spritePos.Y > this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
+                {
+                    direction = 6; //down
+                }
+                if (player.spritePos.Y < this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
+                {
+                    direction = 4; // up
+                }
+            }
+            else
+            {
+                direction = 2; // left
+
+                if (player.spritePos.Y > this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
+                {
+                    direction = 6; // down
+                }
+                if (player.spritePos.Y < this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
+                {
+                    direction = 4; // up
+                }
+            }
+
+            // determine movement
+
+            
+
+            switch (move) // Move the sprites
             {
                 case 1: // Moving right
                     spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
@@ -87,9 +142,18 @@ namespace Archangel
 
             if (cooldown <= 0) // Fire at a set rate until AI is implemented
             {
+                
                 try
                 {
-                    Fire();
+                    double difficultyTweak = 3 + (player.score / 1000); // for every 1000 points or 10 enemies defeated, each enemy fires more often
+                    difficultyTweak = Math.Floor(difficultyTweak);
+                    int dt = (int)difficultyTweak;
+                    Random rand = new Random();
+
+                    if (rand.Next(1, dt) != dt - 1) // difficulty factor: Given the opportunity, they will shoot (dt-1)/dt% of the time
+                    {
+                        Fire();
+                    }
                 }
                 catch (IndexOutOfRangeException noBullets)
                 {

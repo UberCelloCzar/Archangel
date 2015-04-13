@@ -22,6 +22,7 @@ namespace Archangel
     {
         // attributes
         private List<Enemy> enemyList = new List<Enemy>();
+        SkyPlayer player;
         public List<Enemy> enemies
         {
             get { return enemyList; }
@@ -31,9 +32,10 @@ namespace Archangel
         bool skirmishOver;
 
         // constructor
-        public Encounters()
+        public Encounters(SkyPlayer player)
         {
             enemies = new List<Enemy>();
+            this.player = player;
         }
 
         // create enemies
@@ -47,7 +49,7 @@ namespace Archangel
             {
                 int.TryParse(info[i], out elem[i]);
             }
-            enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites));
+            enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites, hud, player));
 
             /*foreach (string enemyStr in info)
             {

@@ -98,9 +98,12 @@ namespace Archangel
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
             }
-            skyPlayer = new SkyPlayer(20, 500, 0, 5, flyingPlayerSprites, playerSmallBullet);
+            skyPlayer = new SkyPlayer(20, 500, 0, 8, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
-            encounter = new Encounters();
+            hud.Thought = 1; // Skye's first thoughts/lines
+            hud.SkyeThink();
+            hud.SkyeTalk();
+            encounter = new Encounters(skyPlayer);
             encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
             enemies = encounter.enemies; // Populate the enemy list
         }
@@ -134,6 +137,7 @@ namespace Archangel
             {
                 encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
                 enemies = encounter.enemies; // Populate the enemy list
+                
             }
             if (enemies.Count > 0)
             {
@@ -190,6 +194,14 @@ namespace Archangel
                             enemies[i].bullets[z].isActive = false;
                             enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
                         }
+                        // check to see if a reflected bullet hits the enemy
+                        if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].Reflected == true && enemies[i].spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
+                        {
+                            enemies[i].TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                            enemies[i].bullets[z].isActive = false;
+                            enemies[i].bullets[z].Reflected = false;
+                            enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                        }
                     }
 
                     if (skyPlayer.direction > 8) // If the sword is active, check the hitbox
@@ -217,12 +229,12 @@ namespace Archangel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
             skyPlayer.Draw(spriteBatch); // Draw player
             for (int i = 0; i < enemies.Count; i++) // Draw enemies
             {
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
+            hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
             spriteBatch.End();
 
             base.Draw(gameTime);

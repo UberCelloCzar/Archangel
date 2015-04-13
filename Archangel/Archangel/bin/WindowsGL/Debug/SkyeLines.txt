@@ -1,6 +1,6 @@
 Use the arrow keys to move
-Press SPACE to fire
-Press F to slash
+Press F to fire
+Press S to slash
 Press D to dash
 Press SHIFT to toggle flight when on a platform
 Land and/or deactivate flight to recover stamina.

@@ -26,6 +26,9 @@ namespace Archangel
         private int initDir; // Stores initial direction
         private int deadTime; // Timer for death sprite
         private int slashTime; // Timer for slash cooldown
+        public long score; // player score
+        private int dashCD; // timer for dash cooldown
+        private bool dashActive; // if player has dash status or not
 
         private int damage; // Holds damage for the sword
         public int swordDamage
@@ -75,7 +78,7 @@ namespace Archangel
             if (charHealth <= 0)
             {
                 lives--; // Take away a life
-                charHealth = 3; // Reset health and position and direction
+                charHealth = 4; // Reset health and position and direction
                 direction = 8; // Dead sprite
             }
         }
@@ -183,39 +186,47 @@ namespace Archangel
             {
                 case 1: // Moving right
                     spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    dashActive = false;
+                    this.objSpeed = 8;
                     break;
                 case 3: // Move left
                     spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    dashActive = false;
+                    this.objSpeed = 8;
                     break;
                 case 5: // Moving up
                     spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
+                    dashActive = false;
+                    this.objSpeed = 8;
                     break;
                 case 7: // Move down
                     spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+                    dashActive = false;
+                    this.objSpeed = 8;
                     break;
             }
 
             // Return to positions
             if (direction == 3 && spritePos.X < 0) // If moving left and it puts you beyond the bounds
             {
-                spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                spritePos = new Rectangle(1, spritePos.Y, spritePos.Width, spritePos.Height);
             }
-            else if (direction == 1 && spritePos.X > (Game1.clientWidth)) // If moving right and it puts you beyond the bounds
+            else if (direction == 1 && (spritePos.X + spritePos.Width) > (Game1.clientWidth)) // If moving right and it puts you beyond the bounds
             {
-                spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                spritePos = new Rectangle(Game1.clientWidth - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
             }
 
             if (direction == 5 && spritePos.Y < 0) // If moving up and it puts you beyond the bounds
             {
-                spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+                spritePos = new Rectangle(spritePos.X, 1, spritePos.Width, spritePos.Height);
             }
-            else if (direction == 7 && spritePos.Y > (Game1.clientHeight)) // If moving down and it puts you beyond the bounds
+            else if (direction == 7 && (spritePos.Y + spritePos.Height) > (Game1.clientHeight)) // If moving down and it puts you beyond the bounds
             {
-                spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
+                spritePos = new Rectangle(spritePos.X, Game1.clientHeight - this.spritePos.Height, spritePos.Width, spritePos.Height);
             }
 
             // Slashing
-            if (kstate.IsKeyDown(Keys.F) && slashTime <= 0 && direction < 8) // Wait for cooldown to end
+            if (kstate.IsKeyDown(Keys.S) && slashTime <= 0 && direction < 8) // Wait for cooldown to end
             {
                 if (direction == 2 || direction == 3) // Pop up a hitbox in front of the character and put them in the appropriate slashing state
                 {
@@ -241,7 +252,7 @@ namespace Archangel
             }
 
             // Firing
-            if (kstate.IsKeyDown(Keys.Space) && cooldown <= 0 && direction < 8) // Fire, then go into cooldown
+            if (kstate.IsKeyDown(Keys.F) && cooldown <= 0 && direction < 8) // Fire, then go into cooldown
             {
                 try
                 {
@@ -251,11 +262,26 @@ namespace Archangel
                 {
                     throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
                 }
-                cooldown = 15; // Go into cooldown
+                cooldown = 25; // Go into cooldown
             }
 
+            // Dashing
+            //***right now, it dashes without regards to the Current that pushes him, 
+            //so we'll need to create that object and check for its interception with
+            //the player then give the speed boost
+
+            if (kstate.IsKeyDown(Keys.D) && dashCD <= 0 && direction < 8) // Dash, then go into cooldown
+            {
+                //try
+                //{
+                    this.objSpeed = 250;
+                //}
+                dashCD = 120; // Go into cooldown
+            }
+
+            dashCD--;
             slashTime--;
-            cooldown--; // Increment cooldowns to allow firing and slashing again
+            cooldown--; // Increment cooldowns to allow dashing, slashing, and firing again
         }
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the character's sprite
