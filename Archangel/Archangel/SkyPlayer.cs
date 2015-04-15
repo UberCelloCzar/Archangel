@@ -21,16 +21,36 @@ namespace Archangel
     // T 3/29/15- added bullets to the draw, added fire method, initialized bullet array in the constructor
     // T 4/2/15- moved fire method to Character, added deadTime and death mechanic, moved intput into this update method
     // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing, added variables and code in update and draw for sword
+    // B 4/14/15 - added code to control the player's stamina, including the outOfStamina and onPlatform attributes
     public class SkyPlayer:Player
     {
         private int initDir; // Stores initial direction
         private int deadTime; // Timer for death sprite
         private int slashTime; // Timer for slash cooldown
+        private bool outOfStamina = false;
+        private bool onPlatform = false;
         public long score; // player score
         private int dashCD; // timer for dash cooldown
         private bool dashActive; // if player has dash status or not
+        private Platform platform;
 
         private int damage; // Holds damage for the sword
+
+        public Platform Platform
+        {
+            get { return platform; }
+        }
+        public bool OutOfStamina
+        {
+            get { return outOfStamina; }
+            set { outOfStamina = value; }
+        }
+
+        public bool OnPlatform
+        {
+            get { return onPlatform; }
+            set { onPlatform = value; }
+        }
         public int swordDamage
         {
             get { return damage; }
@@ -86,6 +106,33 @@ namespace Archangel
         public override void Update()
         {
             base.Update();
+            // stamina code begins here
+            if (Stamina > 0)
+            {
+                outOfStamina = false;
+                Stamina -= .1;
+            }
+            if (Stamina == 0)
+            {
+                outOfStamina = true;
+                direction = 7;
+                //if (onPlatform == false && this.spritePos.Intersects(new Rectangle(0, 1000, 1800, 1)))
+                //{
+                    //charHealth = 0;
+                //}
+            }
+            /*if (this.spritePos.Bottom == platform.spritePos.Top)
+            {
+                onPlatform = true;
+                Stamina += .1;
+            }
+
+            if (this.spritePos.Bottom != platform.spritePos.Top)
+            {
+                onPlatform = false;
+            }*/
+            // stamina code ends here
+
             if (direction == 8 && deadTime == 15)
             {
                 direction = 0;

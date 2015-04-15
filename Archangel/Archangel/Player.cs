@@ -18,9 +18,17 @@ namespace Archangel
     // T 3/27/15- added key press array holder, added update and code
     // T 3/31/15- added fire code to input system
     // T 4/2/15- fixed fire code to handle if there are no bullets, moved fire code to skyPlayer, moved input down to SkyPlayer update
+    // B 4/14/15 - added a stamina attribute and hard coded it to start at 100 
     public abstract class Player:Character
     {
         private int livesLeft; // Lives character has and properties
+        private double stamina = 100; // the amount of stamina the character has
+
+        public double Stamina
+        {
+            get { return stamina; }
+            set { stamina = value; }
+        }
         public int lives
         {
             get { return livesLeft; }
@@ -34,6 +42,7 @@ namespace Archangel
         public Player(int X, int Y, int dir, int spd, Texture2D[] loadSprite) // Sets x,y, and sprite for character
             : base(X, Y, dir, spd, loadSprite)
         {
+            
             cooldown = 0; // Let the player shoot
             charHealth = 3; // Default health
             livesLeft = 3; // Default lives

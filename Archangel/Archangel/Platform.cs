@@ -15,8 +15,23 @@ namespace Archangel
     // Contains code for the "platforms", mostly to be fleshed out later as part of the turret movement switch
 
     // Change Log
-    //class Platform:MovableGameObject
-    //{
-        //public void Draw(SpriteBatch spriteBatch) { }
-    //}
+    // B 4/14/15 - Added code for platforms
+
+    public class Platform:MovableGameObject
+    {
+        public Platform(int X, int Y, int dir, int spd, Texture2D[] loadSprite)
+            : base(X, Y, dir, spd, loadSprite)
+        {
+            
+            
+        }
+        public override void Update()
+        {
+            throw new NotImplementedException();
+        }
+        public override void Draw(SpriteBatch spriteBatch) 
+        {
+            base.Draw(spriteBatch);
+        }
+    }
 }

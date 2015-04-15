@@ -17,6 +17,8 @@ namespace Archangel
 
     // Change Log
     // T 4/2/15- Moved around parameters and player.health so health updates with game
+    // B 4/14/15 - Changed code to allow the stamina to decrease on the screen
+
     public class HeadsUpDisplay
     {
         // attributes
@@ -24,7 +26,7 @@ namespace Archangel
         SpriteFont mainfont;
         Vector2 vect2;
         int health = 100; //(pass in player object) health = player.charHealth
-        int stamina = 100; // player.charStamina
+        double stamina = 100; // player.charStamina
         string skyesays;
         int thought = 4;
         int linenum;
@@ -68,7 +70,7 @@ namespace Archangel
         {
             player = skyPlayer;
             health = player.charHealth; // I moved these here so player health changes on the HUD when it changes in the game
-            //stamina = player.charStamina;
+            stamina = player.Stamina;
 
             spriteBatch = sb;
             mainfont = sf;
