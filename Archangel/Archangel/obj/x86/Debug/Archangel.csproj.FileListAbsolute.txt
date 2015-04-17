@@ -57,3 +57,4 @@ C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\Archangel.csprojResolveAssemblyReference.cache
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter2.txt
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter3.txt
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Platform.xnb

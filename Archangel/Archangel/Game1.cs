@@ -28,6 +28,7 @@ namespace Archangel
     // T 4/3/15- changed all relevant classes to implement an inactive bullet queue, fixed draw issues, fixed collision issues, fixed more issues, removed floatscale
     // T 4/7/15- added sword code to update
     // B 4/14/15 - created the platform object and increased charcter speed
+    // B 4/17/15 - added the file for the platform sprite
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -87,6 +88,7 @@ namespace Archangel
 
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
+            platformSprite = Content.Load<Texture2D>("Platform");
 
             for (int i = 0; i < 14; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
@@ -231,6 +233,8 @@ namespace Archangel
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+            spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
             skyPlayer.Draw(spriteBatch); // Draw player
             for (int i = 0; i < enemies.Count; i++) // Draw enemies
