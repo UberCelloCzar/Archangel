@@ -24,7 +24,7 @@ namespace Archangel
     {
         private int deadTime; // Timer for how long enemy is drawn as dead before disappearing
         HeadsUpDisplay hudref;
-        SkyPlayer player;
+        Player player;
         int initialX;
         int initialY;
         int move;
@@ -33,7 +33,7 @@ namespace Archangel
             get { return deadTime; }
         }
 
-        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, SkyPlayer player) // Sets x,y, direction, and sprite for character
+        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, Player player) // Sets x,y, direction, and sprite for character
             : base (X, Y, dir, spd, loadSprite)
         {
             initialX = X;

@@ -41,7 +41,7 @@ namespace Archangel
         Texture2D[] enemySmallBullet;
         public static int clientWidth; // Lets other methods know window bounds
         public static int clientHeight;
-        SkyPlayer skyPlayer; // Player and enemies and hud and map reader
+        Player skyPlayer; // Player and enemies and hud and map reader
         List<Enemy> enemies;
         HeadsUpDisplay hud;
         SpriteFont mainfont;
@@ -103,7 +103,7 @@ namespace Archangel
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
             }
-            skyPlayer = new SkyPlayer(20, 500, 0, 15, flyingPlayerSprites, playerSmallBullet);
+            skyPlayer = new Player(20, 500, 0, 15, flyingPlayerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             hud.Thought = 1; // Skye's first thoughts/lines
             hud.SkyeThink();

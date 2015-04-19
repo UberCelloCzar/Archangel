@@ -30,7 +30,7 @@ namespace Archangel
         string skyesays;
         int thought = 4;
         int linenum;
-        SkyPlayer player;
+        Player player;
         int skyefrequency = 0; // frequency of how often she talks
 
         // properties
@@ -66,7 +66,7 @@ namespace Archangel
         }
 
 
-        public void DrawHUD(SpriteBatch sb, SpriteFont sf, SkyPlayer skyPlayer)
+        public void DrawHUD(SpriteBatch sb, SpriteFont sf, Player skyPlayer)
         {
             player = skyPlayer;
             health = player.charHealth; // I moved these here so player health changes on the HUD when it changes in the game

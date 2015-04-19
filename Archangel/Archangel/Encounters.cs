@@ -22,7 +22,7 @@ namespace Archangel
     {
         // attributes
         private List<Enemy> enemyList = new List<Enemy>();
-        SkyPlayer player;
+        Player player;
         public List<Enemy> enemies
         {
             get { return enemyList; }
@@ -32,7 +32,7 @@ namespace Archangel
         bool skirmishOver;
 
         // constructor
-        public Encounters(SkyPlayer player)
+        public Encounters(Player player)
         {
             enemies = new List<Enemy>();
             this.player = player;
