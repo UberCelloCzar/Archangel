@@ -22,7 +22,7 @@ namespace Archangel
     // T 4/2/15- moved fire method to Character, added deadTime and death mechanic, moved intput into this update method
     // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing, added variables and code in update and draw for sword
     // B 4/14/15 - added code to control the player's stamina, including the outOfStamina and onPlatform attributes
-    // T 4/19/15- Merged GroundPlayer, SkyPlayer, and Player; renamed it player, added code to draw, update, and fire to differentiate between turret and flying
+    // T 4/19/15- Merged GroundPlayer, SkyPlayer, and Player; renamed it player, added code stubs to draw, update, and fire to differentiate between turret and flying; added code to update and fire
     public class Player: Character
     {
         private int initDir; // Stores initial direction
@@ -281,20 +281,20 @@ namespace Archangel
                 }
 
                 // Return to positions
-                if (direction == 3 && spritePos.X < 0) // If moving left and it puts you beyond the bounds
+                if (direction == 3 && spritePos.Left < 0) // If moving left and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(1, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
-                else if (direction == 1 && (spritePos.X + spritePos.Width) > (Game1.clientWidth)) // If moving right and it puts you beyond the bounds
+                else if (direction == 1 && spritePos.Right > Game1.clientWidth) // If moving right and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(Game1.clientWidth - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
 
-                if (direction == 5 && spritePos.Y < 0) // If moving up and it puts you beyond the bounds
+                if (direction == 5 && spritePos.Top < 0) // If moving up and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(spritePos.X, 1, spritePos.Width, spritePos.Height);
                 }
-                else if (direction == 7 && (spritePos.Y + spritePos.Height) > (Game1.clientHeight)) // If moving down and it puts you beyond the bounds
+                else if (direction == 7 && spritePos.Bottom > Game1.clientHeight) // If moving down and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(spritePos.X, Game1.clientHeight - this.spritePos.Height, spritePos.Width, spritePos.Height);
                 }
@@ -357,6 +357,68 @@ namespace Archangel
                 slashTime--;
                 cooldown--; // Increment cooldowns to allow dashing, slashing, and firing again
             }
+            else // Ground update
+            {
+                /* However you guys want to handle death, I'll talk through it with you guys */
+                /* If you guys want the slash on the ground, again, will talk through it */
+
+                // INPUT
+                kstate = Keyboard.GetState(); // Get pressed keys
+                Keys[] pressedKeys = kstate.GetPressedKeys();
+
+                if (direction == 1 && !kstate.IsKeyDown(Keys.Right)) // Go neutral if moving right and key is released
+                {
+                    direction = 0;
+                }
+                else if (direction == 0 && kstate.IsKeyDown(Keys.Right)) // Go right if neutral an right is pressed
+                {
+                    direction = 1;
+                }
+
+                if (direction == 2 && !kstate.IsKeyDown(Keys.Left)) // Go neutral if moving left and key is released
+                {
+                    direction = 0;
+                }
+                else if (direction == 0 && kstate.IsKeyDown(Keys.Left)) // Go left if neutral an left is pressed
+                {
+                    direction = 2;
+                }
+                // END INPUT
+
+                switch (direction) // Move the sprites
+                {
+                    case 1: // Moving right
+                        spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                        break;
+                    case 2: // Move left
+                        spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                        break;
+                }
+
+                // Return to positions
+                if (direction == 2 && spritePos.X < platform.spritePos.Left) // If moving left and it puts you beyond the bounds
+                {
+                    spritePos = new Rectangle(platform.spritePos.Left, spritePos.Y, spritePos.Width, spritePos.Height);
+                }
+                else if (direction == 1 && spritePos.Right > platform.spritePos.Right) // If moving right and it puts you beyond the bounds
+                {
+                    spritePos = new Rectangle(platform.spritePos.Right - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
+                }
+
+                // Firing - couldn't find a way to make sure player isn't dead before firing without checking the onPlatform variable
+                if (kstate.IsKeyDown(Keys.F) && cooldown <= 0 && direction < 4) // Fire, then go into cooldown
+                {
+                    try
+                    {
+                        Fire();
+                    }
+                    catch (IndexOutOfRangeException noBullets)
+                    {
+                        throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
+                    }
+                    cooldown = 20; // Go into cooldown
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the character's sprite
@@ -392,7 +454,7 @@ namespace Archangel
             }
         }
 
-        public override void Fire() // Fires a bullet
+        public override void Fire() // Fires a bullet NOTE- ALL POSITIONS EXCEPT RIGHT WILL HAVE TO BE CHANGED WHEN NEW SPRITES ARE USED
         {
             base.Fire(); // Get a bullet
             if (onPlatform == false) // Sky firing
@@ -417,8 +479,13 @@ namespace Archangel
                     bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                     bullets[bul].direction = 0; // Right
                 }
-                bullets[bul].isActive = true;
             }
+            else // Ground firing
+            {
+                bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].direction = 2; // Up
+            }
+            bullets[bul].isActive = true;
         }
     }
 }
