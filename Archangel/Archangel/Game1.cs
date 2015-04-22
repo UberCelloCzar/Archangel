@@ -46,6 +46,8 @@ namespace Archangel
         HeadsUpDisplay hud;
         SpriteFont mainfont;
         Encounters encounter;
+        Platform platform;
+        int encounterDelay;
 
         public Game1():base()
         {
@@ -111,6 +113,7 @@ namespace Archangel
             encounter = new Encounters(skyPlayer);
             encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
             enemies = encounter.enemies; // Populate the enemy list
+            platform = encounter.PlatformSpawn(platformSprite);
         }
 
         /// <summary>
@@ -170,6 +173,8 @@ namespace Archangel
                         enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
                     }
                 }
+
+                platform.Update();
 
                 // Collision detection
                 for (int i = 0; i < enemies.Count; i++) // For each enemy
@@ -234,7 +239,7 @@ namespace Archangel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
+            //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
             skyPlayer.Draw(spriteBatch); // Draw player
             for (int i = 0; i < enemies.Count; i++) // Draw enemies
@@ -242,6 +247,10 @@ namespace Archangel
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
             hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
+            if (platform.Active == true) // draw platform if active
+            {
+                platform.Draw(spriteBatch);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

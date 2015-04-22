@@ -71,6 +71,7 @@ namespace Archangel
             player = skyPlayer;
             health = player.charHealth; // I moved these here so player health changes on the HUD when it changes in the game
             stamina = player.Stamina;
+            stamina = Math.Truncate(stamina);
 
             spriteBatch = sb;
             mainfont = sf;

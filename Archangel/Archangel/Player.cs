@@ -137,7 +137,7 @@ namespace Archangel
                 if (Stamina > 0)
                 {
                     outOfStamina = false;
-                    Stamina -= .1;
+                    Stamina -= .03;
                 }
                 if (Stamina == 0)
                 {
@@ -323,6 +323,7 @@ namespace Archangel
                         direction = 9; // Right
                     }
                     slashTime = 15; // Go into cooldown
+                    Stamina = Stamina - 2;
                 }
 
                 // Firing
@@ -351,6 +352,7 @@ namespace Archangel
                     this.objSpeed = 250;
                     //}
                     dashCD = 120; // Go into cooldown
+                    Stamina = Stamina - 5;
                 }
 
                 dashCD--;

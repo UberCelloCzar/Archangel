@@ -28,6 +28,9 @@ namespace Archangel
         int initialX;
         int initialY;
         int move;
+        int leftOrRight = 0;
+        int upOrDown = 0;
+
         public int deathTimer
         {
             get { return deadTime; }
@@ -88,15 +91,8 @@ namespace Archangel
 
             if (player.spritePos.X < this.spritePos.X)
             {
-                //if (cooldown > 0 && (Math.Sqrt(Math.Pow((this.spritePos.X - initialX), 2) + Math.Pow((this.spritePos.Y * this.spritePos.Y), 2)) < 20))
-                //if (cooldown > 0 && ((this.spritePos.X - initialX) < 20))
-                //{
-                //    direction = 1; // seek right
-                //}
-                //else
-                //{
-                    direction = 0; //right
-                //}
+                direction = 0; //right
+                
                 if (player.spritePos.Y > this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
                 {
                     direction = 6; //down
@@ -121,7 +117,38 @@ namespace Archangel
             }
 
             // determine movement
-
+            if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7) // if player is faced/moving up or down
+            {
+                if (this.spritePos.X - initialX < 120 && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
+                {
+                    move = 1; // right
+                }
+                else
+                {
+                    leftOrRight = 1;
+                    move = 3; // left
+                    if (this.spritePos.X - initialX <= 0)
+                    {
+                        leftOrRight = 0;
+                    }
+                }
+            }
+            if (player.direction == 0 || player.direction == 1 || player.direction == 2 || player.direction == 3) // if player if faced/moving left or right
+            {
+                if (this.spritePos.Y - initialY < 120 && this.spritePos.Y + (this.spritePos.Height * 2) < 1000 && upOrDown == 0)
+                {
+                    move = 7; // down
+                }
+                else
+                {
+                    upOrDown = 1;
+                    move = 5; // up
+                    if (this.spritePos.Y - initialY <= 0)
+                    {
+                        upOrDown = 0;
+                    }
+                }
+            }
             
 
             switch (move) // Move the sprites

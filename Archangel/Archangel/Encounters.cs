@@ -23,6 +23,7 @@ namespace Archangel
         // attributes
         private List<Enemy> enemyList = new List<Enemy>();
         Player player;
+        int platFrequency;
         public List<Enemy> enemies
         {
             get { return enemyList; }
@@ -87,6 +88,7 @@ namespace Archangel
                 string file = "encounter" + rand.Next(1, 4) + ".txt"; // increase upper bound as more encounters are made
                 StreamReader input = new StreamReader(file);
                 string freqline = input.ReadLine(); // used to determine how often platforms appear. The lower the number, the more frequent. Lowest = 2
+                platFrequency = int.Parse(freqline);
 
                 // pass that into the platform spawn method here
 
@@ -100,6 +102,15 @@ namespace Archangel
             {
                 hud.Skyesays = "...Huh, no enemies, I guess. Awesome!";
             }
+        }
+
+        // manage platform spawning
+        public Platform PlatformSpawn(Texture2D platformsprite) // this seemes unnecessary
+        {
+            Texture2D[] platforms = new Texture2D[1]; // if more platforms are made, add them to this array
+            platforms[0] = platformsprite;
+            Platform platform1 = new Platform(1530, 840, 0, 1, platforms, platFrequency, player);
+            return platform1;
         }
     }
 }
