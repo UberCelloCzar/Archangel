@@ -22,7 +22,8 @@ namespace Archangel
     // T 4/2/15- moved fire method to Character, added deadTime and death mechanic, moved intput into this update method
     // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing, added variables and code in update and draw for sword
     // B 4/14/15 - added code to control the player's stamina, including the outOfStamina and onPlatform attributes
-    // T 4/19/15- Merged GroundPlayer, SkyPlayer, and Player; renamed it player, added code stubs to draw, update, and fire to differentiate between turret and flying; added code to update and fire
+    // T 4/19/15- merged GroundPlayer, SkyPlayer, and Player; renamed it player, added code stubs to draw, update, and fire to differentiate between turret and flying; added code to update and fire
+    // T 4/22/15- fixed up the draw and updates to reflect new values of direction for ground player
     public class Player: Character
     {
         private int initDir; // Stores initial direction
@@ -34,27 +35,24 @@ namespace Archangel
         private int dashCD; // timer for dash cooldown
         private bool dashActive; // if player has dash status or not
         private Platform platform;
-
-        private int livesLeft; // Lives character has and properties
+        private KeyboardState kstate; // Hold pressed keys
+        private Rectangle resetPos; // Rectangle to hold position for sprite reset upon death of character
+        private int damage; // Holds damage for the sword
+        private int livesLeft; // Lives character has
         private double stamina = 100; // the amount of stamina the character has
+        private int slashFrame; // Is the character slashing
+        private Rectangle sBox; // Position of the hitbox for the sword
 
+        public int lives // Properties to access all the variables needed outside this class
+        {
+            get { return livesLeft; }
+            set { livesLeft = value; }
+        }
         public double Stamina
         {
             get { return stamina; }
             set { stamina = value; }
         }
-        public int lives
-        {
-            get { return livesLeft; }
-            set { livesLeft = value; }
-        }
-
-        private KeyboardState kstate; // Hold pressed keys
-
-        private Rectangle resetPos; // Rectangle to hold position for sprite reset upon death of character
-
-        private int damage; // Holds damage for the sword
-
         public Platform Platform
         {
             get { return platform; }
@@ -64,7 +62,6 @@ namespace Archangel
             get { return outOfStamina; }
             set { outOfStamina = value; }
         }
-
         public bool OnPlatform
         {
             get { return onPlatform; }
@@ -75,15 +72,11 @@ namespace Archangel
             get { return damage; }
             set { damage = value; }
         }
-
-        private Rectangle sBox; // Position of the hitbox for the sword
         public Rectangle swordBox
         {
             get { return sBox; }
             set { sBox = value; }
         }
-
-        private int slashFrame; // Is the character slashing
         public int slashFrames
         {
             get { return slashFrame; }
@@ -410,7 +403,7 @@ namespace Archangel
         {
             if (onPlatform == false) // Sky draw
             {
-                if (direction <= 8) // When not slashing, do the simple draw, subject to change if/when we add animations
+                if (direction <= 8 || direction > 12) // When not slashing, do the simple draw, subject to change if/when we add animations
                 {
                     base.Draw(spriteBatch);
                 }

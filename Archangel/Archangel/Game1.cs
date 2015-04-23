@@ -29,6 +29,7 @@ namespace Archangel
     // T 4/7/15- added sword code to update
     // B 4/14/15 - created the platform object and increased charcter speed
     // B 4/17/15 - added the file for the platform sprite
+    // T 4/22/15- renamed skyplayer to player and flyingsprites to playersprites
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -36,12 +37,12 @@ namespace Archangel
 
         Texture2D platformSprite; // platform sprite
         Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
-        Texture2D[] flyingPlayerSprites;
+        Texture2D[] playerSprites;
         Texture2D[] playerSmallBullet;
         Texture2D[] enemySmallBullet;
         public static int clientWidth; // Lets other methods know window bounds
         public static int clientHeight;
-        Player skyPlayer; // Player and enemies and hud and map reader
+        Player player; // Player and enemies and hud and map reader
         List<Enemy> enemies;
         HeadsUpDisplay hud;
         SpriteFont mainfont;
@@ -72,7 +73,7 @@ namespace Archangel
             clientHeight = graphics.PreferredBackBufferHeight;
             //platformSprite
             enemySprites = new Texture2D[9];
-            flyingPlayerSprites = new Texture2D[14]; // Initialize arrays
+            playerSprites = new Texture2D[14]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
 
@@ -94,7 +95,7 @@ namespace Archangel
 
             for (int i = 0; i < 14; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
-                flyingPlayerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
+                playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
                 if (i < 9)
                 {
                     enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
@@ -105,12 +106,12 @@ namespace Archangel
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
             }
-            skyPlayer = new Player(20, 500, 0, 15, flyingPlayerSprites, playerSmallBullet);
+            player = new Player(20, 500, 0, 15, playerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             hud.Thought = 1; // Skye's first thoughts/lines
             hud.SkyeThink();
             hud.SkyeTalk();
-            encounter = new Encounters(skyPlayer);
+            encounter = new Encounters(player);
             encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
             enemies = encounter.enemies; // Populate the enemy list
             platform = encounter.PlatformSpawn(platformSprite);
@@ -137,7 +138,7 @@ namespace Archangel
 
             // TODO: Add your update logic here
 
-            if (skyPlayer.lives <= 0)
+            if (player.lives <= 0)
             {
                 Environment.Exit(69);
             }
@@ -151,7 +152,7 @@ namespace Archangel
             {
                 try
                 {
-                    skyPlayer.Update(); // Update the player
+                    player.Update(); // Update the player
                 }
                 catch (IndexOutOfRangeException noBullets) // Catch the throw up if no active bullets are found on a fire attempt
                 {
@@ -179,28 +180,28 @@ namespace Archangel
                 // Collision detection
                 for (int i = 0; i < enemies.Count; i++) // For each enemy
                 {
-                    for (int z = 0; z < skyPlayer.bullets.Length; z++) // For each player bullet
+                    for (int z = 0; z < player.bullets.Length; z++) // For each player bullet
                     {
-                        if (skyPlayer.bullets[z].isActive && enemies[i].spritePos.Intersects(skyPlayer.bullets[z].spritePos)) // If the bullet is active
+                        if (player.bullets[z].isActive && enemies[i].spritePos.Intersects(player.bullets[z].spritePos)) // If the bullet is active
                         {
-                            enemies[i].TakeHit(skyPlayer.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
-                            skyPlayer.bullets[z].isActive = false;
-                            skyPlayer.ReloadBullet(z); // Add the bullet back to the inactive queue
+                            enemies[i].TakeHit(player.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
+                            player.bullets[z].isActive = false;
+                            player.ReloadBullet(z); // Add the bullet back to the inactive queue
                         }
                     }
 
                     for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
                     {
-                        if (skyPlayer.direction > 8)
+                        if (player.direction > 8)
                         {
-                            if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(skyPlayer.swordBox))
+                            if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.swordBox))
                             {
                                 enemies[i].bullets[z].Reflect(); // Reflect the bullet if the sword hitbox is up and the bullet hits it
                             }
                         }
-                        else if (enemies[i].bullets[z].isActive && skyPlayer.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
+                        else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
                         {
-                            skyPlayer.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                            player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
                             enemies[i].bullets[z].isActive = false;
                             enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
                         }
@@ -214,11 +215,11 @@ namespace Archangel
                         }
                     }
 
-                    if (skyPlayer.direction > 8) // If the sword is active, check the hitbox
+                    if (player.direction > 8) // If the sword is active, check the hitbox
                     {
-                        if (enemies[i].spritePos.Intersects(skyPlayer.swordBox) && skyPlayer.slashFrames == 2) // Only hit once. Pick a frame.
+                        if (enemies[i].spritePos.Intersects(player.swordBox) && player.slashFrames == 2) // Only hit once. Pick a frame.
                         {
-                            enemies[i].TakeHit(1); // Sword damage
+                            enemies[i].TakeHit(player.swordDamage); // Sword damage
                         }
                     }
                 }
@@ -241,12 +242,12 @@ namespace Archangel
 
             //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
-            skyPlayer.Draw(spriteBatch); // Draw player
+            player.Draw(spriteBatch); // Draw player
             for (int i = 0; i < enemies.Count; i++) // Draw enemies
             {
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
-            hud.DrawHUD(spriteBatch, mainfont, skyPlayer);
+            hud.DrawHUD(spriteBatch, mainfont, player);
             if (platform.Active == true) // draw platform if active
             {
                 platform.Draw(spriteBatch);
