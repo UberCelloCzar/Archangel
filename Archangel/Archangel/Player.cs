@@ -141,13 +141,13 @@ namespace Archangel
                 // stamina code begins here
                 if (Stamina > 0)
                 {
-                    outOfStamina = false;
+                    outOfStamina = false; // Decrease stamina while flying
                     Stamina -= .03;
                 }
                 if (Stamina == 0)
                 {
-                    outOfStamina = true;
-                    direction = 7;
+                    outOfStamina = true; // If the character runs out of stamina, put them in the fall state
+                    direction = 16;
                     //if (onPlatform == false && this.spritePos.Intersects(new Rectangle(0, 1000, 1800, 1)))
                     //{
                     //charHealth = 0;
@@ -381,7 +381,7 @@ namespace Archangel
                 else if (direction == 14 && spritePos.Right > platform.spritePos.Right) // If moving right and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(platform.spritePos.Right - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
-                } /* NOTE: CHECK THIS AFTER FIXING THE CLIENTBOUNDS ISSUE */
+                }
             }
 
             // Firing - the return in the death block prevents firing while dead- fire method is called the same way regardless of platform bool

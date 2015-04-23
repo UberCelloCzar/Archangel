@@ -29,7 +29,7 @@ namespace Archangel
     // T 4/7/15- added sword code to update
     // B 4/14/15 - created the platform object and increased charcter speed
     // B 4/17/15 - added the file for the platform sprite
-    // T 4/22/15- renamed skyplayer to player and flyingsprites to playersprites
+    // T 4/22/15- renamed skyplayer to player and flyingsprites to playersprites, fixed the clientbounds issue
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -53,6 +53,9 @@ namespace Archangel
         public Game1():base()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1800;
+            graphics.PreferredBackBufferHeight = 1000;
+
             Content.RootDirectory = "Content";
         }
 
@@ -65,15 +68,11 @@ namespace Archangel
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            graphics.PreferredBackBufferWidth = 1800;
-            graphics.PreferredBackBufferHeight = 1000;
-            graphics.ApplyChanges();
-
-            clientWidth = graphics.PreferredBackBufferWidth; // Lets other methods know window bounds
-            clientHeight = graphics.PreferredBackBufferHeight;
+            clientWidth = graphics.GraphicsDevice.Viewport.Width; // Lets other methods know window bounds
+            clientHeight = graphics.GraphicsDevice.Viewport.Height;
             //platformSprite
             enemySprites = new Texture2D[9];
-            playerSprites = new Texture2D[14]; // Initialize arrays
+            playerSprites = new Texture2D[17]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
 
@@ -247,6 +246,8 @@ namespace Archangel
             {
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
+
+            spriteBatch.DrawString(mainfont, graphics.GraphicsDevice.Viewport.ToString(), new Vector2(500, 500), Color.Blue);
             hud.DrawHUD(spriteBatch, mainfont, player);
             if (platform.Active == true) // draw platform if active
             {
