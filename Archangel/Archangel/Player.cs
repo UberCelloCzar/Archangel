@@ -131,6 +131,18 @@ namespace Archangel
         {
             base.Update();
 
+            if (direction == 8 && deadTime == 15) // Death works the same on land and air
+            {
+                direction = 0;
+                spritePos = resetPos; // Reset after the player has sufficiently suffered for their failure
+                direction = initDir;
+            }
+            else if (direction == 8)
+            {
+                deadTime++;
+                return; // Don't let the player move while viewing their death
+            }
+
             if (onPlatform == false) // Sky update
             {
                 // stamina code begins here
@@ -160,19 +172,7 @@ namespace Archangel
                 }*/
                 // stamina code ends here
 
-                if (direction == 8 && deadTime == 15)
-                {
-                    direction = 0;
-                    spritePos = resetPos; // Reset after the player has sufficiently suffered for their failure
-                    direction = initDir;
-                }
-                else if (direction == 8)
-                {
-                    deadTime++;
-                    return; // Don't let the player move while viewing their death
-                }
-
-                if (direction > 8) // If the slash animation isn't over, don't let the user screw it up
+                if (direction > 8 && direction < 13) // If the slash animation isn't over, don't let the user screw it up
                 {
                     if (slashFrame >= 10) // If the animation is over, go back to the original state and reset the animation counter (this is 5 frames by the way, it starts at 0)
                     {
@@ -326,20 +326,6 @@ namespace Archangel
                     Stamina = Stamina - 2;
                 }
 
-                // Firing
-                if (kstate.IsKeyDown(Keys.F) && cooldown <= 0 && direction < 8) // Fire, then go into cooldown
-                {
-                    try
-                    {
-                        Fire();
-                    }
-                    catch (IndexOutOfRangeException noBullets)
-                    {
-                        throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
-                    }
-                    cooldown = 25; // Go into cooldown
-                }
-
                 // Dashing
                 //***right now, it dashes without regards to the Current that pushes him, 
                 //so we'll need to create that object and check for its interception with
@@ -361,65 +347,62 @@ namespace Archangel
             }
             else // Ground update
             {
-                /* However you guys want to handle death, I'll talk through it with you guys */
-                /* If you guys want the slash on the ground, again, will talk through it */
-
                 // INPUT
                 kstate = Keyboard.GetState(); // Get pressed keys
                 Keys[] pressedKeys = kstate.GetPressedKeys();
 
-                if (direction == 1 && !kstate.IsKeyDown(Keys.Right)) // Go neutral if moving right and key is released
+                if (direction == 14 && !kstate.IsKeyDown(Keys.Right)) // Go neutral if moving right and key is released
                 {
-                    direction = 0;
+                    direction = 13;
                 }
-                else if (direction == 0 && kstate.IsKeyDown(Keys.Right)) // Go right if neutral an right is pressed
+                else if (direction == 13 && kstate.IsKeyDown(Keys.Right)) // Go right if neutral an right is pressed
                 {
-                    direction = 1;
+                    direction = 14;
                 }
 
-                if (direction == 2 && !kstate.IsKeyDown(Keys.Left)) // Go neutral if moving left and key is released
+                if (direction == 15 && !kstate.IsKeyDown(Keys.Left)) // Go neutral if moving left and key is released
                 {
-                    direction = 0;
+                    direction = 13;
                 }
-                else if (direction == 0 && kstate.IsKeyDown(Keys.Left)) // Go left if neutral an left is pressed
+                else if (direction == 13 && kstate.IsKeyDown(Keys.Left)) // Go left if neutral an left is pressed
                 {
-                    direction = 2;
+                    direction = 15;
                 }
                 // END INPUT
 
                 switch (direction) // Move the sprites
                 {
-                    case 1: // Moving right
+                    case 14: // Moving right
                         spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                         break;
-                    case 2: // Move left
+                    case 15: // Move left
                         spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                         break;
                 }
 
                 // Return to positions
-                if (direction == 2 && spritePos.X < platform.spritePos.Left) // If moving left and it puts you beyond the bounds
+                if (direction == 15 && spritePos.X < platform.spritePos.Left) // If moving left and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(platform.spritePos.Left, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
-                else if (direction == 1 && spritePos.Right > platform.spritePos.Right) // If moving right and it puts you beyond the bounds
+                else if (direction == 14 && spritePos.Right > platform.spritePos.Right) // If moving right and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(platform.spritePos.Right - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
-                }
+                } /* NOTE: CHECK THIS AFTER FIXING THE CLIENTBOUNDS ISSUE */
+            }
 
-                // Firing - couldn't find a way to make sure player isn't dead before firing without checking the onPlatform variable
-                if (kstate.IsKeyDown(Keys.F) && cooldown <= 0 && direction < 4) // Fire, then go into cooldown
+            // Firing - the return in the death block prevents firing while dead- fire method is called the same way regardless of platform bool
+            if (kstate.IsKeyDown(Keys.F) && cooldown <= 0) // Fire, then go into cooldown
+            {
+                try
                 {
-                    try
-                    {
-                        Fire();
-                    }
-                    catch (IndexOutOfRangeException noBullets)
-                    {
-                        throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
-                    }
-                    cooldown = 20; // Go into cooldown
+                    Fire();
                 }
+                catch (IndexOutOfRangeException noBullets)
+                {
+                    throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
+                }
+                cooldown = 25; // Go into cooldown
             }
         }
 

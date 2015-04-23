@@ -41,8 +41,8 @@ namespace Archangel
 
         /// <Logic>
         /// for bullet: right=0,left=1,up=2,down=3
-        /// for sky player: faceRight=0,moveRight=1,faceLeft=2,moveLeft=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8,rightSlash=9,leftSlash=10,upSlash=11,downSlash=12
-        /// for ground player: faceUp=0, moveRight=1,moveLeft=2,dead=3
+        /// for player: faceRight=0,moveRight=1,faceLeft=2,moveLeft=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8,rightSlash=9,leftSlash=10,upSlash=11,downSlash=12
+        /// for player (continued/ground): faceUp=13, moveRight=14,moveLeft=15
         /// for enemies: faceLeft=0,moveLeft=1,faceRight=2,moveRight=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8
         /// </Logic>
         private int facedDirection; 
