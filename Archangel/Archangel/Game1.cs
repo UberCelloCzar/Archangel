@@ -30,6 +30,7 @@ namespace Archangel
     // B 4/14/15 - created the platform object and increased charcter speed
     // B 4/17/15 - added the file for the platform sprite
     // T 4/22/15- renamed skyplayer to player and flyingsprites to playersprites, fixed the clientbounds issue
+    // T 4/24/15- added enemy collisions with platforms
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -47,14 +48,13 @@ namespace Archangel
         HeadsUpDisplay hud;
         SpriteFont mainfont;
         Encounters encounter;
-        Platform platform;
         int encounterDelay;
 
         public Game1():base()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1800;
             graphics.PreferredBackBufferHeight = 1000;
+            graphics.PreferredBackBufferWidth = 1800;
 
             Content.RootDirectory = "Content";
         }
@@ -68,6 +68,9 @@ namespace Archangel
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //graphics.IsFullScreen = true; I want to make it run full screen later
+            //graphics.ApplyChanges();
+
             clientWidth = graphics.GraphicsDevice.Viewport.Width; // Lets other methods know window bounds
             clientHeight = graphics.GraphicsDevice.Viewport.Height;
             //platformSprite
@@ -92,7 +95,7 @@ namespace Archangel
             mainfont = Content.Load<SpriteFont>("mainFont");
             platformSprite = Content.Load<Texture2D>("Platform");
 
-            for (int i = 0; i < 14; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
+            for (int i = 0; i < 17; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
                 playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
                 if (i < 9)
@@ -113,7 +116,7 @@ namespace Archangel
             encounter = new Encounters(player);
             encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
             enemies = encounter.enemies; // Populate the enemy list
-            platform = encounter.PlatformSpawn(platformSprite);
+            player.Platform = encounter.PlatformSpawn(platformSprite);
         }
 
         /// <summary>
@@ -174,11 +177,29 @@ namespace Archangel
                     }
                 }
 
-                platform.Update();
+                player.Platform.Update();
 
                 // Collision detection
                 for (int i = 0; i < enemies.Count; i++) // For each enemy
                 {
+                    if (enemies[i].spritePos.Intersects(player.Platform.spritePos))
+                    {
+                        switch (enemies[i].direction)
+                        {
+                            case 1:
+                                enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Left - enemies[i].spritePos.Width, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with left side
+                                break;
+                            case 3:
+                                enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Right, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with right side
+                                break;
+                            case 5:
+                                enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Bottom, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with bottom
+                                break;
+                            default: // Catches both moveDown and falling
+                                enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Top - enemies[i].spritePos.Height, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with top
+                                break;
+                        }
+                    }
                     for (int z = 0; z < player.bullets.Length; z++) // For each player bullet
                     {
                         if (player.bullets[z].isActive && enemies[i].spritePos.Intersects(player.bullets[z].spritePos)) // If the bullet is active
@@ -191,7 +212,7 @@ namespace Archangel
 
                     for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
                     {
-                        if (player.direction > 8)
+                        if (player.direction > 8 && player.direction < 13)
                         {
                             if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.swordBox))
                             {
@@ -239,6 +260,7 @@ namespace Archangel
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            player.Platform.Draw(spriteBatch);
             //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
             player.Draw(spriteBatch); // Draw player
@@ -247,12 +269,9 @@ namespace Archangel
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
 
-            spriteBatch.DrawString(mainfont, graphics.GraphicsDevice.Viewport.ToString(), new Vector2(500, 500), Color.Blue);
+            spriteBatch.DrawString(mainfont, player.spritePos.ToString() + ", " + player.direction.ToString(), new Vector2(500, 500), Color.Blue);
             hud.DrawHUD(spriteBatch, mainfont, player);
-            if (platform.Active == true) // draw platform if active
-            {
-                platform.Draw(spriteBatch);
-            }
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

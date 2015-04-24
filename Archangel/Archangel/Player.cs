@@ -24,6 +24,7 @@ namespace Archangel
     // B 4/14/15 - added code to control the player's stamina, including the outOfStamina and onPlatform attributes
     // T 4/19/15- merged GroundPlayer, SkyPlayer, and Player; renamed it player, added code stubs to draw, update, and fire to differentiate between turret and flying; added code to update and fire
     // T 4/22/15- fixed up the draw and updates to reflect new values of direction for ground player
+    // T 4/24/15- added platform collisions
     public class Player: Character
     {
         private int initDir; // Stores initial direction
@@ -39,7 +40,7 @@ namespace Archangel
         private Rectangle resetPos; // Rectangle to hold position for sprite reset upon death of character
         private int damage; // Holds damage for the sword
         private int livesLeft; // Lives character has
-        private double stamina = 100; // the amount of stamina the character has
+        private double stamina; // the amount of stamina the character has
         private int slashFrame; // Is the character slashing
         private Rectangle sBox; // Position of the hitbox for the sword
 
@@ -56,6 +57,7 @@ namespace Archangel
         public Platform Platform
         {
             get { return platform; }
+            set { platform = value; }
         }
         public bool OutOfStamina
         {
@@ -88,6 +90,7 @@ namespace Archangel
             cooldown = 0; // Let the player shoot
             charHealth = 3; // Default health
             livesLeft = 3; // Default lives
+            stamina = 100; // Default stamina
             resetPos = new Rectangle(X, Y, charSprite[0].Width, charSprite[0].Height); // Sets position to return to when player dies
 
             bullets = new Bullet[50]; // Initialize bullet array
@@ -114,13 +117,15 @@ namespace Archangel
 
             if (charHealth <= 0)
             {
+                onPlatform = false;
                 lives--; // Take away a life
-                charHealth = 4; // Reset health and position and direction
+                stamina = 100; // Reset health and position and direction and stamina
+                charHealth = 4; 
                 direction = 8; // Dead sprite
             }
         }
 
-        public override void Update() // Update for the sky
+        public override void Update() // Inputs and movement
         {
             base.Update();
 
@@ -148,21 +153,9 @@ namespace Archangel
                 {
                     outOfStamina = true; // If the character runs out of stamina, put them in the fall state
                     direction = 16;
-                    //if (onPlatform == false && this.spritePos.Intersects(new Rectangle(0, 1000, 1800, 1)))
-                    //{
-                    //charHealth = 0;
-                    //}
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height); // Move down
+                    return;
                 }
-                /*if (this.spritePos.Bottom == platform.spritePos.Top)
-                {
-                    onPlatform = true;
-                    Stamina += .1;
-                }
-
-                if (this.spritePos.Bottom != platform.spritePos.Top)
-                {
-                    onPlatform = false;
-                }*/
                 // stamina code ends here
 
                 if (direction > 8 && direction < 13) // If the slash animation isn't over, don't let the user screw it up
@@ -274,20 +267,20 @@ namespace Archangel
                 }
 
                 // Return to positions
-                if (direction == 3 && spritePos.Left < 0) // If moving left and it puts you beyond the bounds
+                if (spritePos.Left < 0) // If moving left and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(1, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
-                else if (direction == 1 && spritePos.Right > Game1.clientWidth) // If moving right and it puts you beyond the bounds
+                else if (spritePos.Right > Game1.clientWidth) // If moving right and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(Game1.clientWidth - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
 
-                if (direction == 5 && spritePos.Top < 0) // If moving up and it puts you beyond the bounds
+                if (spritePos.Top < 0) // If moving up and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(spritePos.X, 1, spritePos.Width, spritePos.Height);
                 }
-                else if (direction == 7 && spritePos.Bottom > Game1.clientHeight) // If moving down and it puts you beyond the bounds
+                else if (spritePos.Bottom > Game1.clientHeight) // If moving down and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(spritePos.X, Game1.clientHeight - this.spritePos.Height, spritePos.Width, spritePos.Height);
                 }
@@ -334,12 +327,38 @@ namespace Archangel
                     Stamina = Stamina - 5;
                 }
 
-                dashCD--;
-                slashTime--;
-                cooldown--; // Increment cooldowns to allow dashing, slashing, and firing again
+                // Platform collision
+                if (this.spritePos.Intersects(platform.spritePos))
+                {
+                    switch (direction)
+                    {
+                        case 1:
+                            spritePos = new Rectangle(platform.spritePos.Left - spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with left side
+                            break;
+                        case 3:
+                            spritePos = new Rectangle(platform.spritePos.Right, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with right side
+                            break;
+                        case 5:
+                            spritePos = new Rectangle(spritePos.X, platform.spritePos.Bottom, spritePos.Width, spritePos.Height); // Collides with bottom
+                            break;
+                        default: // Catches both moveDown and falling
+                            spritePos = new Rectangle(spritePos.X, platform.spritePos.Top - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
+                            onPlatform = true;
+                            direction = 13;
+                            break;
+                    }
+                }
             }
             else // Ground update
             {
+                if (stamina < 99.99)
+                {
+                    stamina += .03; // Regen stamina when landed
+                }
+                else if (stamina == 99.99)
+                {
+                    stamina = 100; // Cap
+                }
                 // INPUT
                 kstate = Keyboard.GetState(); // Get pressed keys
                 Keys[] pressedKeys = kstate.GetPressedKeys();
@@ -348,7 +367,7 @@ namespace Archangel
                 {
                     direction = 13;
                 }
-                else if (direction == 13 && kstate.IsKeyDown(Keys.Right)) // Go right if neutral an right is pressed
+                else if (direction == 13 && kstate.IsKeyDown(Keys.Right)) // Go right if neutral and right is pressed
                 {
                     direction = 14;
                 }
@@ -360,6 +379,11 @@ namespace Archangel
                 else if (direction == 13 && kstate.IsKeyDown(Keys.Left)) // Go left if neutral an left is pressed
                 {
                     direction = 15;
+                }
+                else if (stamina != 0 && kstate.IsKeyDown(Keys.A)) // Allow takeoff
+                {
+                    onPlatform = false;
+                    direction = 5;
                 }
                 // END INPUT
 
@@ -374,13 +398,21 @@ namespace Archangel
                 }
 
                 // Return to positions
-                if (direction == 15 && spritePos.X < platform.spritePos.Left) // If moving left and it puts you beyond the bounds
+                if (spritePos.X < platform.spritePos.Left) // If moving left and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(platform.spritePos.Left, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
-                else if (direction == 14 && spritePos.Right > platform.spritePos.Right) // If moving right and it puts you beyond the bounds
+                else if (spritePos.Right > Game1.clientWidth) // If moving right and it puts you beyond the bounds
+                {
+                    spritePos = new Rectangle(Game1.clientWidth - spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
+                }
+                else if (spritePos.Right > platform.spritePos.Right) // If moving right and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(platform.spritePos.Right - this.spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height);
+                }
+                else if (spritePos.X < 0) // If moving left and it puts you beyond the bounds
+                {
+                    spritePos = new Rectangle(1, spritePos.Y, spritePos.Width, spritePos.Height);
                 }
             }
 
@@ -397,12 +429,14 @@ namespace Archangel
                 }
                 cooldown = 25; // Go into cooldown
             }
+
+            dashCD--;
+            slashTime--;
+            cooldown--; // Increment cooldowns to allow dashing, slashing, and firing again
         }
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the character's sprite
         {
-            if (onPlatform == false) // Sky draw
-            {
                 if (direction <= 8 || direction > 12) // When not slashing, do the simple draw, subject to change if/when we add animations
                 {
                     base.Draw(spriteBatch);
@@ -429,39 +463,30 @@ namespace Archangel
                     slashFrame++; // Move to the next frame
                     color = Color.White; // And reset the color
                 }
-            }
         }
 
         public override void Fire() // Fires a bullet NOTE- ALL POSITIONS EXCEPT RIGHT WILL HAVE TO BE CHANGED WHEN NEW SPRITES ARE USED
         {
             base.Fire(); // Get a bullet
-            if (onPlatform == false) // Sky firing
+            if (direction == 2 || direction == 3) // Change bullet to match gun's position and character's direction
             {
-                if (direction == 2 || direction == 3) // Change bullet to match gun's position and character's direction
-                {
-                    bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
-                    bullets[bul].direction = 1; // Left
-                }
-                else if (direction == 4 || direction == 5)
-                {
-                    bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
-                    bullets[bul].direction = 2; // Up
-                }
-                else if (direction == 6 || direction == 7)
-                {
-                    bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
-                    bullets[bul].direction = 3; // Down
-                }
-                else
-                {
-                    bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
-                    bullets[bul].direction = 0; // Right
-                }
+                bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].direction = 1; // Left
             }
-            else // Ground firing
+            else if (direction == 4 || direction == 5 || direction > 12)
             {
                 bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 2; // Up
+            }
+            else if (direction == 6 || direction == 7)
+            {
+                bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].direction = 3; // Down
+            }
+            else
+            {
+                bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].direction = 0; // Right
             }
             bullets[bul].isActive = true;
         }

@@ -63,7 +63,7 @@ namespace Archangel
                 spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
             }
 
-            if (spritePos.X + spritePos.Width <= 0)
+            if (spritePos.Right <= 0)
             {
                 active = false;
             }
