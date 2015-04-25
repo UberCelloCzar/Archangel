@@ -290,7 +290,7 @@ namespace Archangel
                 {
                     TakeHit(25); // Kills you
                 }
-                else if (spritePos.Bottom > Game1.clientHeight) // If moving down and it puts you beyond the bounds
+                else if (spritePos.Bottom > Game1.clientHeight && outOfStamina == false) // If moving down and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(spritePos.X, Game1.clientHeight - this.spritePos.Height, spritePos.Width, spritePos.Height);
                 }
