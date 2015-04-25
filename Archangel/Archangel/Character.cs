@@ -126,7 +126,6 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
             for (int i = 0; i < bullets.Length; i++) // Draw active bullets
             {
                 if (bullets[i].isActive)

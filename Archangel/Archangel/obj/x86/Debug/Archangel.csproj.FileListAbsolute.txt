@@ -58,5 +58,12 @@ C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\obj\x86\Debug\
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter2.txt
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter3.txt
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Platform.xnb
-C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Platform.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Platform.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Hitspark.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 3.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Ground.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 3.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose SlashD.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character SlashR.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Platform.xnb
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Player Hitspark.xnb

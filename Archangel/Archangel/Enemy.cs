@@ -37,7 +37,7 @@ namespace Archangel
         }
 
         public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, Player player) // Sets x,y, direction, and sprite for character
-            : base (X, Y, dir, spd, loadSprite)
+            : base (X, Y, 0, spd, loadSprite)
         {
             initialX = X;
             initialY = Y;
@@ -165,6 +165,9 @@ namespace Archangel
                 case 7: // Move down
                     spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
                     break;
+                case 8: // Dead
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spritePos.Width, spritePos.Height);
+                    break;
             }
 
             if (cooldown <= 0) // Fire at a set rate until AI is implemented
@@ -194,7 +197,27 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draws the ememies
         {
+            
+            switch (direction) // Draw the slashes
+            {
+                case 0: case 1:
+                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
+                    break;
+                case 2: case 3:
+                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Right
+                    break;
+                case 4: case 5:
+                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
+                    break;
+                case 6: case 7:
+                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), color); // Down
+                    break;
+                case 8:
+                    spriteBatch.Draw(spriteArray[8], new Rectangle(spritePos.X, spritePos.Y, spriteArray[8].Width, spriteArray[8].Height), color);
+                    break;
+            }
             base.Draw(spriteBatch);
+            color = Color.White; // And reset the color
         }
 
         public override void Fire()
@@ -212,12 +235,12 @@ namespace Archangel
             }
             else if (direction == 6 || direction == 7)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 152, spritePos.Y + (200 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 3; // Down
             }
             else
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.Right - bullets[bul].spritePos.Width, spritePos.Y + (34 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 1; // Left
             }
             bullets[bul].isActive = true;

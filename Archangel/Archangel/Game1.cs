@@ -97,15 +97,34 @@ namespace Archangel
 
             for (int i = 0; i < 17; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
-                playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1");
-                if (i < 9)
-                {
-                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
-                }
                 if (i < 4)
                 {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1"); // Right sprites
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
                     playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
+                }
+                else if (i > 3 && i < 8)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 3"); // Down sprites
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 3");
+                }
+                else if (i == 8)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Player Hitspark");
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Hitspark");
+                }
+                else if (i > 8 && i < 11)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character SlashR");
+                }
+                else if (i > 10 && i < 13)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character Pose SlashD");
+                }
+                else if (i > 12)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character Ground");
                 }
             }
             player = new Player(20, 500, 0, 15, playerSprites, playerSmallBullet);
@@ -269,7 +288,7 @@ namespace Archangel
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
 
-            spriteBatch.DrawString(mainfont, player.spritePos.ToString() + ", " + player.direction.ToString(), new Vector2(500, 500), Color.Blue);
+            spriteBatch.DrawString(mainfont, player.spritePos.ToString(), new Vector2(500, 500), Color.Blue);
             hud.DrawHUD(spriteBatch, mainfont, player);
             
             spriteBatch.End();
