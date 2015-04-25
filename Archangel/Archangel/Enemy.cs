@@ -87,8 +87,6 @@ namespace Archangel
                 return; // Don't let the enemy move while dead
             }
 
-            // Add code here if you want to have enemy move in any direction other than the passed in direction
-
             if (player.spritePos.X < this.spritePos.X)
             {
                 direction = 0; //right

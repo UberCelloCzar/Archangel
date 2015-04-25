@@ -190,7 +190,7 @@ namespace Archangel
                     {
                         hud.Skyesays = "An enemy is out of bullets!"; // Catch the throw up if no active bullets are found on a fire attempt
                     }
-                    if (enemies[i].deathTimer >= 5)
+                    if (enemies[i].deathTimer >= 20)
                     {
                         enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
                     }
@@ -238,7 +238,7 @@ namespace Archangel
                                 enemies[i].bullets[z].Reflect(); // Reflect the bullet if the sword hitbox is up and the bullet hits it
                             }
                         }
-                        else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
+                        else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
                         {
                             player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
                             enemies[i].bullets[z].isActive = false;

@@ -25,6 +25,7 @@ namespace Archangel
     // T 4/19/15- merged GroundPlayer, SkyPlayer, and Player; renamed it player, added code stubs to draw, update, and fire to differentiate between turret and flying; added code to update and fire
     // T 4/22/15- fixed up the draw and updates to reflect new values of direction for ground player
     // T 4/24/15- added platform collisions, fixed shit
+    // T 4/25/15- fixed sprite aspect ratios, fixed death timers
     public class Player: Character
     {
         private int initDir; // Stores initial direction
@@ -248,27 +249,24 @@ namespace Archangel
                 switch (direction) // Move the sprites
                 {
                     case 1: // Moving right
-                        spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
+                        spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                         dashActive = false;
                         this.objSpeed = 8;
                         break;
                     case 3: // Move left
-                        spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
+                        spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                         dashActive = false;
                         this.objSpeed = 8;
                         break;
                     case 5: // Moving up
-                        spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spriteArray[4].Width, spriteArray[4].Height);
+                        spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
                         dashActive = false;
                         this.objSpeed = 8;
                         break;
                     case 7: case 16: // Move down or falling
-                        spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spriteArray[4].Width, spriteArray[4].Height);
+                        spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
                         dashActive = false;
                         this.objSpeed = 8;
-                        break;
-                    case 8: // Dead
-                        spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[8].Width, spriteArray[8].Height);
                         break;
                 }
 
@@ -450,35 +448,35 @@ namespace Archangel
             switch (direction) // Draw the slashes
             {
                 case 0: case 1:
-                    spriteBatch.Draw(spriteArray[0], spritePos, color); // Right
+                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Right
                     break;
                 case 2: case 3:
-                    spriteBatch.Draw(spriteArray[0], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
+                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
                     break;
                 case 4: case 5: case 16:
-                    spriteBatch.Draw(spriteArray[4], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
+                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
                     break;
                 case 6: case 7:
-                    spriteBatch.Draw(spriteArray[4], spritePos, color); // Down
+                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), color); // Down
                     break;
                 case 8:
-                    spriteBatch.Draw(spriteArray[8], spritePos, color);
+                    spriteBatch.Draw(spriteArray[8], new Rectangle(spritePos.X, spritePos.Y, spriteArray[8].Width, spriteArray[8].Height), color);
                     break;
                 // This is how animation works in C#: we have the entry in the sprite array contain a row of the frames, the rectangle is the source rectangle from the image- so frame # times the width of a single frame is the distance from the left at which the source box is located
                 case 9:
-                    spriteBatch.Draw(spriteArray[9], spritePos, color);
+                    spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height), color);
                     break; // Right Slash
                 case 10:
-                    spriteBatch.Draw(spriteArray[9], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
                     break; // Left Slash
                 case 11:
-                    spriteBatch.Draw(spriteArray[11], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                    spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
                     break; // Up Slash
                 case 12:
-                    spriteBatch.Draw(spriteArray[11], spritePos, color);
+                    spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height), color);
                     break; // Down Slash
                 case 13: case 14: case 15:
-                    spriteBatch.Draw(spriteArray[13], spritePos, color);
+                    spriteBatch.Draw(spriteArray[13], new Rectangle(spritePos.X, spritePos.Y, spriteArray[13].Width, spriteArray[13].Height), color);
                     break;
             }
             base.Draw(spriteBatch);
