@@ -149,7 +149,7 @@ namespace Archangel
                     outOfStamina = false; // Decrease stamina while flying
                     Stamina -= .03;
                 }
-                if (Stamina == 0)
+                if (Stamina <= 0)
                 {
                     outOfStamina = true; // If the character runs out of stamina, put them in the fall state
                     direction = 16;
@@ -353,9 +353,9 @@ namespace Archangel
             {
                 if (stamina < 99.99)
                 {
-                    stamina += .03; // Regen stamina when landed
+                    stamina += .1; // Regen stamina when landed
                 }
-                else if (stamina == 99.99)
+                else if (stamina >= 99.99)
                 {
                     stamina = 100; // Cap
                 }

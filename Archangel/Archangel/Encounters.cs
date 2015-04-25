@@ -109,7 +109,7 @@ namespace Archangel
         {
             Texture2D[] platforms = new Texture2D[1]; // if more platforms are made, add them to this array
             platforms[0] = platformsprite;
-            Platform platform1 = new Platform(1530, 840, 0, 1, platforms, platFrequency, player);
+            Platform platform1 = new Platform(1830, 840, 0, 3, platforms, platFrequency, player);
             return platform1;
         }
     }

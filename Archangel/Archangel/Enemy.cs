@@ -117,7 +117,7 @@ namespace Archangel
             }
 
             // determine movement
-            if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7) // if player is faced/moving up or down
+            if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7 || player.OnPlatform == true) // if player is faced/moving up or down
             {
                 if (this.spritePos.X - initialX < 120 && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
                 {

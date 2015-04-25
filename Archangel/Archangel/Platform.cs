@@ -66,6 +66,7 @@ namespace Archangel
             if (spritePos.Right <= 0)
             {
                 active = false;
+                spritePos = new Rectangle(1830, spritePos.Y, spritePos.Width, spritePos.Height);
             }
         }
         public override void Draw(SpriteBatch spriteBatch)
