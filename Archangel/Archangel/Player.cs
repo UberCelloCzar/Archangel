@@ -26,11 +26,12 @@ namespace Archangel
     // T 4/22/15- fixed up the draw and updates to reflect new values of direction for ground player
     // T 4/24/15- added platform collisions, fixed shit
     // T 4/25/15- fixed sprite aspect ratios, fixed death timers
+    // T 4/28/15- fixed gun and slash positions, fixed spritepos issue, fixed slash speed issue, added manual fall mechanic
     public class Player: Character
     {
         private int initDir; // Stores initial direction
         private int deadTime; // Timer for death sprite
-        private int slashTime; // Timer for slash cooldown
+        public int slashTime; // Timer for slash cooldown
         private bool outOfStamina = false;
         private bool onPlatform = false;
         public long score; // player score
@@ -89,10 +90,11 @@ namespace Archangel
             : base(X, Y, dir, spd, charSprite)
         {
             cooldown = 0; // Let the player shoot
-            charHealth = 3; // Default health
+            charHealth = 10; // Default health
             livesLeft = 3; // Default lives
             stamina = 100; // Default stamina
             resetPos = new Rectangle(X, Y, charSprite[0].Width, charSprite[0].Height); // Sets position to return to when player dies
+            damage = 1; // Set sword damage
 
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
@@ -154,7 +156,6 @@ namespace Archangel
                 {
                     outOfStamina = true; // If the character runs out of stamina, put them in the fall state
                     direction = 16;
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height); // Move down
                     return;
                 }
                 // stamina code ends here
@@ -243,6 +244,17 @@ namespace Archangel
                     {
                         direction = 6;
                     }
+                    
+                    if (kstate.IsKeyDown(Keys.A))
+                    {
+                        direction = 16;
+                    }
+                    if (direction == 16 && kstate.IsKeyDown(Keys.W)) // Let the player fall and recover on command (if there is stamina left)
+                    {
+                        direction = 0;
+                    }
+                    
+
                     // END INPUT
                 }
 
@@ -284,11 +296,11 @@ namespace Archangel
                 {
                     spritePos = new Rectangle(spritePos.X, 1, spritePos.Width, spritePos.Height);
                 }
-                else if (spritePos.Top > Game1.clientHeight && outOfStamina == true) // If falling down and it puts you beyond the bounds
+                else if (spritePos.Top > Game1.clientHeight && direction == 16) // If falling down and it puts you beyond the bounds
                 {
                     TakeHit(25); // Kills you
                 }
-                else if (spritePos.Bottom > Game1.clientHeight && outOfStamina == false) // If moving down and it puts you beyond the bounds
+                else if (spritePos.Bottom > Game1.clientHeight && direction != 16) // If moving down and it puts you beyond the bounds
                 {
                     spritePos = new Rectangle(spritePos.X, Game1.clientHeight - this.spritePos.Height, spritePos.Width, spritePos.Height);
                 }
@@ -298,25 +310,26 @@ namespace Archangel
                 {
                     if (direction == 2 || direction == 3) // Pop up a hitbox in front of the character and put them in the appropriate slashing state
                     {
-                        sBox = new Rectangle(spritePos.X, spritePos.Y, 56, 136);
+                        sBox = new Rectangle(spritePos.X, spritePos.Y, 40, spritePos.Height);
                         direction = 10; // Left
                     }
                     else if (direction == 4 || direction == 5)
                     {
-                        sBox = new Rectangle(spritePos.X, spritePos.Y, 56, 136);
+                        sBox = new Rectangle(spritePos.X, spritePos.Y, spritePos.Width, 26);
                         direction = 11; // Up
                     }
                     else if (direction == 6 || direction == 7)
                     {
-                        sBox = new Rectangle(spritePos.Left, spritePos.Bottom - 20, 225, 61);
+                        sBox = new Rectangle(spritePos.X, spritePos.Bottom - 26, spritePos.Width, 26);
                         direction = 12; // Down
                     }
                     else
                     {
-                        sBox = new Rectangle(spritePos.Right - 20, spritePos.Top, 225, 61);
+                        sBox = new Rectangle(spritePos.Right - 40, spritePos.Y, 40, spritePos.Height);
                         direction = 9; // Right
                     }
-                    slashTime = 15; // Go into cooldown
+                    slashFrame = 0;
+                    slashTime = 20; // Go into cooldown
                     Stamina = Stamina - 2;
                 }
 
@@ -350,7 +363,7 @@ namespace Archangel
                             spritePos = new Rectangle(spritePos.X, platform.spritePos.Bottom, spritePos.Width, spritePos.Height); // Collides with bottom
                             break;
                         default: // Catches both moveDown and falling
-                            spritePos = new Rectangle(spritePos.X, platform.spritePos.Top - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
+                            spritePos = new Rectangle(spritePos.X, (platform.spritePos.Top + 9) - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
                             onPlatform = true;
                             direction = 13;
                             break;
@@ -391,6 +404,7 @@ namespace Archangel
                 else if (stamina != 0 && kstate.IsKeyDown(Keys.A)) // Allow takeoff
                 {
                     onPlatform = false;
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y - 10, spritePos.Width, spritePos.Height);
                     direction = 5;
                 }
                 // END INPUT
@@ -445,71 +459,83 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draw the character's sprite
         {
-            switch (direction) // Draw the slashes
+            switch (direction) // Draw the sprites
             {
                 case 0: case 1:
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
                     spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Right
                     break;
                 case 2: case 3:
-                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
+                    spriteBatch.Draw(spriteArray[0], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
                     break;
                 case 4: case 5: case 16:
-                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height);
+                    spriteBatch.Draw(spriteArray[4], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
                     break;
                 case 6: case 7:
-                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), color); // Down
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height);
+                    spriteBatch.Draw(spriteArray[4], spritePos, color); // Down
                     break;
                 case 8:
                     spriteBatch.Draw(spriteArray[8], new Rectangle(spritePos.X, spritePos.Y, spriteArray[8].Width, spriteArray[8].Height), color);
                     break;
                 // This is how animation works in C#: we have the entry in the sprite array contain a row of the frames, the rectangle is the source rectangle from the image- so frame # times the width of a single frame is the distance from the left at which the source box is located
                 case 9:
-                    spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height), color);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height);
+                    spriteBatch.Draw(spriteArray[9], spritePos, color);
+                    slashFrame++; // Move to the next frame
                     break; // Right Slash
                 case 10:
-                    spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height);
+                    spriteBatch.Draw(spriteArray[9], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    slashFrame++; // Move to the next frame
                     break; // Left Slash
                 case 11:
-                    spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height);
+                    spriteBatch.Draw(spriteArray[11], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                    slashFrame++; // Move to the next frame
                     break; // Up Slash
                 case 12:
-                    spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height), color);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height);
+                    spriteBatch.Draw(spriteArray[11], spritePos, color);
+                    slashFrame++; // Move to the next frame
                     break; // Down Slash
                 case 13: case 14: case 15:
-                    spriteBatch.Draw(spriteArray[13], new Rectangle(spritePos.X, spritePos.Y, spriteArray[13].Width, spriteArray[13].Height), color);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[13].Width, spriteArray[13].Height);
+                    spriteBatch.Draw(spriteArray[13], spritePos, color);
                     break;
             }
             base.Draw(spriteBatch);
-            slashFrame++; // Move to the next frame
             color = Color.White; // And reset the color
         }
 
-        public override void Fire() // Fires a bullet NOTE- ALL POSITIONS EXCEPT RIGHT WILL HAVE TO BE CHANGED WHEN NEW SPRITES ARE USED
+        public override void Fire() // Fires a bullet NOTE- ALL POSITIONS WILL HAVE TO BE CHANGED WHEN NEW SPRITES ARE USED
         {
             base.Fire(); // Get a bullet
             if (direction == 2 || direction == 3) // Change bullet to match gun's position and character's direction
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.Left, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.Left - bullets[bul].spritePos.Width, spritePos.Y + 30 - (bullets[bul].spritePos.Height / 2), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 1; // Left
             }
             else if (direction == 4 || direction == 5)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 165, spritePos.Y + (196 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 71 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 9 - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 2; // Up
             }
             else if (direction > 12)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 136, spritePos.Y + (28 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 66 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 14 - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 2; // Ground/up
             }
             else if (direction == 6 || direction == 7)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 165, spritePos.Bottom + (196 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 71 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 84, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 3; // Down
             }
             else
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + (40 - (bullets[bul].spritePos.Height / 2)), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.Right, spritePos.Y + 30 - (bullets[bul].spritePos.Height / 2), bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 0; // Right
             }
             bullets[bul].isActive = true;

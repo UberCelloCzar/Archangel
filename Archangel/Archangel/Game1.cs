@@ -31,6 +31,7 @@ namespace Archangel
     // B 4/17/15 - added the file for the platform sprite
     // T 4/22/15- renamed skyplayer to player and flyingsprites to playersprites, fixed the clientbounds issue
     // T 4/24/15- added enemy collisions with platforms
+    // T 4/28/15- fixed bounds issues (again), added fullscreen
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -50,11 +51,10 @@ namespace Archangel
         Encounters encounter;
         int encounterDelay;
 
+
         public Game1():base()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferHeight = 1000;
-            graphics.PreferredBackBufferWidth = 1800;
 
             Content.RootDirectory = "Content";
         }
@@ -68,11 +68,13 @@ namespace Archangel
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //graphics.IsFullScreen = true; I want to make it run full screen later
-            //graphics.ApplyChanges();
+            graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width; // 1800
+            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height; // 1000
+            graphics.IsFullScreen = true; //I want to make it run full screen
+            graphics.ApplyChanges();
 
-            clientWidth = graphics.GraphicsDevice.Viewport.Width; // Lets other methods know window bounds
-            clientHeight = graphics.GraphicsDevice.Viewport.Height;
+            clientWidth = graphics.GraphicsDevice.DisplayMode.Width ; // Lets other methods know window bounds
+            clientHeight = graphics.GraphicsDevice.DisplayMode.Height;
             //platformSprite
             enemySprites = new Texture2D[9];
             playerSprites = new Texture2D[17]; // Initialize arrays
@@ -275,7 +277,7 @@ namespace Archangel
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Goldenrod);
-
+            
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
@@ -288,7 +290,6 @@ namespace Archangel
                 enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
             }
 
-            spriteBatch.DrawString(mainfont, player.spritePos.ToString(), new Vector2(500, 500), Color.Blue);
             hud.DrawHUD(spriteBatch, mainfont, player);
             
             spriteBatch.End();
