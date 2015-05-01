@@ -30,7 +30,7 @@ namespace Archangel
             set { speed = value; }
         }
 
-        protected Color color = Color.White; // Will turn red momentarily when hit
+        private Color color = Color.White; // Will turn red momentarily when hit
 
         private Texture2D[] spriteImages; // Holds all the sprites for a given object
         protected Texture2D[] spriteArray

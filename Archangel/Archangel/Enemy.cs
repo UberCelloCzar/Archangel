@@ -88,30 +88,30 @@ namespace Archangel
                 return; // Don't let the enemy move while dead
             }
 
-            if (player.spritePos.X < this.spritePos.X)
+            if (player.spritePos.X > this.spritePos.X)
             {
-                direction = 0; //right
+                direction = 3; //right
                 
                 if (player.spritePos.Y > this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
                 {
-                    direction = 6; //down
+                    direction = 7; //down
                 }
                 if (player.spritePos.Y < this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
                 {
-                    direction = 4; // up
+                    direction = 5; // up
                 }
             }
             else
             {
-                direction = 2; // left
+                direction = 1; // left
 
                 if (player.spritePos.Y > this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
                 {
-                    direction = 6; // down
+                    direction = 7; // down
                 }
                 if (player.spritePos.Y < this.spritePos.Y && (player.spritePos.Center.X > this.spritePos.X && player.spritePos.Center.X < this.spritePos.X + player.spritePos.Width))
                 {
-                    direction = 4; // up
+                    direction = 5; // up
                 }
             }
 
@@ -120,12 +120,12 @@ namespace Archangel
             {
                 if (this.spritePos.X - initialX < 120 && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
                 {
-                    move = 1; // right
+                    move = 3; // right
                 }
                 else
                 {
                     leftOrRight = 1;
-                    move = 3; // left
+                    move = 1; // left
                     if (this.spritePos.X - initialX <= 0)
                     {
                         leftOrRight = 0;
@@ -152,11 +152,11 @@ namespace Archangel
 
             switch (move) // Move the sprites
             {
-                case 1: // Moving right
-                    spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
-                    break;
-                case 3: // Move left
+                case 1: // Move left
                     spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                    break;
+                case 3: // Moving right
+                    spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                     break;
                 case 5: // Moving up
                     spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
@@ -200,10 +200,10 @@ namespace Archangel
             switch (direction) // Draw the slashes
             {
                 case 0: case 1:
-                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
+                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Left
                     break;
                 case 2: case 3:
-                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Right
+                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Right
                     break;
                 case 4: case 5:
                     spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling

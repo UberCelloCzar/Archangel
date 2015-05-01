@@ -31,7 +31,7 @@ namespace Archangel
     {
         private int initDir; // Stores initial direction
         private int deadTime; // Timer for death sprite
-        public int slashTime; // Timer for slash cooldown
+        private int slashTime; // Timer for slash cooldown
         private bool outOfStamina = false;
         private bool onPlatform = false;
         public long score; // player score
