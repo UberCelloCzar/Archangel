@@ -28,10 +28,12 @@ namespace Archangel
         int health = 100; //(pass in player object) health = player.charHealth
         double stamina = 100; // player.charStamina
         string skyesays;
-        int thought = 4;
+        int thought = 1;
         int linenum;
         Player player;
         int skyefrequency = 0; // frequency of how often she talks
+        Color skyeColor;
+        Color backColor;
 
         // properties
         public int Thought
@@ -72,6 +74,26 @@ namespace Archangel
             health = player.charHealth; // I moved these here so player health changes on the HUD when it changes in the game
             stamina = player.Stamina;
             stamina = Math.Truncate(stamina);
+            if (thought == 1)
+            {
+                skyeColor = Color.Chartreuse;
+                backColor = Color.Black;
+            }
+            if (thought == 2)
+            {
+                skyeColor = Color.DeepSkyBlue;
+                backColor = Color.Black;
+            }
+            if (thought == 4)
+            {
+                skyeColor = Color.LightSkyBlue;
+                backColor = Color.Black;
+            }
+            if (thought == 3)
+            {
+                skyeColor = Color.OrangeRed;
+                backColor = Color.Black;
+            }
 
             spriteBatch = sb;
             mainfont = sf;
@@ -79,32 +101,32 @@ namespace Archangel
             spriteBatch.DrawString(mainfont, "Score: " + skyPlayer.score, new Vector2(725, 9), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(10, 31), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 53), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 73), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            //spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(290, 453), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0); // bottom of screen example
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 73), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(290, 453), backColor, 0, vect2, .78f, SpriteEffects.None, 0); // bottom of screen example
             // left, neutral, plus .01f scale
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(9, 10), Color.Black, 0, vect2, .79f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(724, 10), Color.Black, 0, vect2, .79f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(9, 30), Color.Black, 0, vect2, .79f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 53), Color.Black, 0, vect2, .76f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 72), Color.Black, 0, vect2, .755f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 72), backColor, 0, vect2, .755f, SpriteEffects.None, 0);
             // 2 left, neutral
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(8, 10), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(723, 10), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(8, 30), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(8, 53), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 72), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 72), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
             // 2 left, 2 up
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(8, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(723, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(8, 28), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(8, 51), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 74), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 74), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
             // base, 2 up
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(10, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(725, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(10, 28), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 51), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 70), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 70), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
 
             // white inline
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(9, 10), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
@@ -115,8 +137,8 @@ namespace Archangel
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(725, 10), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(10, 30), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 52), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 72), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 73), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 72), skyeColor, 0, vect2, .75f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 73), skyeColor, 0, vect2, .75f, SpriteEffects.None, 0);
         }
 
         // HOW IT ALL WORKS:

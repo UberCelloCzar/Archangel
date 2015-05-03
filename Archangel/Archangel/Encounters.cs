@@ -85,7 +85,7 @@ namespace Archangel
             {
                 // create Streamreader and read in random encounter file
                 Random rand = new Random();
-                string file = "encounter" + rand.Next(1, 4) + ".txt"; // increase upper bound as more encounters are made
+                string file = "encounter" + rand.Next(1, 6) + ".txt"; // increase upper bound as more encounters are made
                 StreamReader input = new StreamReader(file);
                 string freqline = input.ReadLine(); // used to determine how often platforms appear. The lower the number, the more frequent. Lowest = 2
                 platFrequency = int.Parse(freqline);
@@ -109,7 +109,7 @@ namespace Archangel
         {
             Texture2D[] platforms = new Texture2D[1]; // if more platforms are made, add them to this array
             platforms[0] = platformsprite;
-            Platform platform1 = new Platform(1830, 840, 0, 3, platforms, platFrequency, player);
+            Platform platform1 = new Platform(1920, 880, 0, 3, platforms, platFrequency, player);
             return platform1;
         }
     }

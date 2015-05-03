@@ -31,6 +31,8 @@ namespace Archangel
         int move;
         int leftOrRight = 0;
         int upOrDown = 0;
+        int pointX;
+        int pointY;
 
         public int deathTimer
         {
@@ -70,10 +72,24 @@ namespace Archangel
                 direction = 8; // Changes state to show death sprite, disappearance is after takehit method is called in calling class
                 hudref.Skyfrequency++;
                 player.score = player.score + 100;
-                if (hudref.Skyfrequency >= 2)
+                if(hudref.Skyfrequency == 0)
+                {
+                    hudref.Thought = 1;
+                    hudref.SkyeTalk();
+                }
+                if (hudref.Skyfrequency == 3 || hudref.Skyfrequency == 6)
                 {
                     hudref.Thought = 3;
                     hudref.SkyeTalk();
+                }
+                if(hudref.Skyfrequency == 9)
+                {
+                    Random rand = new Random();
+                    hudref.Thought = 4;
+                    hudref.SkyeTalk();
+                }
+                if(hudref.Skyfrequency == 10)
+                {
                     hudref.Skyfrequency = 0;
                 }
             }
@@ -86,6 +102,26 @@ namespace Archangel
             {
                 deadTime++;
                 return; // Don't let the enemy move while dead
+            }
+            if(player.OnPlatform == false)
+            {
+                pointX = initialX;
+                pointY = initialY;
+            }
+            else
+            {
+                if (player.direction == 0 || player.direction == 1)
+                {
+                    pointX = player.spritePos.X + player.spritePos.Width;
+                }
+                else
+                {
+                    pointX = player.spritePos.X - player.spritePos.Width;
+                }
+                if (this.spritePos.Y <= player.spritePos.Y + player.spritePos.Height)
+                {
+                    pointY = player.spritePos.Y + (player.spritePos.Height * 2);
+                }
             }
 
             if (player.spritePos.X > this.spritePos.X)
@@ -118,7 +154,7 @@ namespace Archangel
             // determine movement
             if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7 || player.OnPlatform == true) // if player is faced/moving up or down
             {
-                if (this.spritePos.X - initialX < 120 && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
+                if (this.spritePos.X - pointX < 120 && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
                 {
                     move = 3; // right
                 }
@@ -126,7 +162,7 @@ namespace Archangel
                 {
                     leftOrRight = 1;
                     move = 1; // left
-                    if (this.spritePos.X - initialX <= 0)
+                    if (this.spritePos.X - pointX <= 0)
                     {
                         leftOrRight = 0;
                     }
@@ -134,7 +170,7 @@ namespace Archangel
             }
             if (player.direction == 0 || player.direction == 1 || player.direction == 2 || player.direction == 3) // if player if faced/moving left or right
             {
-                if (this.spritePos.Y - initialY < 120 && this.spritePos.Y + (this.spritePos.Height * 2) < 1000 && upOrDown == 0)
+                if (this.spritePos.Y - pointY < 120 && this.spritePos.Y + (this.spritePos.Height * 2) < 1000 && upOrDown == 0)
                 {
                     move = 7; // down
                 }
@@ -142,7 +178,7 @@ namespace Archangel
                 {
                     upOrDown = 1;
                     move = 5; // up
-                    if (this.spritePos.Y - initialY <= 0)
+                    if (this.spritePos.Y - pointY <= 0)
                     {
                         upOrDown = 0;
                     }

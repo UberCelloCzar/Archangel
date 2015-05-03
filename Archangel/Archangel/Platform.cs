@@ -25,6 +25,9 @@ namespace Archangel
         Player player;
         Texture2D[] platforms;
         int delay = 0;
+        int lifetime = 1200; // 20 seconds after player lands on it
+        bool decay = false;
+        int shake = 1;
 
         //properties
         public bool Active
@@ -58,15 +61,46 @@ namespace Archangel
                 delay = 0;
             }
 
-            if (active == true && player.OnPlatform != true)
+            if (active == true && player.OnPlatform != true && lifetime > 0)
             {
                 spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
             }
-
-            if (spritePos.Right <= 0)
+            if (active == true && player.OnPlatform == true)
             {
+                decay = true;
+            }
+
+            if(decay == true)
+            {
+                lifetime--;
+            }
+
+            if(lifetime <= 180 && lifetime > 0)
+            {
+                if (shake == 1)
+                {
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y + 3, spritePos.Width, spritePos.Height);
+                    shake = 0;
+                }
+                else
+                {
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y - 3, spritePos.Width, spritePos.Height);
+                    shake = 1;
+                }
+            }
+
+            if(lifetime <= 0)
+            {
+                player.OnPlatform = false;
+                spritePos = new Rectangle(spritePos.X, spritePos.Y + 4, spritePos.Width, spritePos.Height);
+            }
+
+            if (spritePos.Right <= 0 || spritePos.Y > 1200)
+            {
+                decay = false;
+                lifetime = 1200;
                 active = false;
-                spritePos = new Rectangle(1830, spritePos.Y, spritePos.Width, spritePos.Height);
+                spritePos = new Rectangle(1920, 880, spritePos.Width, spritePos.Height);
             }
         }
         public override void Draw(SpriteBatch spriteBatch)
