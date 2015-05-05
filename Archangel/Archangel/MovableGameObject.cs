@@ -24,7 +24,7 @@ namespace Archangel
     public abstract class MovableGameObject:GameObject
     { 
         private int speed; // Variable for object speed and properties
-        protected int objSpeed
+        public int objSpeed
         {
             get { return speed; }
             set { speed = value; }
@@ -45,6 +45,7 @@ namespace Archangel
         /// for player (continued/ground): faceUp=13, moveRight=14,moveLeft=15
         /// for player (continued/other): falling=16
         /// for enemies: faceLeft=0,moveLeft=1,faceRight=2,moveRight=3,faceUp=4,moveUp=5,faceDown=6,moveDown=7,dead=8
+        /// for dash: right=0, left=1, up=2, down=3
         /// </Logic>
         private int facedDirection; 
         public int direction // Direction object is facing and/or moving in

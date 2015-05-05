@@ -27,7 +27,7 @@ namespace Archangel
     // T 4/24/15- added platform collisions, fixed shit
     // T 4/25/15- fixed sprite aspect ratios, fixed death timers
     // T 4/28/15- fixed gun and slash positions, fixed spritepos issue, fixed slash speed issue, added manual fall mechanic
-    // T 5/4/15- fixed takeoff and same-key inputs
+    // T 5/4/15- fixed takeoff and same-key inputs, fixed draw and gun positions for new sprites, removed some properties, added dash
     public class Player: Character
     {
         private int initDir; // Stores initial direction
@@ -35,9 +35,9 @@ namespace Archangel
         private int slashTime; // Timer for slash cooldown
         private bool outOfStamina = false;
         private bool onPlatform = false;
-        public long score; // player score
-        private int dashCD; // timer for dash cooldown
-        private bool dashActive; // if player has dash status or not
+        public long score; // Player score
+        private int dashCD; // Timer for dash cooldown
+        public int dashActive; // If player has dash status or not
         private Platform platform;
         private KeyboardState kstate; // Hold pressed keys
         private Rectangle resetPos; // Rectangle to hold position for sprite reset upon death of character
@@ -46,27 +46,21 @@ namespace Archangel
         private double stamina; // the amount of stamina the character has
         private int slashFrame; // Is the character slashing
         private Rectangle sBox; // Position of the hitbox for the sword
-        private int aPressed; // how many frames ago was the A button pressed, counts to 10 frames, then lets the a button do something again
+        private int aPressed; // How many frames ago was the A button pressed, counts to 10 frames, then lets the a button do something again
+        public AirCurrent dash; // Air current the dash is based on
 
         public int lives // Properties to access all the variables needed outside this class
         {
             get { return livesLeft; }
-            set { livesLeft = value; }
         }
         public double Stamina
         {
             get { return stamina; }
-            set { stamina = value; }
         }
         public Platform Platform
         {
             get { return platform; }
             set { platform = value; }
-        }
-        public bool OutOfStamina
-        {
-            get { return outOfStamina; }
-            set { outOfStamina = value; }
         }
         public bool OnPlatform
         {
@@ -76,12 +70,10 @@ namespace Archangel
         public int swordDamage
         {
             get { return damage; }
-            set { damage = value; }
         }
         public Rectangle swordBox
         {
             get { return sBox; }
-            set { sBox = value; }
         }
         public int slashFrames
         {
@@ -98,6 +90,9 @@ namespace Archangel
             resetPos = new Rectangle(X, Y, charSprite[0].Width, charSprite[0].Height); // Sets position to return to when player dies
             damage = 1; // Set sword damage
             aPressed = 0; // Set the key to unpressed
+            Texture2D[] dashSprite = new Texture2D[1]; // Pass in an array of 1, to eliminate extra code
+            dashSprite[0] = charSprite[17];
+            dash = new AirCurrent(0, 0, 0, 15, dashSprite); // Create the current
 
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
@@ -124,7 +119,7 @@ namespace Archangel
             if (charHealth <= 0)
             {
                 onPlatform = false;
-                lives--; // Take away a life
+                livesLeft--; // Take away a life
                 stamina = 100; // Reset health and position and direction and stamina
                 charHealth = 4; 
                 direction = 8; // Dead sprite
@@ -150,12 +145,12 @@ namespace Archangel
             if (onPlatform == false) // Sky update
             {
                 // stamina code begins here
-                if (Stamina > 0)
+                if (stamina > 0)
                 {
                     outOfStamina = false; // Decrease stamina while flying
-                    Stamina -= .03;
+                    stamina -= .03;
                 }
-                if (Stamina <= 0 && outOfStamina == false)
+                if (stamina <= 0 && outOfStamina == false)
                 {
                     outOfStamina = true; // If the character runs out of stamina, put them in the fall state
                     direction = 16;
@@ -190,7 +185,7 @@ namespace Archangel
                     }
                 }
 
-                if (outOfStamina != true)
+                if (outOfStamina != true && dashActive == 0)
                 {
                     // INPUT
                     kstate = Keyboard.GetState(); // Get pressed keys
@@ -268,30 +263,87 @@ namespace Archangel
                     }
                     // END INPUT
                 }
+                else if (outOfStamina != true && dashActive > 0)
+                {
+                    switch (direction) // Make sure player is moving if in the dash
+                    {
+                        case 0:
+                            direction = 1; // Right
+                            break;
+                        case 2:
+                            direction = 3; // Left
+                            break;
+                        case 4:
+                            direction = 5; // Up
+                            break;
+                        case 6:
+                            direction = 7; // Down
+                            break;
+                    }
+
+                    if (dashActive == 1) // Suck the player into the center
+                    {
+                        spritePos = new Rectangle(dash.spritePos.Center.X - (spritePos.Width / 2), dash.spritePos.Center.Y - spritePos.Height - 50, spritePos.Width, spritePos.Height);
+                    }
+                }
 
                 switch (direction) // Move the sprites
                 {
                     case 1: // Moving right
-                        spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
-                        dashActive = false;
-                        this.objSpeed = 8;
+                        if (dashActive >= 21)
+                        {
+                            dashActive = 0;
+                            this.objSpeed = 8;
+                            spritePos = new Rectangle(dash.spritePos.Left - spritePos.Width - 5, spritePos.Y, spritePos.Width, spritePos.Height);
+                        }
+                        else
+                        {
+                            spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                        }
                         break;
                     case 3: // Move left
-                        spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
-                        dashActive = false;
-                        this.objSpeed = 8;
+                        if (dashActive >= 21)
+                        {
+                            dashActive = 0;
+                            this.objSpeed = 8;
+                            spritePos = new Rectangle(dash.spritePos.Right + 5, spritePos.Y, spritePos.Width, spritePos.Height);
+                        }
+                        else
+                        {
+                            spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
+                        }
                         break;
                     case 5: // Moving up
-                        spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
-                        dashActive = false;
-                        this.objSpeed = 8;
+                        if (dashActive >= 21)
+                        {
+                            dashActive = 0;
+                            this.objSpeed = 8;
+                            spritePos = new Rectangle(spritePos.X, dash.spritePos.Bottom + 5, spritePos.Width, spritePos.Height);
+                        }
+                        else
+                        {
+                            spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
+                        }
                         break;
                     case 7: case 16: // Move down or falling
-                        spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
-                        dashActive = false;
-                        this.objSpeed = 8;
+                        if (dashActive >= 21)
+                        {
+                            dashActive = 0;
+                            this.objSpeed = 8;
+                            spritePos = new Rectangle(spritePos.X, dash.spritePos.Top - spritePos.Height - 5, spritePos.Width, spritePos.Height);
+                        }
+                        else
+                        {
+                            spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+                        }
                         break;
                 }
+                if (dashActive > 0) // Continue dash if active
+                {
+                    dashActive++;
+                }
+
+                dash.Update();
 
                 // Return to positions
                 if (spritePos.Left < 0) // If moving left and it puts you beyond the bounds
@@ -341,7 +393,7 @@ namespace Archangel
                     }
                     slashFrame = 0;
                     slashTime = 20; // Go into cooldown
-                    Stamina = Stamina - 2;
+                    stamina = stamina - 2;
                 }
 
                 // Dashing
@@ -351,12 +403,32 @@ namespace Archangel
 
                 if (kstate.IsKeyDown(Keys.D) && dashCD <= 0 && direction < 8) // Dash, then go into cooldown
                 {
-                    //try
-                    //{
-                    this.objSpeed = 250;
-                    //}
-                    dashCD = 120; // Go into cooldown
-                    Stamina = Stamina - 5;
+                    dash.spritePos = new Rectangle(this.spritePos.Center.X, this.spritePos.Center.Y, dash.spritePos.Width, dash.spritePos.Height); // Spawn the dash box
+                    switch (direction)
+                    {
+                        case 0: case 1:
+                            dash.direction = 0; // Right
+                            break;
+                        case 2: case 3:
+                            dash.direction = 1; // Left
+                            break;
+                        case 4: case 5:
+                            dash.direction = 2; // Up
+                            break;
+                        case 6: case 7:
+                            dash.direction = 3; // Down
+                            break;
+                    }
+                    dash.dashFrame = 1;
+                    dashCD = 240; // Go into cooldown
+                    stamina = stamina - 5;
+                }
+
+                // Dash collision
+                if (dash.dashFrame > 0 && this.spritePos.Intersects(dash.spritePos) && dashActive <= 0)
+                {
+                    this.objSpeed = 20; // Speed up and start counting
+                    dashActive = 1;
                 }
 
                 // Platform collision
@@ -374,7 +446,7 @@ namespace Archangel
                             spritePos = new Rectangle(spritePos.X, platform.spritePos.Bottom, spritePos.Width, spritePos.Height); // Collides with bottom
                             break;
                         default: // Catches both moveDown and falling
-                            spritePos = new Rectangle(spritePos.X, (platform.spritePos.Top + 9) - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
+                            spritePos = new Rectangle(spritePos.X, (platform.spritePos.Top + 12) - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
                             onPlatform = true;
                             direction = 13;
                             break;
@@ -415,7 +487,7 @@ namespace Archangel
                 else if (stamina != 0 && kstate.IsKeyDown(Keys.A) && aPressed == 0) // Allow takeoff
                 {
                     onPlatform = false;
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y - 50, spritePos.Width, spritePos.Height);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y - 30, spritePos.Width, spritePos.Height);
                     direction = 5;
                     aPressed = 1; // Start the counter
                 }
@@ -489,16 +561,20 @@ namespace Archangel
                     spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
                     spriteBatch.Draw(spriteArray[0], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Left
                     break;
-                case 4: case 5: case 16:
+                case 4: case 5:
                     spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height);
-                    spriteBatch.Draw(spriteArray[4], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
+                    spriteBatch.Draw(spriteArray[4], spritePos, color); // Up
                     break;
                 case 6: case 7:
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height);
-                    spriteBatch.Draw(spriteArray[4], spritePos, color); // Down
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[6].Width, spriteArray[6].Height);
+                    spriteBatch.Draw(spriteArray[6], spritePos, color); // Down
                     break;
                 case 8:
                     spriteBatch.Draw(spriteArray[8], new Rectangle(spritePos.X, spritePos.Y, spriteArray[8].Width, spriteArray[8].Height), color);
+                    break;
+                case 16:
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[6].Width, spriteArray[6].Height);
+                    spriteBatch.Draw(spriteArray[6], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Falling
                     break;
                 // This is how animation works in C#: we have the entry in the sprite array contain a row of the frames, the rectangle is the source rectangle from the image- so frame # times the width of a single frame is the distance from the left at which the source box is located
                 case 9:
@@ -526,6 +602,9 @@ namespace Archangel
                     spriteBatch.Draw(spriteArray[13], spritePos, color);
                     break;
             }
+
+            dash.Draw(spriteBatch); // Draw the dash
+
             base.Draw(spriteBatch);
             color = Color.White; // And reset the color
         }
@@ -540,17 +619,17 @@ namespace Archangel
             }
             else if (direction == 4 || direction == 5)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 71 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 9 - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 48 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 2 - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 2; // Up
             }
             else if (direction > 12)
             {
                 bullets[bul].spritePos = new Rectangle(spritePos.X + 66 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 14 - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
-                bullets[bul].direction = 2; // Ground/up
+                bullets[bul].direction = 2; // Ground (bullet is still going up)
             }
             else if (direction == 6 || direction == 7)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 71 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 84, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 72 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 78, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 3; // Down
             }
             else

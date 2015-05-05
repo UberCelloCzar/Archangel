@@ -32,6 +32,7 @@ namespace Archangel
     // T 4/22/15- renamed skyplayer to player and flyingsprites to playersprites, fixed the clientbounds issue
     // T 4/24/15- added enemy collisions with platforms
     // T 4/28/15- fixed bounds issues (again), added fullscreen
+    // T 5/4/15- added dash
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -77,7 +78,7 @@ namespace Archangel
             clientHeight = graphics.GraphicsDevice.DisplayMode.Height;
             //platformSprite
             enemySprites = new Texture2D[9];
-            playerSprites = new Texture2D[17]; // Initialize arrays
+            playerSprites = new Texture2D[18]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
 
@@ -96,17 +97,23 @@ namespace Archangel
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
             platformSprite = Content.Load<Texture2D>("Platform");
+            playerSprites[17] = Content.Load<Texture2D>("Dash"); // Stick dash on the endo of the player's sprite array to save space and code
 
             for (int i = 0; i < 17; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
                 if (i < 4)
                 {
                     playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1"); // Right sprites
-                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1");
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1"); // Left Sprites
                     playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
-                else if (i > 3 && i < 8)
+                else if (i > 3 && i < 6)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 4"); // Up sprites
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 4");
+                }
+                else if (i > 5 && i < 8)
                 {
                     playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 3"); // Down sprites
                     enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 3");
@@ -129,7 +136,7 @@ namespace Archangel
                     playerSprites[i] = Content.Load<Texture2D>("Main Character Ground");
                 }
             }
-            player = new Player(20, 500, 0, 15, playerSprites, playerSmallBullet);
+            player = new Player(20, 500, 0, 8, playerSprites, playerSmallBullet);
             hud = new HeadsUpDisplay();
             hud.Thought = 1; // Skye's first thoughts/lines
             hud.SkyeThink();
@@ -284,6 +291,7 @@ namespace Archangel
             player.Platform.Draw(spriteBatch);
             //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
+            spriteBatch.DrawString(mainfont, player.dash.dashFrame.ToString() + "," + player.dashActive.ToString(), new Vector2(500, 500), Color.Blue);
             player.Draw(spriteBatch); // Draw player
             for (int i = 0; i < enemies.Count; i++) // Draw enemies
             {

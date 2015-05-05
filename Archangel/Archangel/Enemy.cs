@@ -21,6 +21,7 @@ namespace Archangel
     // T 4/2/15- moved fire method to Character, added death timer and mechanic
     // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing
     // T 4/28/15- fixed gun positions
+    // T 5/4/15- fixed draw and gun positions for new sprites
     public class Enemy:Character
     {
         private int deadTime; // Timer for how long enemy is drawn as dead before disappearing
@@ -232,8 +233,7 @@ namespace Archangel
 
         public override void Draw(SpriteBatch spriteBatch) // Draws the ememies
         {
-            
-            switch (direction) // Draw the slashes
+            switch (direction) // Draw the Enemies
             {
                 case 0: case 1:
                     spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Left
@@ -242,10 +242,10 @@ namespace Archangel
                     spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Right
                     break;
                 case 4: case 5:
-                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0); // Up or falling
+                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), color); // Up
                     break;
                 case 6: case 7:
-                    spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), color); // Down
+                    spriteBatch.Draw(spriteArray[6], new Rectangle(spritePos.X, spritePos.Y, spriteArray[6].Width, spriteArray[6].Height), color); // Down
                     break;
                 case 8:
                     spriteBatch.Draw(spriteArray[8], new Rectangle(spritePos.X, spritePos.Y, spriteArray[8].Width, spriteArray[8].Height), color);
@@ -265,12 +265,12 @@ namespace Archangel
             }
             else if (direction == 4 || direction == 5)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 69 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 9 - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 38 - (bullets[bul].spritePos.Width / 2), spritePos.Y - bullets[bul].spritePos.Height, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 2; // Up
             }
             else if (direction == 6 || direction == 7)
             {
-                bullets[bul].spritePos = new Rectangle(spritePos.X + 69 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 90, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
+                bullets[bul].spritePos = new Rectangle(spritePos.X + 69 - (bullets[bul].spritePos.Width / 2), spritePos.Y + 83, bullets[bul].spritePos.Width, bullets[bul].spritePos.Height);
                 bullets[bul].direction = 3; // Down
             }
             else
