@@ -27,6 +27,7 @@ namespace Archangel
     // T 4/24/15- added platform collisions, fixed shit
     // T 4/25/15- fixed sprite aspect ratios, fixed death timers
     // T 4/28/15- fixed gun and slash positions, fixed spritepos issue, fixed slash speed issue, added manual fall mechanic
+    // T 5/4/15- fixed takeoff and same-key inputs
     public class Player: Character
     {
         private int initDir; // Stores initial direction
@@ -45,6 +46,7 @@ namespace Archangel
         private double stamina; // the amount of stamina the character has
         private int slashFrame; // Is the character slashing
         private Rectangle sBox; // Position of the hitbox for the sword
+        private int aPressed; // how many frames ago was the A button pressed, counts to 10 frames, then lets the a button do something again
 
         public int lives // Properties to access all the variables needed outside this class
         {
@@ -95,6 +97,7 @@ namespace Archangel
             stamina = 100; // Default stamina
             resetPos = new Rectangle(X, Y, charSprite[0].Width, charSprite[0].Height); // Sets position to return to when player dies
             damage = 1; // Set sword damage
+            aPressed = 0; // Set the key to unpressed
 
             bullets = new Bullet[50]; // Initialize bullet array
             for (int i = 0; i < bullets.Length; i++)
@@ -245,16 +248,24 @@ namespace Archangel
                         direction = 6;
                     }
                     
-                    if (kstate.IsKeyDown(Keys.A))
+                    if (direction != 16 && kstate.IsKeyDown(Keys.A) && aPressed == 0)
                     {
                         direction = 16;
+                        aPressed = 1; // Start the counter
                     }
-                    if (direction == 16 && kstate.IsKeyDown(Keys.W)) // Let the player fall and recover on command (if there is stamina left)
+                    else if (direction == 16 && kstate.IsKeyDown(Keys.A) && aPressed == 0) // Let the player fall and recover on command (if there is stamina left)
                     {
                         direction = 0;
+                        aPressed = 1; // Start the counter
                     }
-                    
-
+                    else if (aPressed > 0 && aPressed < 10)
+                    {
+                        aPressed++; // Add to the counter
+                    }
+                    else if (aPressed > 0)
+                    {
+                        aPressed = 0; // Reset the counter
+                    }
                     // END INPUT
                 }
 
@@ -401,11 +412,20 @@ namespace Archangel
                 {
                     direction = 15;
                 }
-                else if (stamina != 0 && kstate.IsKeyDown(Keys.A)) // Allow takeoff
+                else if (stamina != 0 && kstate.IsKeyDown(Keys.A) && aPressed == 0) // Allow takeoff
                 {
                     onPlatform = false;
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y - 10, spritePos.Width, spritePos.Height);
+                    spritePos = new Rectangle(spritePos.X, spritePos.Y - 50, spritePos.Width, spritePos.Height);
                     direction = 5;
+                    aPressed = 1; // Start the counter
+                }
+                else if (aPressed > 0 && aPressed < 10)
+                {
+                    aPressed++; // Add a frame to the counter
+                }
+                else if (aPressed > 0)
+                {
+                    aPressed = 0; // Reset the counter
                 }
                 // END INPUT
 
