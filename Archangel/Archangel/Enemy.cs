@@ -34,15 +34,36 @@ namespace Archangel
         int upOrDown = 0;
         int pointX;
         int pointY;
+        int blessing;
+        Color blessingColor = Color.White;
+        int artilleryCDR = 0;
+        bool shielded = false;
+        int swiftDI = 0;
 
         public int deathTimer
         {
             get { return deadTime; }
         }
+        public bool Shielded
+        {
+            get { return shielded; }
+            set { shielded = value; }
+        }
 
-        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, Player player) // Sets x,y, direction, and sprite for character
+        public Color BlessingColor
+        {
+            set { blessingColor = value; }
+        }
+
+        public int Blessing
+        {
+            get { return blessing; }
+        }
+
+        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, Player player, int bless) // Sets x,y, direction, and sprite for character
             : base (X, Y, 0, spd, loadSprite)
         {
+            blessing = bless;
             initialX = X;
             initialY = Y;
             hudref = hud;
@@ -62,36 +83,64 @@ namespace Archangel
             cooldown = 2; // Don't let them fire immediately
             direction = dir; // Initial direction
             charHealth = 3; // Enemy health
+            switch (blessing)
+            {
+                case 0: // Standard enemy with no blessing
+                    blessingColor = Color.White;
+                    break;
+                case 1: // Gifted enemy with more health
+                    blessingColor = Color.Yellow;
+                    charHealth = 5;
+                    break;
+                case 2: // Swift enemy with more speed and strafe range
+                    blessingColor = Color.PaleTurquoise;
+                    this.objSpeed = 5;
+                    swiftDI = 30;
+                    charHealth = 2;
+                    break;
+                case 3: // Shielded enemy
+                    blessingColor = Color.LightCoral;
+                    charHealth = 1;
+                    shielded = true;
+                    break;
+                case 4: // Artillery enemy with less bullet cooldown
+                    blessingColor = Color.GreenYellow;
+                    artilleryCDR = 40;
+                    break;
+            }
         }
 
         public override void TakeHit(int dmg) // Enemy takes a hit and possibly dies
         {
-            base.TakeHit(dmg);
-
-            if (charHealth <= 0) // Deactivate enemy when killed
+            if (shielded == false)
             {
-                direction = 8; // Changes state to show death sprite, disappearance is after takehit method is called in calling class
-                hudref.Skyfrequency++;
-                player.score = player.score + 100;
-                if(hudref.Skyfrequency == 0)
+                base.TakeHit(dmg);
+
+                if (charHealth <= 0) // Deactivate enemy when killed
                 {
-                    hudref.Thought = 1;
-                    hudref.SkyeTalk();
-                }
-                if (hudref.Skyfrequency == 3 || hudref.Skyfrequency == 6)
-                {
-                    hudref.Thought = 3;
-                    hudref.SkyeTalk();
-                }
-                if(hudref.Skyfrequency == 9)
-                {
-                    Random rand = new Random();
-                    hudref.Thought = 4;
-                    hudref.SkyeTalk();
-                }
-                if(hudref.Skyfrequency == 10)
-                {
-                    hudref.Skyfrequency = 0;
+                    direction = 8; // Changes state to show death sprite, disappearance is after takehit method is called in calling class
+                    hudref.Skyfrequency++;
+                    player.score = player.score + 100;
+                    if (hudref.Skyfrequency == 0)
+                    {
+                        hudref.Thought = 1;
+                        hudref.SkyeTalk();
+                    }
+                    if (hudref.Skyfrequency == 3 || hudref.Skyfrequency == 6)
+                    {
+                        hudref.Thought = 3;
+                        hudref.SkyeTalk();
+                    }
+                    if (hudref.Skyfrequency == 9)
+                    {
+                        Random rand = new Random();
+                        hudref.Thought = 4;
+                        hudref.SkyeTalk();
+                    }
+                    if (hudref.Skyfrequency == 10)
+                    {
+                        hudref.Skyfrequency = 0;
+                    }
                 }
             }
         }
@@ -153,9 +202,9 @@ namespace Archangel
             }
 
             // determine movement
-            if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7 || player.OnPlatform == true) // if player is faced/moving up or down
+            if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7 || player.direction == 16 || player.OnPlatform == true) // if player is faced/moving up or down
             {
-                if (this.spritePos.X - pointX < 120 && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
+                if (this.spritePos.X - pointX < 120 + swiftDI && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
                 {
                     move = 3; // right
                 }
@@ -171,7 +220,7 @@ namespace Archangel
             }
             if (player.direction == 0 || player.direction == 1 || player.direction == 2 || player.direction == 3) // if player if faced/moving left or right
             {
-                if (this.spritePos.Y - pointY < 120 && this.spritePos.Y + (this.spritePos.Height * 2) < 1000 && upOrDown == 0)
+                if (this.spritePos.Y - pointY < 120 + swiftDI && this.spritePos.Y + (this.spritePos.Height * 2) < 1000 && upOrDown == 0)
                 {
                     move = 7; // down
                 }
@@ -206,7 +255,7 @@ namespace Archangel
                     break;
             }
 
-            if (cooldown <= 0) // Fire at a set rate until AI is implemented
+            if (cooldown <= 0)
             {
                 
                 try
@@ -225,7 +274,7 @@ namespace Archangel
                 {
                     throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
                 }
-                cooldown = 80; // Go into cooldown
+                cooldown = 80 - artilleryCDR; // Go into cooldown
             }
 
             cooldown--; // Countdown to fire again
@@ -252,7 +301,11 @@ namespace Archangel
                     break;
             }
             base.Draw(spriteBatch);
-            color = Color.White; // And reset the color
+            color = blessingColor; // And reset the color
+            // Blessed: Yellow
+            // Swift: PaleTurquoise
+            // Shield: LightCoral
+            // Artillery: GreenYellow
         }
 
         public override void Fire()

@@ -48,6 +48,7 @@ namespace Archangel
         private Rectangle sBox; // Position of the hitbox for the sword
         private int aPressed; // How many frames ago was the A button pressed, counts to 10 frames, then lets the a button do something again
         public AirCurrent dash; // Air current the dash is based on
+        private bool controlledFall = false;
 
         public int lives // Properties to access all the variables needed outside this class
         {
@@ -84,11 +85,11 @@ namespace Archangel
             : base(X, Y, dir, spd, charSprite)
         {
             cooldown = 0; // Let the player shoot
-            charHealth = 10; // Default health
+            charHealth = 5; // Default health
             livesLeft = 3; // Default lives
             stamina = 100; // Default stamina
             resetPos = new Rectangle(X, Y, charSprite[0].Width, charSprite[0].Height); // Sets position to return to when player dies
-            damage = 1; // Set sword damage
+            damage = 2; // Set sword damage
             aPressed = 0; // Set the key to unpressed
             Texture2D[] dashSprite = new Texture2D[1]; // Pass in an array of 1, to eliminate extra code
             dashSprite[0] = charSprite[17];
@@ -121,7 +122,7 @@ namespace Archangel
                 onPlatform = false;
                 livesLeft--; // Take away a life
                 stamina = 100; // Reset health and position and direction and stamina
-                charHealth = 4; 
+                charHealth = 5; 
                 direction = 8; // Dead sprite
             }
         }
@@ -145,7 +146,7 @@ namespace Archangel
             if (onPlatform == false) // Sky update
             {
                 // stamina code begins here
-                if (stamina > 0)
+                if (stamina > 0 && controlledFall == false)
                 {
                     outOfStamina = false; // Decrease stamina while flying
                     stamina -= .03;
@@ -243,9 +244,10 @@ namespace Archangel
                         direction = 6;
                     }
                     
-                    if (direction != 16 && kstate.IsKeyDown(Keys.A) && aPressed == 0)
+                    if (stamina > 0 && direction != 16 && kstate.IsKeyDown(Keys.A) && aPressed == 0)
                     {
                         direction = 16;
+                        controlledFall = true;
                         aPressed = 1; // Start the counter
                     }
                     else if (direction == 16 && kstate.IsKeyDown(Keys.A) && aPressed == 0) // Let the player fall and recover on command (if there is stamina left)
@@ -290,6 +292,7 @@ namespace Archangel
                 switch (direction) // Move the sprites
                 {
                     case 1: // Moving right
+                        controlledFall = false;
                         if (dashActive >= 21)
                         {
                             dashActive = 0;
@@ -302,6 +305,7 @@ namespace Archangel
                         }
                         break;
                     case 3: // Move left
+                        controlledFall = false;
                         if (dashActive >= 21)
                         {
                             dashActive = 0;
@@ -314,6 +318,7 @@ namespace Archangel
                         }
                         break;
                     case 5: // Moving up
+                        controlledFall = false;
                         if (dashActive >= 21)
                         {
                             dashActive = 0;
@@ -325,7 +330,20 @@ namespace Archangel
                             spritePos = new Rectangle(spritePos.X, spritePos.Y - objSpeed, spritePos.Width, spritePos.Height);
                         }
                         break;
-                    case 7: case 16: // Move down or falling
+                    case 7: //case 16: // Move down
+                        controlledFall = false;
+                        if (dashActive >= 21)
+                        {
+                            dashActive = 0;
+                            this.objSpeed = 8;
+                            spritePos = new Rectangle(spritePos.X, dash.spritePos.Top - spritePos.Height - 5, spritePos.Width, spritePos.Height);
+                        }
+                        else
+                        {
+                            spritePos = new Rectangle(spritePos.X, spritePos.Y + objSpeed, spritePos.Width, spritePos.Height);
+                        }
+                        break;
+                    case 16: // Falling
                         if (dashActive >= 21)
                         {
                             dashActive = 0;

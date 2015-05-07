@@ -168,7 +168,7 @@ namespace Archangel
 
             // TODO: Add your update logic here
 
-            if (player.lives <= 0)
+            if (player.lives < 0)
             {
                 Environment.Exit(69);
             }
@@ -268,6 +268,11 @@ namespace Archangel
                         if (enemies[i].spritePos.Intersects(player.swordBox) && player.slashFrames == 2) // Only hit once. Pick a frame.
                         {
                             enemies[i].TakeHit(player.swordDamage); // Sword damage
+                            if (enemies[i].Blessing == 3)
+                            {
+                                enemies[i].Shielded = false; // deactivates sheield
+                                enemies[i].BlessingColor = Color.White;
+                            }
                         }
                     }
                 }
@@ -291,7 +296,7 @@ namespace Archangel
             player.Platform.Draw(spriteBatch);
             //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
-            spriteBatch.DrawString(mainfont, player.dash.dashFrame.ToString() + "," + player.dashActive.ToString(), new Vector2(500, 500), Color.Blue);
+            //spriteBatch.DrawString(mainfont, player.dash.dashFrame.ToString() + "," + player.dashActive.ToString(), new Vector2(500, 500), Color.Blue);
             player.Draw(spriteBatch); // Draw player
             for (int i = 0; i < enemies.Count; i++) // Draw enemies
             {

@@ -24,6 +24,7 @@ namespace Archangel
         private List<Enemy> enemyList = new List<Enemy>();
         Player player;
         int platFrequency;
+        double blessedNum = 1; // lowest = 1
         public List<Enemy> enemies
         {
             get { return enemyList; }
@@ -50,32 +51,15 @@ namespace Archangel
             {
                 int.TryParse(info[i], out elem[i]);
             }
-            enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites, hud, player));
-
-            /*foreach (string enemyStr in info)
+            int bn = (int)blessedNum;
+            int blessType = 0;
+            if (bn >= 1)
             {
-                try
-                {
-                    elem[y] = int.Parse(enemyStr);
-                    int enemyXpos = elem[0];
-                    int enemyYpos = elem[1];
-                    int enemyState = elem[2];
-                    int enemySpeed = elem[3];
-                    if (y == 3)
-                    {
-                        enemies.Add(new Enemy(enemyXpos, enemyYpos, enemyState, enemySpeed, enemysprites, bulletsprites));
-                    }
-                    y = y + 1;
-                }
-                catch (IndexOutOfRangeException ioe)
-                {
-                    hud.Skyesays = "Their formation is off...";
-                }
-                catch (FormatException foe)
-                {
-                    hud.Skyesays = "...Huh, no enemies, I guess. Sweet!";
-                }
-            }*/
+                Random rand = new Random();
+                blessType = rand.Next(0, 5);
+                blessedNum--;
+            }
+            enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites, hud, player, blessType));
         }
 
         // read encounter layout
@@ -90,7 +74,9 @@ namespace Archangel
                 string freqline = input.ReadLine(); // used to determine how often platforms appear. The lower the number, the more frequent. Lowest = 2
                 platFrequency = int.Parse(freqline);
 
-                // pass that into the platform spawn method here
+                // check score before making enemies
+                blessedNum = player.score / 800;
+                blessedNum = Math.Round(blessedNum);
 
                 string line = "";
                 while ((line = input.ReadLine()) != null) // read enemy data

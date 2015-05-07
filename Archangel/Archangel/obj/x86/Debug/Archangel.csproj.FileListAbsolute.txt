@@ -79,3 +79,6 @@ C:\Users\mauri_000\Desktop\MJ\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Dash.xnb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 4.xnb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 4.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Dash.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 4.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 4.xnb
