@@ -172,16 +172,16 @@ namespace Archangel
                 // stamina code ends here
 
                 // Slashing
-                if (slashHold > 0 && slashHold%6 == 0) // Flash a color
+                if (slashHold > 20 && slashHold%6 == 0) // Flash a color
                 {
-                    color = Color.FromNonPremultiplied(100, 100, 100, 0);
+                    color = Color.FromNonPremultiplied(0, 141, 229, 256);
                 }
-                if (slashHold >= 50) // Solid color when charge is finished
+                if (slashHold >= 60) // Solid color when charge is finished
                 {
-                    color = Color.FromNonPremultiplied(100, 100, 100, 0);
+                    color = Color.FromNonPremultiplied(0, 141, 229, 256);
                 }
 
-                if (whirlpoolTimer >= 2700)
+                if (whirlpoolTimer >= 700)
                 {
                     whirlpoolTimer = 0;
                     whirlwind.isActive = false;
@@ -190,15 +190,15 @@ namespace Archangel
                 {
                     whirlpoolTimer++; // Count how long it's out
                 }
-                if (kstate.IsKeyUp(Keys.S) && slashHold > 0 && slashHold < 51)
+                if (kstate.IsKeyUp(Keys.S) && slashHold > 0 && slashHold < 61)
                 {
                     slashHold = 0; // Reset the hold counter if key is released
                 }
-                else if (kstate.IsKeyDown(Keys.S) && slashHold > 0 && slashHold < 51) // Hold for 50 to charge
+                else if (kstate.IsKeyDown(Keys.S) && slashHold > 0 && slashHold < 61) // Hold for 60 to charge
                 {
                     slashHold++; // Keep counting the charge
                 }
-                else if (kstate.IsKeyUp(Keys.S) && slashHold >= 50)
+                else if (kstate.IsKeyUp(Keys.S) && slashHold >= 60)
                 {
                     switch (direction)
                     {
@@ -454,7 +454,7 @@ namespace Archangel
                 // Dashing
                 if (kstate.IsKeyDown(Keys.D) && dashCD <= 0 && direction < 8) // Dash, then go into cooldown
                 {
-                    this.objSpeed = 20; // Speed up and start counting
+                    this.objSpeed = 45; // Speed up and start counting
                     dashActive = 1;
                     dashCD = 240; // Go into cooldown
                     stamina = stamina - 5;
@@ -465,13 +465,13 @@ namespace Archangel
                 {
                     switch (direction)
                     {
-                        case 1:
+                        case 0: case 1:
                             spritePos = new Rectangle(platform.spritePos.Left - spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with left side
                             break;
-                        case 3:
+                        case 2: case 3:
                             spritePos = new Rectangle(platform.spritePos.Right, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with right side
                             break;
-                        case 5:
+                        case 4: case 5:
                             spritePos = new Rectangle(spritePos.X, platform.spritePos.Bottom, spritePos.Width, spritePos.Height); // Collides with bottom
                             break;
                         default: // Catches both moveDown and falling

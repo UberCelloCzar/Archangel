@@ -127,9 +127,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Dash.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Enemy Pose 3.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

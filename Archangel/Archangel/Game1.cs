@@ -36,6 +36,7 @@ namespace Archangel
     // B 5/7/15- added background and menus
     // T 5/10/15- Fixed menu sizes and game loop (didn't make a change log in program.cs so I lef that one here), fixed pause menu toggle
     // B 5/11/15- Added scrolling background
+    // T 5/11/15- General bug fixing in all classes
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -114,7 +115,7 @@ namespace Archangel
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
             platformSprite = Content.Load<Texture2D>("Platform");
-            playerSprites[17] = Content.Load<Texture2D>("Dash"); // Stick slash on the endo of the player's sprite array to save space and code
+            playerSprites[17] = Content.Load<Texture2D>("Whirlwind"); // Stick slash on the endo of the player's sprite array to save space and code
             background = Content.Load<Texture2D>("BackGround");
             titleMenu = Content.Load<Texture2D>("Title Screen");
             pauseMenu = Content.Load<Texture2D>("Pause Screen");
@@ -329,9 +330,14 @@ namespace Archangel
                                         {
                                             enemies[i].bullets[z].Reflect(false); // Reflect the bullet if the sword hitbox is up and the bullet hits it
                                         }
+                                        else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos))
+                                        {
+                                            player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                                            enemies[i].bullets[z].isActive = false;
+                                            enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                                        }
                                     }
-
-                                    if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
+                                    else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
                                     {
                                         player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
                                         enemies[i].bullets[z].isActive = false;
@@ -455,7 +461,7 @@ namespace Archangel
                 player.Platform.Draw(spriteBatch);
                 //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
-                spriteBatch.DrawString(mainfont, player.whirlpoolTimer.ToString(), new Vector2(500, 500), Color.Blue);
+                //spriteBatch.DrawString(mainfont, player.whirlpoolTimer.ToString(), new Vector2(500, 500), Color.Blue);
                 player.Draw(spriteBatch); // Draw player
                 for (int i = 0; i < enemies.Count; i++) // Draw enemies
                 {
