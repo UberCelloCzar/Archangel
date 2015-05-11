@@ -35,6 +35,7 @@ namespace Archangel
     // T 5/4/15- added dash
     // B 5/7/15- added background and menus
     // T 5/10/15- Fixed menu sizes and game loop (didn't make a change log in program.cs so I lef that one here), fixed pause menu toggle
+    // B 5/11/15- Added scrolling background
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -63,6 +64,8 @@ namespace Archangel
         int pPressed; // How long has p been pressed
         enum Menu { title, help, game, pause, end };
         Menu menuState = new Menu();
+        Rectangle backgroundRec1;
+        Rectangle backgroundRec2;
 
         public Game1():base()
         {
@@ -93,6 +96,8 @@ namespace Archangel
             playerSprites = new Texture2D[18]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
+            backgroundRec1 = new Rectangle(0, 0, clientWidth, clientHeight);
+            backgroundRec2 = new Rectangle(clientWidth, 0, clientWidth, clientHeight);
 
             base.Initialize();
         }
@@ -243,6 +248,7 @@ namespace Archangel
                                 encounterDelay = -5;
                                 encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
                                 enemies = encounter.enemies; // Populate the enemy list
+                                
                                 //encounterNum++;
                             }
                             else
@@ -361,6 +367,19 @@ namespace Archangel
                             }
                         }
                         // End Collision detection
+                        if (enemies.Count == 0)
+                        {
+                            backgroundRec1.X = backgroundRec1.X - 2;
+                            backgroundRec2.X = backgroundRec2.X - 2;
+                        }
+                        if (backgroundRec1.X == -clientWidth)
+                        {
+                            backgroundRec1.X = clientWidth;
+                        }
+                        if (backgroundRec2.X == -clientWidth)
+                        {
+                            backgroundRec2.X = clientWidth;
+                        }
                     }
                     break;
                 case Menu.pause:
@@ -430,7 +449,8 @@ namespace Archangel
 
             if (menuState == Menu.game)
             {
-                spriteBatch.Draw(background, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
+                spriteBatch.Draw(background, backgroundRec1, Color.White);
+                spriteBatch.Draw(background, backgroundRec2, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
                 player.Platform.Draw(spriteBatch);
                 //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
