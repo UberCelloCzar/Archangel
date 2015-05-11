@@ -24,6 +24,8 @@ namespace Archangel
     {
         bool reflected;
         private int dealtDamage; // Variable for bullet's damage and properties
+        private Random rgen;
+        public int randNum;
 
         public bool Reflected
         {
@@ -80,23 +82,33 @@ namespace Archangel
             base.Draw(spriteBatch);
         }
 
-        public void Reflect() // Changes the direction of the bullet to the opposite of the direction it was traveling
+        public void Reflect(bool randomReflect) // Changes the direction of the bullet to the opposite of the direction it was traveling
         {
             reflected = true;
-            switch (direction)
+
+            if (randomReflect == false)
             {
-                case 0:
-                    direction = 1; // Right switches to left
-                    break;
-                case 1:
-                    direction = 0; // Left switches to right
-                    break;
-                case 2:
-                    direction = 3; // Up switches to down
-                    break;
-                case 3:
-                    direction = 2; // Down switches to up
-                    break;
+                switch (direction)
+                {
+                    case 0:
+                        direction = 1; // Right switches to left
+                        break;
+                    case 1:
+                        direction = 0; // Left switches to right
+                        break;
+                    case 2:
+                        direction = 3; // Up switches to down
+                        break;
+                    case 3:
+                        direction = 2; // Down switches to up
+                        break;
+                }
+            }
+            else
+            {
+                rgen = new Random();
+                randNum = rgen.Next(0, 4); // Randomly reflect
+                direction = randNum;
             }
         }
     }

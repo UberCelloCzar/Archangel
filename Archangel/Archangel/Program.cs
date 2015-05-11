@@ -18,8 +18,16 @@ namespace Archangel
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
-                game.Run();
+            var game = new Game1();
+            while (game.newGame == true)
+            {
+                using (game)
+                    game.Run();
+                if (game.newGame == true)
+                {
+                    game = new Game1();
+                }
+            }
         }
     }
 #endif

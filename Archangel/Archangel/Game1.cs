@@ -33,16 +33,20 @@ namespace Archangel
     // T 4/24/15- added enemy collisions with platforms
     // T 4/28/15- fixed bounds issues (again), added fullscreen
     // T 5/4/15- added dash
+    // B 5/7/15- added background and menus
+    // T 5/10/15- Fixed menu sizes and game loop (didn't make a change log in program.cs so I lef that one here), fixed pause menu toggle
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public bool newGame = true;
         Texture2D platformSprite; // platform sprite
         Texture2D[] enemySprites; // Texture2D arrays and variables to pass into the methods for drawing of each object
         Texture2D[] playerSprites;
         Texture2D[] playerSmallBullet;
         Texture2D[] enemySmallBullet;
+        Texture2D[] chargeArc;
         public static int clientWidth; // Lets other methods know window bounds
         public static int clientHeight;
         Player player; // Player and enemies and hud and map reader
@@ -51,7 +55,14 @@ namespace Archangel
         SpriteFont mainfont;
         Encounters encounter;
         int encounterDelay;
-
+        Texture2D background;
+        Texture2D titleMenu;
+        Texture2D pauseMenu;
+        Texture2D helpMenu;
+        Texture2D gameOver;
+        int pPressed; // How long has p been pressed
+        enum Menu { title, help, game, pause, end };
+        Menu menuState = new Menu();
 
         public Game1():base()
         {
@@ -73,6 +84,7 @@ namespace Archangel
             graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height; // 1000
             graphics.IsFullScreen = true; //I want to make it run full screen
             graphics.ApplyChanges();
+            menuState = Menu.title;
 
             clientWidth = graphics.GraphicsDevice.DisplayMode.Width ; // Lets other methods know window bounds
             clientHeight = graphics.GraphicsDevice.DisplayMode.Height;
@@ -97,7 +109,12 @@ namespace Archangel
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
             platformSprite = Content.Load<Texture2D>("Platform");
-            playerSprites[17] = Content.Load<Texture2D>("Dash"); // Stick dash on the endo of the player's sprite array to save space and code
+            playerSprites[17] = Content.Load<Texture2D>("Dash"); // Stick slash on the endo of the player's sprite array to save space and code
+            background = Content.Load<Texture2D>("BackGround");
+            titleMenu = Content.Load<Texture2D>("Title Screen");
+            pauseMenu = Content.Load<Texture2D>("Pause Screen");
+            helpMenu = Content.Load<Texture2D>("Help Screen");
+            gameOver = Content.Load<Texture2D>("Game Over Screen");
 
             for (int i = 0; i < 17; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
             {
@@ -163,121 +180,202 @@ namespace Archangel
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
             // TODO: Add your update logic here
-
-            if (player.lives < 0)
+            
+            switch (menuState)
             {
-                Environment.Exit(69);
-            }
-            if (enemies.Count <= 0)
-            {
-                encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
-                enemies = encounter.enemies; // Populate the enemy list
-                
-            }
-            if (enemies.Count > 0)
-            {
-                try
-                {
-                    player.Update(); // Update the player
-                }
-                catch (IndexOutOfRangeException noBullets) // Catch the throw up if no active bullets are found on a fire attempt
-                {
-                    hud.Skyesays = "You're out of bullets! Wait for them to replenish before trying to fire.";
-                }
-
-                for (int i = 0; i < enemies.Count; i++) // Update all the enemies
-                {
-                    try
+                case Menu.title:
+                    if (Keyboard.GetState().IsKeyDown(Keys.A))
                     {
-                        enemies[i].Update(); // NOTE: bullet updates are in the update method in the Character class
+                        menuState = Menu.help;
                     }
-                    catch (IndexOutOfRangeException noBullets)
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
-                        hud.Skyesays = "An enemy is out of bullets!"; // Catch the throw up if no active bullets are found on a fire attempt
+                        newGame = false;
+                        Exit();
                     }
-                    if (enemies[i].deathTimer >= 20)
+                    break;
+                case Menu.help:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
-                        enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
+                        menuState = Menu.game;
                     }
-                }
-
-                player.Platform.Update();
-
-                // Collision detection
-                for (int i = 0; i < enemies.Count; i++) // For each enemy
-                {
-                    if (enemies[i].spritePos.Intersects(player.Platform.spritePos))
+                    break;
+                case Menu.game:
+                    if (Keyboard.GetState().IsKeyDown(Keys.P) && pPressed == 0)
                     {
-                        switch (enemies[i].direction)
+                        menuState = Menu.pause;
+                        pPressed = 1; // Start the counter
+                    }
+                    else if (pPressed > 0 && pPressed < 10)
+                    {
+                        pPressed++; // Add to the counter
+                    }
+                    else if (pPressed > 0)
+                    {
+                        pPressed = 0; // Reset the counter
+                    }
+                    if (player.lives < 0)
+                    {
+                        menuState = Menu.end;
+                    }
+                    else
+                    {
+                        if (enemies.Count <= 0)
                         {
-                            case 1:
-                                enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Left - enemies[i].spritePos.Width, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with left side
-                                break;
-                            case 3:
-                                enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Right, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with right side
-                                break;
-                            case 5:
-                                enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Bottom, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with bottom
-                                break;
-                            default: // Catches both moveDown and falling
-                                enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Top - enemies[i].spritePos.Height, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with top
-                                break;
+                            encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
+                            enemies = encounter.enemies; // Populate the enemy list
+
                         }
-                    }
-                    for (int z = 0; z < player.bullets.Length; z++) // For each player bullet
-                    {
-                        if (player.bullets[z].isActive && enemies[i].spritePos.Intersects(player.bullets[z].spritePos)) // If the bullet is active
+                        if (enemies.Count > 0)
                         {
-                            enemies[i].TakeHit(player.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
-                            player.bullets[z].isActive = false;
-                            player.ReloadBullet(z); // Add the bullet back to the inactive queue
-                        }
-                    }
-
-                    for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
-                    {
-                        if (player.direction > 8 && player.direction < 13)
-                        {
-                            if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.swordBox))
+                            try
                             {
-                                enemies[i].bullets[z].Reflect(); // Reflect the bullet if the sword hitbox is up and the bullet hits it
+                                player.Update(); // Update the player
+                            }
+                            catch (IndexOutOfRangeException noBullets) // Catch the throw up if no active bullets are found on a fire attempt
+                            {
+                                hud.Skyesays = "You're out of bullets! Wait for them to replenish before trying to fire.";
+                            }
+
+                            for (int i = 0; i < enemies.Count; i++) // Update all the enemies
+                            {
+                                try
+                                {
+                                    enemies[i].Update(); // NOTE: bullet updates are in the update method in the Character class
+                                }
+                                catch (IndexOutOfRangeException noBullets)
+                                {
+                                    hud.Skyesays = "An enemy is out of bullets!"; // Catch the throw up if no active bullets are found on a fire attempt
+                                }
+                                if (enemies[i].deathTimer >= 20)
+                                {
+                                    enemies.RemoveAt(i); // Remove the enemy from the game after their death has been viewed
+                                }
+                            }
+
+                            player.Platform.Update();
+
+                            // Collision detection
+                            for (int i = 0; i < enemies.Count; i++) // For each enemy
+                            {
+                                if (enemies[i].spritePos.Intersects(player.Platform.spritePos))
+                                {
+                                    switch (enemies[i].direction)
+                                    {
+                                        case 1:
+                                            enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Left - enemies[i].spritePos.Width, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with left side
+                                            break;
+                                        case 3:
+                                            enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Right, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with right side
+                                            break;
+                                        case 5:
+                                            enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Bottom, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with bottom
+                                            break;
+                                        default: // Catches both moveDown and falling
+                                            enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Top - enemies[i].spritePos.Height, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with top
+                                            break;
+                                    }
+                                }
+                                for (int z = 0; z < player.bullets.Length; z++) // For each player bullet
+                                {
+                                    if (player.bullets[z].isActive && enemies[i].spritePos.Intersects(player.bullets[z].spritePos)) // If the bullet is active
+                                    {
+                                        enemies[i].TakeHit(player.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
+                                        player.bullets[z].isActive = false;
+                                        player.ReloadBullet(z); // Add the bullet back to the inactive queue
+                                    }
+                                }
+
+                                for (int z = 0; z < enemies[i].bullets.Length; z++) // For each enemy bullet
+                                {
+                                    if (player.direction > 8 && player.direction < 13)
+                                    {
+                                        if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.swordBox))
+                                        {
+                                            enemies[i].bullets[z].Reflect(false); // Reflect the bullet if the sword hitbox is up and the bullet hits it
+                                        }
+                                    }
+                                    else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
+                                    {
+                                        player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                                        enemies[i].bullets[z].isActive = false;
+                                        enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                                    }
+                                    // check to see if a reflected bullet hits the enemy
+                                    if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].Reflected == true && enemies[i].spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
+                                    {
+                                        enemies[i].TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
+                                        enemies[i].bullets[z].isActive = false;
+                                        enemies[i].bullets[z].Reflected = false;
+                                        enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
+                                    }
+
+                                    if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.Whirlwind.spritePos) && enemies[i].bullets[z].Reflected == false)
+                                    {
+                                        enemies[i].bullets[z].Reflect(true); // Randomly reflect
+                                    }
+                                }
+
+                                if (player.direction > 8) // If the sword is active, check the hitbox
+                                {
+                                    if (enemies[i].spritePos.Intersects(player.swordBox) && player.slashFrames == 2) // Only hit once. Pick a frame.
+                                    {
+                                        enemies[i].TakeHit(player.swordDamage); // Sword damage
+                                        if (enemies[i].Blessing == 3)
+                                        {
+                                            enemies[i].Shielded = false; // deactivates sheield
+                                            enemies[i].BlessingColor = Color.White;
+                                        }
+                                    }
+                                }
                             }
                         }
-                        else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
-                        {
-                            player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
-                            enemies[i].bullets[z].isActive = false;
-                            enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
-                        }
-                        // check to see if a reflected bullet hits the enemy
-                        if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].Reflected == true && enemies[i].spritePos.Intersects(enemies[i].bullets[z].spritePos)) // Don't hurt the player if it hits the sword
-                        {
-                            enemies[i].TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
-                            enemies[i].bullets[z].isActive = false;
-                            enemies[i].bullets[z].Reflected = false;
-                            enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
-                        }
+                        // End Collision detection
                     }
-
-                    if (player.direction > 8) // If the sword is active, check the hitbox
+                    break;
+                case Menu.pause:
+                    if (Keyboard.GetState().IsKeyDown(Keys.P) && pPressed == 0)
                     {
-                        if (enemies[i].spritePos.Intersects(player.swordBox) && player.slashFrames == 2) // Only hit once. Pick a frame.
-                        {
-                            enemies[i].TakeHit(player.swordDamage); // Sword damage
-                            if (enemies[i].Blessing == 3)
-                            {
-                                enemies[i].Shielded = false; // deactivates sheield
-                                enemies[i].BlessingColor = Color.White;
-                            }
-                        }
+                        menuState = Menu.game;
+                        pPressed = 1;
                     }
-                }
+                    else if (pPressed > 0 && pPressed < 10)
+                    {
+                        pPressed++; // Add to the counter
+                    }
+                    else if (pPressed > 0)
+                    {
+                        pPressed = 0; // Reset the counter
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
+                        newGame = false;
+                        Exit();
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                    {
+                        newGame = true;
+                        Exit();
+                    }
+                    break;
+                case Menu.end:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    {
+                        newGame = true;
+                        Exit();
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
+                        newGame = false;
+                        Exit();
+                    }
+                    break;
             }
-            // End Collision detection
+
+            
+            
             
             base.Update(gameTime);
         }
@@ -292,19 +390,40 @@ namespace Archangel
             
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
-            player.Platform.Draw(spriteBatch);
-            //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
-
-            //spriteBatch.DrawString(mainfont, player.dash.dashFrame.ToString() + "," + player.dashActive.ToString(), new Vector2(500, 500), Color.Blue);
-            player.Draw(spriteBatch); // Draw player
-            for (int i = 0; i < enemies.Count; i++) // Draw enemies
+            if (menuState == Menu.title)
             {
-                enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
+                spriteBatch.Draw(titleMenu, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
             }
 
-            hud.DrawHUD(spriteBatch, mainfont, player);
-            
+            if (menuState == Menu.help)
+            {
+                spriteBatch.Draw(helpMenu, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
+            }
+
+            if (menuState == Menu.game)
+            {
+                spriteBatch.Draw(background, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
+
+                player.Platform.Draw(spriteBatch);
+                //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
+
+                spriteBatch.DrawString(mainfont, player.whirlpoolTimer.ToString(), new Vector2(500, 500), Color.Blue);
+                player.Draw(spriteBatch); // Draw player
+                for (int i = 0; i < enemies.Count; i++) // Draw enemies
+                {
+                    enemies[i].Draw(spriteBatch); // NOTE: bullet draws are in the draw method for the character class
+                }
+
+                hud.DrawHUD(spriteBatch, mainfont, player);
+            }
+            if (menuState == Menu.pause)
+            {
+                spriteBatch.Draw(pauseMenu, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
+            }
+            if (menuState == Menu.end)
+            {
+                spriteBatch.Draw(gameOver, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
