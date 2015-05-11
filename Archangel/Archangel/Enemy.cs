@@ -39,6 +39,10 @@ namespace Archangel
         int artilleryCDR = 0;
         bool shielded = false;
         int swiftDI = 0;
+        bool archangel = false;
+        int archMoveCD = 600;
+        int oldMD;
+        int moveDecision;
 
         public int deathTimer
         {
@@ -59,10 +63,15 @@ namespace Archangel
         {
             get { return blessing; }
         }
+        public bool Archangel
+        {
+            set { archangel = value; }
+        }
 
-        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, Player player, int bless) // Sets x,y, direction, and sprite for character
+        public Enemy(int X, int Y, int dir, int spd, Texture2D[] loadSprite, Texture2D[] bulletSprite, HeadsUpDisplay hud, Player player, int bless, bool arch) // Sets x,y, direction, and sprite for character
             : base (X, Y, 0, spd, loadSprite)
         {
+            archangel = arch;
             blessing = bless;
             initialX = X;
             initialY = Y;
@@ -83,30 +92,43 @@ namespace Archangel
             cooldown = 2; // Don't let them fire immediately
             direction = dir; // Initial direction
             charHealth = 3; // Enemy health
-            switch (blessing)
+            if (archangel != true)
             {
-                case 0: // Standard enemy with no blessing
-                    blessingColor = Color.White;
-                    break;
-                case 1: // Gifted enemy with more health
-                    blessingColor = Color.Yellow;
-                    charHealth = 5;
-                    break;
-                case 2: // Swift enemy with more speed and strafe range
-                    blessingColor = Color.PaleTurquoise;
-                    this.objSpeed = 5;
-                    swiftDI = 30;
-                    charHealth = 2;
-                    break;
-                case 3: // Shielded enemy
-                    blessingColor = Color.LightCoral;
-                    charHealth = 1;
-                    shielded = true;
-                    break;
-                case 4: // Artillery enemy with less bullet cooldown
-                    blessingColor = Color.GreenYellow;
-                    artilleryCDR = 40;
-                    break;
+                switch (blessing)
+                {
+                    case 0: // Standard enemy with no blessing
+                        blessingColor = Color.White;
+                        break;
+                    case 1: // Gifted enemy with more health
+                        blessingColor = Color.Yellow;
+                        charHealth = 5;
+                        break;
+                    case 2: // Swift enemy with more speed and strafe range
+                        blessingColor = Color.PaleTurquoise;
+                        this.objSpeed = 5;
+                        swiftDI = 30;
+                        charHealth = 2;
+                        break;
+                    case 3: // Shielded enemy
+                        blessingColor = Color.LightCoral;
+                        charHealth = 1;
+                        shielded = true;
+                        break;
+                    case 4: // Artillery enemy with less bullet cooldown
+                        blessingColor = Color.GreenYellow;
+                        artilleryCDR = 40;
+                        break;
+                }
+            }
+            if (archangel == true)
+            {
+                charHealth = 10;
+                artilleryCDR = 20;
+                this.objSpeed = 4;
+                swiftDI = 60;
+                blessingColor = Color.Red;
+                initialX = 600;
+                initialY = 300;
             }
         }
 
@@ -134,7 +156,7 @@ namespace Archangel
                     if (hudref.Skyfrequency == 9)
                     {
                         Random rand = new Random();
-                        hudref.Thought = 4;
+                        hudref.Thought = 2;
                         hudref.SkyeTalk();
                     }
                     if (hudref.Skyfrequency == 10)
@@ -148,6 +170,10 @@ namespace Archangel
         public override void Update()
         {
             base.Update();
+            Random rand2 = new Random();
+            int seed = (int)(10 * rand2.NextDouble());
+            Random rand1 = new Random();
+
             if (direction == 8)
             {
                 deadTime++;
@@ -202,6 +228,43 @@ namespace Archangel
             }
 
             // determine movement
+            if (archangel == true && archMoveCD <= 0)
+            {
+                oldMD = moveDecision;
+                moveDecision = rand1.Next();
+                if (rand1.Next() == oldMD)
+                {
+                    moveDecision = rand1.Next();
+                }
+                switch (moveDecision)
+                {
+                    case 1:
+                        initialX = 600;
+                        initialY = 100;
+                        break;
+                    case 2:
+                        initialX = 1000;
+                        initialY = 750;
+                        break;
+                    case 3:
+                        initialX = 800;
+                        initialY = 425;
+                        break;
+                    case 4:
+                        initialX = 600;
+                        initialY = 750;
+                        break;
+                    case 5:
+                        initialX = 1000;
+                        initialY = 100;
+                        break;
+                }
+                archMoveCD = 480;
+            }
+            else
+            {
+                archMoveCD--;
+            }
             if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7 || player.direction == 16 || player.OnPlatform == true) // if player is faced/moving up or down
             {
                 if (this.spritePos.X - pointX < 120 + swiftDI && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)

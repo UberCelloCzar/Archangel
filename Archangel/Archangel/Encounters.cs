@@ -25,6 +25,8 @@ namespace Archangel
         Player player;
         int platFrequency;
         double blessedNum = 1; // lowest = 1
+        double archangelNum = 1; // lowest = 1
+        int baseArchNum = 1;
         public List<Enemy> enemies
         {
             get { return enemyList; }
@@ -59,12 +61,22 @@ namespace Archangel
                 blessType = rand.Next(0, 5);
                 blessedNum--;
             }
-            enemies.Add(new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites, hud, player, blessType));
+            Enemy enemyToAdd;
+            if (archangelNum == baseArchNum)
+            {
+                enemyToAdd = new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites, hud, player, blessType, true);
+            }
+            else
+            {
+                enemyToAdd = new Enemy(elem[0], elem[1], elem[2], elem[3], enemysprites, bulletsprites, hud, player, blessType, false);
+            }
+            enemies.Add(enemyToAdd);
         }
 
         // read encounter layout
         public void ReadEncounter(Texture2D[] enemysprites, Texture2D[] bulletsprites, HeadsUpDisplay hud)
         {
+            bool archSpawn = false;
             try
             {
                 // create Streamreader and read in random encounter file
@@ -77,11 +89,27 @@ namespace Archangel
                 // check score before making enemies
                 blessedNum = player.score / 800;
                 blessedNum = Math.Round(blessedNum);
+                archangelNum = player.score / 2400;
+                archangelNum = Math.Round(archangelNum);
+                double archToSpawn = archangelNum;
 
                 string line = "";
-                while ((line = input.ReadLine()) != null) // read enemy data
+                while ((line = input.ReadLine()) != null && archSpawn != true) // read enemy data
                 {
+                    archToSpawn = archToSpawn - 1;
                     CreateEnemy(line, enemysprites, bulletsprites, hud);
+                    if (archangelNum == baseArchNum)
+                    {
+                        if (archToSpawn != 0)
+                        {
+                            //archToSpawn = archToSpawn - 1;
+                        }
+                        else
+                        {
+                            baseArchNum = baseArchNum + 1;
+                            archSpawn = true;
+                        }
+                    }
                 }
             }
             catch (IOException ioe)

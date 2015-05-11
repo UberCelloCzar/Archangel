@@ -34,6 +34,9 @@ namespace Archangel
         int skyefrequency = 0; // frequency of how often she talks
         Color skyeColor;
         Color backColor;
+        bool story = false;
+        int storyLine = 31;
+        int readTime = 340;
 
         // properties
         public int Thought
@@ -61,7 +64,14 @@ namespace Archangel
             }
             set { skyefrequency = value; }
         }
-
+        public bool Story
+        {
+            get { return story; }
+            set
+            {
+                story = value;
+            }
+        }
         public HeadsUpDisplay()
         {
             SkyeThink();
@@ -79,12 +89,12 @@ namespace Archangel
                 skyeColor = Color.Chartreuse;
                 backColor = Color.Black;
             }
-            if (thought == 2)
+            if (thought == 4)
             {
                 skyeColor = Color.DeepSkyBlue;
                 backColor = Color.Black;
             }
-            if (thought == 4)
+            if (thought == 2)
             {
                 skyeColor = Color.LightSkyBlue;
                 backColor = Color.Black;
@@ -101,32 +111,27 @@ namespace Archangel
             spriteBatch.DrawString(mainfont, "Score: " + skyPlayer.score, new Vector2(725, 9), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(10, 31), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 53), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 73), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
             //spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(290, 453), backColor, 0, vect2, .78f, SpriteEffects.None, 0); // bottom of screen example
             // left, neutral, plus .01f scale
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(9, 10), Color.Black, 0, vect2, .79f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(724, 10), Color.Black, 0, vect2, .79f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(9, 30), Color.Black, 0, vect2, .79f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 53), Color.Black, 0, vect2, .76f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 72), backColor, 0, vect2, .755f, SpriteEffects.None, 0);
             // 2 left, neutral
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(8, 10), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(723, 10), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(8, 30), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(8, 53), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 72), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
             // 2 left, 2 up
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(8, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(723, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(8, 28), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(8, 51), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 74), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
             // base, 2 up
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(10, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(725, 8), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(10, 28), Color.Black, 0, vect2, .78f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 51), Color.Black, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 70), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
 
             // white inline
             spriteBatch.DrawString(mainfont, "HP    " + health, new Vector2(9, 10), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
@@ -137,8 +142,27 @@ namespace Archangel
             spriteBatch.DrawString(mainfont, "Score: " + player.score, new Vector2(725, 10), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "END " + stamina, new Vector2(10, 30), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
             spriteBatch.DrawString(mainfont, "Lives: " + skyPlayer.lives, new Vector2(10, 52), Color.White, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 72), skyeColor, 0, vect2, .75f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 73), skyeColor, 0, vect2, .75f, SpriteEffects.None, 0);
+
+            if (story == false)
+            {
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 73), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 72), backColor, 0, vect2, .755f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 72), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 74), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 70), backColor, 0, vect2, .75f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(10, 72), skyeColor, 0, vect2, .75f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(9, 73), skyeColor, 0, vect2, .75f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 273), backColor, 0, vect2, 1f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 272), backColor, 0, vect2, 1f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 272), backColor, 0, vect2, 1f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 274), backColor, 0, vect2, 1f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 270), backColor, 0, vect2, 1f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 272), skyeColor, 0, vect2, 1f, SpriteEffects.None, 0);
+                spriteBatch.DrawString(mainfont, "Skye: " + SkyeTalk(), new Vector2(8, 273), skyeColor, 0, vect2, 1f, SpriteEffects.None, 0);
+            }
         }
 
         // HOW IT ALL WORKS:
@@ -198,22 +222,28 @@ namespace Archangel
             {
                 case 1://tips
                     {
-                        this.linenum = rand.Next(0, 10);
+                        this.linenum = rand.Next(1, 11);
                         break;
                     }
-                case 2://story
+                case 2://funny/functional line
                     {
-                        linenum = rand.Next(10, 20);
+                        linenum = rand.Next(11, 21);
                         break;
                     }
                 case 3://taunts
                     {
-                        linenum = rand.Next(20, 30);
+                        linenum = rand.Next(21, 31);
                         break;
                     }
-                case 4://funny/functional line
+                case 4://story
                     {
-                        linenum = rand.Next(30, 40);
+                        linenum = storyLine;
+                        readTime--;
+                        if (readTime <= 0)
+                        {
+                            storyLine++;
+                            readTime = 340;
+                        }
                         break;
                     }
                 default: linenum = 9999; break;

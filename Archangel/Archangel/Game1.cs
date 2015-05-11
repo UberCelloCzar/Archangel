@@ -46,7 +46,6 @@ namespace Archangel
         Texture2D[] playerSprites;
         Texture2D[] playerSmallBullet;
         Texture2D[] enemySmallBullet;
-        Texture2D[] chargeArc;
         public static int clientWidth; // Lets other methods know window bounds
         public static int clientHeight;
         Player player; // Player and enemies and hud and map reader
@@ -60,6 +59,7 @@ namespace Archangel
         Texture2D pauseMenu;
         Texture2D helpMenu;
         Texture2D gameOver;
+        int encounterNum = 1;
         int pPressed; // How long has p been pressed
         enum Menu { title, help, game, pause, end };
         Menu menuState = new Menu();
@@ -224,12 +224,38 @@ namespace Archangel
                     {
                         if (enemies.Count <= 0)
                         {
-                            encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
-                            enemies = encounter.enemies; // Populate the enemy list
-
+                            if (encounterDelay == -5 && encounterNum != 2)
+                            {
+                                encounterDelay = 240;
+                            }
+                            if (encounterDelay == -5 && encounterNum == 2)
+                            {
+                                //hud.Story = true;
+                                encounterDelay = 1200;
+                            }
+                            if (encounterDelay <= 0 && encounterDelay != -5)
+                            {
+                                hud.Story = false;
+                                if(encounterNum == 2)
+                                {
+                                    encounterNum = 0;
+                                }
+                                encounterDelay = -5;
+                                encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
+                                enemies = encounter.enemies; // Populate the enemy list
+                                //encounterNum++;
+                            }
+                            else
+                            {
+                                encounterDelay--;
+                                if (hud.Story == true)
+                                {
+                                    hud.Thought = 4;
+                                }
+                            }
                         }
-                        if (enemies.Count > 0)
-                        {
+                        //if (enemies.Count > 0)
+                        //{
                             try
                             {
                                 player.Update(); // Update the player
@@ -238,7 +264,8 @@ namespace Archangel
                             {
                                 hud.Skyesays = "You're out of bullets! Wait for them to replenish before trying to fire.";
                             }
-
+                        if(enemies.Count > 0)
+                        {
                             for (int i = 0; i < enemies.Count; i++) // Update all the enemies
                             {
                                 try
@@ -297,7 +324,8 @@ namespace Archangel
                                             enemies[i].bullets[z].Reflect(false); // Reflect the bullet if the sword hitbox is up and the bullet hits it
                                         }
                                     }
-                                    else if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
+
+                                    if (enemies[i].bullets[z].isActive && player.spritePos.Intersects(enemies[i].bullets[z].spritePos) && player.direction != 8) // Don't hurt the player if it hits the sword
                                     {
                                         player.TakeHit(enemies[i].bullets[z].damage); // If the bullet is active and the player and bullet intersect, take a hit and kill the bullet
                                         enemies[i].bullets[z].isActive = false;
