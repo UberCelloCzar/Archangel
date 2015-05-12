@@ -126,7 +126,7 @@ namespace Archangel
                 artilleryCDR = 20;
                 this.objSpeed = 4;
                 swiftDI = 60;
-                blessingColor = Color.Red;
+                blessingColor = Color.SkyBlue;
                 initialX = 600;
                 initialY = 300;
             }

@@ -94,7 +94,7 @@ namespace Archangel
             clientHeight = graphics.GraphicsDevice.DisplayMode.Height;
             //platformSprite
             enemySprites = new Texture2D[9];
-            playerSprites = new Texture2D[18]; // Initialize arrays
+            playerSprites = new Texture2D[20]; // Initialize arrays
             playerSmallBullet = new Texture2D[4];
             enemySmallBullet = new Texture2D[4];
             backgroundRec1 = new Rectangle(0, 0, clientWidth, clientHeight);
@@ -115,14 +115,16 @@ namespace Archangel
             // TODO: use this.Content to load your game content here
             mainfont = Content.Load<SpriteFont>("mainFont");
             platformSprite = Content.Load<Texture2D>("Platform");
-            playerSprites[17] = Content.Load<Texture2D>("Whirlwind"); // Stick slash on the endo of the player's sprite array to save space and code
+            playerSprites[17] = Content.Load<Texture2D>("Whirlwind"); // Stick charge wind and dash on the end of the player's sprite array to save space and code
+            playerSprites[18] = Content.Load<Texture2D>("DashLat");
+            playerSprites[19] = Content.Load<Texture2D>("DashVert");
             background = Content.Load<Texture2D>("BackGround");
             titleMenu = Content.Load<Texture2D>("Title Screen");
             pauseMenu = Content.Load<Texture2D>("Pause Screen");
             helpMenu = Content.Load<Texture2D>("Help Screen");
             gameOver = Content.Load<Texture2D>("Game Over Screen");
 
-            for (int i = 0; i < 17; i++) // For loop poulates entire arrays with 1 sprite for testing purposes
+            for (int i = 0; i < 17; i++) // For loop populates arrays
             {
                 if (i < 4)
                 {

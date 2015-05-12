@@ -584,7 +584,7 @@ namespace Archangel
             {
                 case 0: case 1:
                     spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
-                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Right
+                    spriteBatch.Draw(spriteArray[0], spritePos, color); // Right
                     break;
                 case 2: case 3:
                     spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height);
@@ -629,12 +629,31 @@ namespace Archangel
                 case 13: case 14: case 15:
                     spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[13].Width, spriteArray[13].Height);
                     spriteBatch.Draw(spriteArray[13], spritePos, color);
-                    break;
+                    break; // Ground
             }
 
             if (whirlwind.isActive)
             {
-                whirlwind.Draw(spriteBatch); // Draw the dash
+                whirlwind.Draw(spriteBatch); // Draw the whirlwind
+            }
+
+            if (dashActive > 0)
+            {
+                switch (direction)
+                {
+                    case 1: // Right
+                        spriteBatch.Draw(spriteArray[18], new Rectangle(spritePos.X - spriteArray[18].Width, spritePos.Y, spriteArray[18].Width, spriteArray[18].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                    case 3: // Left
+                        spriteBatch.Draw(spriteArray[18], new Rectangle(spritePos.Right, spritePos.Y, spriteArray[18].Width, spriteArray[18].Height), color);
+                        break;
+                    case 5: // Up
+                        spriteBatch.Draw(spriteArray[19], new Rectangle(spritePos.X, spritePos.Bottom, spriteArray[19].Width, spriteArray[19].Height), color);
+                        break;
+                    case 7: // Down
+                        spriteBatch.Draw(spriteArray[19], new Rectangle(spritePos.X, spritePos.Y - spriteArray[19].Height, spriteArray[19].Width, spriteArray[19].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                        break;
+                }
             }
 
             base.Draw(spriteBatch);
