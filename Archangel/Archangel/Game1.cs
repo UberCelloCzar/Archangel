@@ -150,11 +150,15 @@ namespace Archangel
                 }
                 else if (i > 8 && i < 11)
                 {
-                    playerSprites[i] = Content.Load<Texture2D>("Main Character SlashR");
+                    playerSprites[i] = Content.Load<Texture2D>("SlashRight");
                 }
-                else if (i > 10 && i < 13)
+                else if (i == 11)
                 {
-                    playerSprites[i] = Content.Load<Texture2D>("Main Character Pose SlashD");
+                    playerSprites[i] = Content.Load<Texture2D>("SlashUp");
+                }
+                else if (i == 12)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("SlashDown");
                 }
                 else if (i > 12)
                 {

@@ -227,22 +227,22 @@ namespace Archangel
                 {
                     if (direction == 2 || direction == 3) // Pop up a hitbox in front of the character and put them in the appropriate slashing state
                     {
-                        sBox = new Rectangle(spritePos.X, spritePos.Y, 40, spritePos.Height);
+                        sBox = new Rectangle(spritePos.X, spritePos.Y, 40, 122);
                         direction = 10; // Left
                     }
                     else if (direction == 4 || direction == 5)
                     {
-                        sBox = new Rectangle(spritePos.X, spritePos.Y, spritePos.Width, 26);
+                        sBox = new Rectangle(spritePos.X, spritePos.Y, 112, 26);
                         direction = 11; // Up
                     }
                     else if (direction == 6 || direction == 7)
                     {
-                        sBox = new Rectangle(spritePos.X, spritePos.Bottom - 26, spritePos.Width, 26);
+                        sBox = new Rectangle(spritePos.X, spritePos.Bottom - 26, 112, 26);
                         direction = 12; // Down
                     }
                     else
                     {
-                        sBox = new Rectangle(spritePos.Right - 40, spritePos.Y, 40, spritePos.Height);
+                        sBox = new Rectangle(spritePos.Right - 40, spritePos.Y, 40, 122);
                         direction = 9; // Right
                     }
                     slashHold = 1;
@@ -253,7 +253,7 @@ namespace Archangel
 
                 if (direction > 8 && direction < 13) // If the slash animation isn't over, don't let the user screw it up
                 {
-                    if (slashFrame >= 20) // If the animation is over, go back to the original state and reset the animation counter (this is 5 frames by the way, it starts at 0)
+                    if (slashFrame >= 19) // If the animation is over, go back to the original state and reset the animation counter (this is 5 frames by the way, it starts at 0)
                     {
                         slashFrame = 0; // Reset the # of frames
                         switch (direction)
@@ -274,6 +274,30 @@ namespace Archangel
                     }
                     else
                     {
+                        switch (direction)
+                        {
+                            case 9:
+                                if (slashFrame > 6 && slashFrame < 13)
+                                {
+                                    sBox = new Rectangle(spritePos.Right - 40, spritePos.Y, 40, 99);
+                                }
+                                else if (slashFrame > 12)
+                                {
+                                    sBox = new Rectangle(spritePos.Right - 40, spritePos.Y, 40, 112);
+                                }
+                                break;
+                            case 10:
+                                if (slashFrame > 6 && slashFrame < 13)
+                                {
+                                    sBox = new Rectangle(spritePos.X, spritePos.Y, 40, 99);
+                                }
+                                else if (slashFrame > 12)
+                                {
+                                    sBox = new Rectangle(spritePos.X, spritePos.Y, 40, 112);
+                                }
+                                break;
+                            // The up and down slash animation sword hitboxes are the same on all sprites
+                        }
                         return; // Otherwise, wait for the animation to finish
                     }
                 }
@@ -607,23 +631,63 @@ namespace Archangel
                     break;
                 // This is how animation works in C#: we have the entry in the sprite array contain a row of the frames, the rectangle is the source rectangle from the image- so frame # times the width of a single frame is the distance from the left at which the source box is located
                 case 9:
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height);
-                    spriteBatch.Draw(spriteArray[9], spritePos, color);
+                    if (slashFrame < 7) // Frame 1
+                    {
+                        spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, 139, 122), new Rectangle(0, 0, 139, 122), color);
+                    }
+                    else if (slashFrame > 6 && slashFrame < 13) // Frame 2
+                    {
+                        spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, 169, 99), new Rectangle(139, 0, 169, 99), color);
+                    }
+                    else if (slashFrame > 12) // Frame 3
+                    {
+                        spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, 154, 112), new Rectangle(308, 0, 154, 112), color);
+                    }
                     slashFrame++; // Move to the next frame
                     break; // Right Slash
                 case 10:
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[9].Width, spriteArray[9].Height);
-                    spriteBatch.Draw(spriteArray[9], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    if (slashFrame < 7) // Frame 1
+                    {
+                        spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, 139, 122), new Rectangle(0, 0, 139, 122), color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    }
+                    else if (slashFrame > 6 && slashFrame < 13) // Frame 2
+                    {
+                        spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, 169, 99), new Rectangle(139, 0, 169, 99), color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    }
+                    else if (slashFrame > 12) // Frame 3
+                    {
+                        spriteBatch.Draw(spriteArray[9], new Rectangle(spritePos.X, spritePos.Y, 154, 112), new Rectangle(308, 0, 154, 112), color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    }
                     slashFrame++; // Move to the next frame
                     break; // Left Slash
                 case 11:
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height);
-                    spriteBatch.Draw(spriteArray[11], spritePos, null, color, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                    if (slashFrame < 7) // Frame 1
+                    {
+                        spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, 112, 109), new Rectangle(0, 0, 112, 109), color);
+                    }
+                    else if (slashFrame > 6 && slashFrame < 13) // Frame 2
+                    {
+                        spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, 112, 100), new Rectangle(112, 0, 112, 100), color);
+                    }
+                    else if (slashFrame > 12) // Frame 3
+                    {
+                        spriteBatch.Draw(spriteArray[11], new Rectangle(spritePos.X, spritePos.Y, 112, 103), new Rectangle(224, 0, 112, 103), color);
+                    }
                     slashFrame++; // Move to the next frame
                     break; // Up Slash
                 case 12:
-                    spritePos = new Rectangle(spritePos.X, spritePos.Y, spriteArray[11].Width, spriteArray[11].Height);
-                    spriteBatch.Draw(spriteArray[11], spritePos, color);
+                    if (slashFrame < 7) // Frame 1
+                    {
+                        spriteBatch.Draw(spriteArray[12], new Rectangle(spritePos.X, spritePos.Y, 112, 109), new Rectangle(0, 0, 112, 107), color);
+                    }
+                    else if (slashFrame > 6 && slashFrame < 13) // Frame 2
+                    {
+                        spriteBatch.Draw(spriteArray[12], new Rectangle(spritePos.X, spritePos.Y, 112, 100), new Rectangle(112, 0, 112, 100), color);
+                    }
+                    else if (slashFrame > 12) // Frame 3
+                    {
+                        spriteBatch.Draw(spriteArray[12], new Rectangle(spritePos.X, spritePos.Y, 112, 103), new Rectangle(224, 0, 112, 103), color);
+                    }
                     slashFrame++; // Move to the next frame
                     break; // Down Slash
                 case 13: case 14: case 15:
