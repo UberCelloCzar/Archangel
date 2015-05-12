@@ -70,13 +70,10 @@ C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 3.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Ground.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 3.xnb
-C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose SlashD.xnb
-C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character SlashR.xnb
 C:\Users\mauri_000\Desktop\MJ\Archangel\Archangel\obj\x86\Debug\Archangel.exe
 C:\Users\mauri_000\Desktop\MJ\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 4.xnb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 4.xnb
-C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Dash.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 4.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 4.xnb
 C:\Users\Brandon\Documents\Archangel\Archangel-master\Archangel\Archangel\obj\x86\Debug\Archangel.exe
@@ -175,3 +172,52 @@ C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\Windows
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashRight.xnb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashDown.xnb
 C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashUp.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\obj\x86\Debug\Archangel.exe
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\obj\x86\Debug\Archangel.pdb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\SDL.dll
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter1.txt
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter2.txt
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\encounter3.txt
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\SkyeLines.txt
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\mainFont.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Bullet 1.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Player Bullet 1.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Platform.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 1.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Ground.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 1.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Hitspark.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Player Hitspark.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 3.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 4.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 3.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 4.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Game Over Screen.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\BackGround.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Pause Screen.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Title Screen.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Help Screen.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\DashLat.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\DashVert.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\Whirlwind.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashRight.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashDown.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashUp.xnb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Archangel.exe
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Archangel.pdb
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Lidgren.Network.dll
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\MonoGame.Framework.dll
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\OpenTK.dll
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll
+C:\Users\mauri_000\Downloads\Archangel-master (17)\Archangel-master\Archangel\Archangel\obj\x86\Debug\Archangel.csprojResolveAssemblyReference.cache
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Game Over Screen.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\BackGround.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Pause Screen.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Title Screen.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Help Screen.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\DashLat.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\DashVert.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Whirlwind.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashRight.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashDown.xnb
+C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashUp.xnb

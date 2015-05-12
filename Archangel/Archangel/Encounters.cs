@@ -89,7 +89,7 @@ namespace Archangel
                 // check score before making enemies
                 blessedNum = player.score / 800;
                 blessedNum = Math.Round(blessedNum);
-                archangelNum = player.score / 2400;
+                archangelNum = player.score / 2000;
                 archangelNum = Math.Round(archangelNum);
                 double archToSpawn = archangelNum;
 

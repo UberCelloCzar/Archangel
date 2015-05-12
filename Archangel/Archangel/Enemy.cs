@@ -65,6 +65,7 @@ namespace Archangel
         }
         public bool Archangel
         {
+            get { return archangel; }
             set { archangel = value; }
         }
 
@@ -100,7 +101,7 @@ namespace Archangel
                         blessingColor = Color.White;
                         break;
                     case 1: // Gifted enemy with more health
-                        blessingColor = Color.Yellow;
+                        blessingColor = Color.Silver;
                         charHealth = 5;
                         break;
                     case 2: // Swift enemy with more speed and strafe range
@@ -126,7 +127,7 @@ namespace Archangel
                 artilleryCDR = 20;
                 this.objSpeed = 4;
                 swiftDI = 60;
-                blessingColor = Color.SkyBlue;
+                blessingColor = Color.Yellow;
                 initialX = 600;
                 initialY = 300;
             }

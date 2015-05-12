@@ -94,14 +94,14 @@ namespace Archangel
                 skyeColor = Color.DeepSkyBlue;
                 backColor = Color.Black;
             }
-            if (thought == 2)
+            if (thought == 3)
             {
                 skyeColor = Color.LightSkyBlue;
                 backColor = Color.Black;
             }
-            if (thought == 3)
+            if (thought == 2)
             {
-                skyeColor = Color.OrangeRed;
+                skyeColor = Color.Tomato;
                 backColor = Color.Black;
             }
 
@@ -182,7 +182,7 @@ namespace Archangel
             {
                 StreamReader input = new StreamReader("SkyeLines.txt");
                 string line = "";
-                for (int lineread = 0; lineread < 40; lineread++)
+                for (int lineread = 1; lineread < 40; lineread++)
                 {
                     line = input.ReadLine();
                     if (lineread == this.linenum)

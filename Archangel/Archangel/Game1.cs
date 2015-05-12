@@ -239,6 +239,7 @@ namespace Archangel
                             if (encounterDelay == -5 && encounterNum != 2)
                             {
                                 encounterDelay = 240;
+                                player.staminaPause = true;
                             }
                             if (encounterDelay == -5 && encounterNum == 2)
                             {
@@ -253,6 +254,7 @@ namespace Archangel
                                     encounterNum = 0;
                                 }
                                 encounterDelay = -5;
+                                player.staminaPause = false;
                                 encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
                                 enemies = encounter.enemies; // Populate the enemy list
                                 
@@ -277,6 +279,7 @@ namespace Archangel
                             {
                                 hud.Skyesays = "You're out of bullets! Wait for them to replenish before trying to fire.";
                             }
+                            player.Platform.Update();
                         if(enemies.Count > 0)
                         {
                             for (int i = 0; i < enemies.Count; i++) // Update all the enemies
@@ -295,7 +298,7 @@ namespace Archangel
                                 }
                             }
 
-                            player.Platform.Update();
+                            //player.Platform.Update();
 
                             // Collision detection
                             for (int i = 0; i < enemies.Count; i++) // For each enemy
@@ -369,7 +372,7 @@ namespace Archangel
                                     if (enemies[i].spritePos.Intersects(player.swordBox) && player.slashFrames == 2) // Only hit once. Pick a frame.
                                     {
                                         enemies[i].TakeHit(player.swordDamage); // Sword damage
-                                        if (enemies[i].Blessing == 3)
+                                        if (enemies[i].Blessing == 3 && enemies[i].Archangel != true)
                                         {
                                             enemies[i].Shielded = false; // deactivates sheield
                                             enemies[i].BlessingColor = Color.White;

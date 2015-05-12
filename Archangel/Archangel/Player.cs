@@ -52,6 +52,7 @@ namespace Archangel
         private bool controlledFall = false;
         private int slashHold; // How long the slash key has been held
         public int whirlpoolTimer; // How long has the whirlpool been out
+        public bool staminaPause;
         
 
         public int lives // Properties to access all the variables needed outside this class
@@ -88,6 +89,10 @@ namespace Archangel
         public int slashFrames
         {
             get { return slashFrame; }
+        }
+        public bool StaminaPause
+        {
+            set { staminaPause = value; }
         }
 
         public Player(int X, int Y, int dir, int spd, Texture2D[] charSprite, Texture2D[] bulletSprite) // Sets x,y, direction, and sprite for character
@@ -158,7 +163,7 @@ namespace Archangel
             if (onPlatform == false) // Sky update
             {
                 // stamina code begins here
-                if (stamina > 0 && controlledFall == false)
+                if (stamina > 0 && controlledFall == false && staminaPause == false)
                 {
                     outOfStamina = false; // Decrease stamina while flying
                     stamina -= .03;
@@ -181,7 +186,7 @@ namespace Archangel
                     color = Color.FromNonPremultiplied(0, 141, 229, 256);
                 }
 
-                if (whirlpoolTimer >= 700)
+                if (whirlpoolTimer >= 480)
                 {
                     whirlpoolTimer = 0;
                     whirlwind.isActive = false;
@@ -219,6 +224,7 @@ namespace Archangel
                             whirlwind.direction = 3;
                             break;
                     }
+                    stamina = stamina - 10;
                     whirlwind.isActive = true;
                     whirlpoolTimer = 1;
                     slashHold = 0;
@@ -478,9 +484,9 @@ namespace Archangel
                 // Dashing
                 if (kstate.IsKeyDown(Keys.D) && dashCD <= 0 && direction < 8) // Dash, then go into cooldown
                 {
-                    this.objSpeed = 45; // Speed up and start counting
+                    this.objSpeed = 40; // Speed up and start counting
                     dashActive = 1;
-                    dashCD = 240; // Go into cooldown
+                    dashCD = 130; // Go into cooldown
                     stamina = stamina - 5;
                 }
 
@@ -557,9 +563,11 @@ namespace Archangel
                 switch (direction) // Move the sprites
                 {
                     case 14: // Moving right
+                        this.objSpeed = 8;
                         spritePos = new Rectangle(spritePos.X + objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                         break;
                     case 15: // Move left
+                        this.objSpeed = 8;
                         spritePos = new Rectangle(spritePos.X - objSpeed, spritePos.Y, spritePos.Width, spritePos.Height);
                         break;
                 }
@@ -594,7 +602,14 @@ namespace Archangel
                 {
                     throw new IndexOutOfRangeException(); // If it tries to fire and there are no bullets, throw up further
                 }
-                cooldown = 25; // Go into cooldown
+                if (onPlatform == true)
+                {
+                    cooldown = 35;
+                }
+                else
+                {
+                    cooldown = 25; // Go into cooldown
+                }
             }
 
             dashCD--;
