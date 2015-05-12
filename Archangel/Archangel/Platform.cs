@@ -92,6 +92,8 @@ namespace Archangel
             if(lifetime <= 0)
             {
                 player.OnPlatform = false;
+                player.direction = 0;
+                player.spritePos = new Rectangle(player.spritePos.X, player.spritePos.Y - 18, player.spritePos.Width, player.spritePos.Height);
                 spritePos = new Rectangle(spritePos.X, spritePos.Y + 4, spritePos.Width, spritePos.Height);
             }
 

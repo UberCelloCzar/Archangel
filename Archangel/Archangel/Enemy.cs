@@ -101,7 +101,7 @@ namespace Archangel
                         blessingColor = Color.White;
                         break;
                     case 1: // Gifted enemy with more health
-                        blessingColor = Color.Silver;
+                        blessingColor = Color.DarkGray;
                         charHealth = 5;
                         break;
                     case 2: // Swift enemy with more speed and strafe range

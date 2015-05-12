@@ -361,7 +361,7 @@ namespace Archangel
                                         enemies[i].ReloadBullet(z); // Add the bullet back to the inactive queue
                                     }
 
-                                    if (enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.Whirlwind.spritePos) && enemies[i].bullets[z].Reflected == false)
+                                    if (player.Whirlwind.isActive && enemies[i].bullets[z].isActive && enemies[i].bullets[z].spritePos.Intersects(player.Whirlwind.spritePos) && enemies[i].bullets[z].Reflected == false)
                                     {
                                         enemies[i].bullets[z].Reflect(true); // Randomly reflect
                                     }
