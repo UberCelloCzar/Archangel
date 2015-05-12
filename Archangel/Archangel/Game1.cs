@@ -37,6 +37,7 @@ namespace Archangel
     // T 5/10/15- Fixed menu sizes and game loop (didn't make a change log in program.cs so I lef that one here), fixed pause menu toggle
     // B 5/11/15- Added scrolling background
     // T 5/11/15- General bug fixing in all classes
+    // B 5/12/15- Added new menues and updated old ones
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -60,10 +61,11 @@ namespace Archangel
         Texture2D titleMenu;
         Texture2D pauseMenu;
         Texture2D helpMenu;
+        Texture2D help2Menu;
         Texture2D gameOver;
         int encounterNum = 1;
         int pPressed; // How long has p been pressed
-        enum Menu { title, help, game, pause, end };
+        enum Menu { title, help, help2, game, pause, end };
         Menu menuState = new Menu();
         Rectangle backgroundRec1;
         Rectangle backgroundRec2;
@@ -123,6 +125,7 @@ namespace Archangel
             pauseMenu = Content.Load<Texture2D>("Pause Screen");
             helpMenu = Content.Load<Texture2D>("Help Screen");
             gameOver = Content.Load<Texture2D>("Game Over Screen");
+            help2Menu = Content.Load<Texture2D>("Help Screen 2");
 
             for (int i = 0; i < 17; i++) // For loop populates arrays
             {
@@ -209,6 +212,12 @@ namespace Archangel
                     }
                     break;
                 case Menu.help:
+                    if (Keyboard.GetState().IsKeyDown(Keys.N))
+                    {
+                        menuState = Menu.help2;
+                    }
+                    break;
+                case Menu.help2:
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
                         menuState = Menu.game;
@@ -460,6 +469,11 @@ namespace Archangel
             if (menuState == Menu.help)
             {
                 spriteBatch.Draw(helpMenu, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
+            }
+
+            if (menuState == Menu.help2)
+            {
+                spriteBatch.Draw(help2Menu, new Rectangle(0, 0, clientWidth, clientHeight), Color.White);
             }
 
             if (menuState == Menu.game)

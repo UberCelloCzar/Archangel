@@ -152,11 +152,8 @@ C:\Users\mauri_000\Downloads\Archangel-master (16)\Archangel-master\Archangel\Ar
 C:\Users\mauri_000\Downloads\Archangel-master (16)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll
 C:\Users\mauri_000\Downloads\Archangel-master (16)\Archangel-master\Archangel\Archangel\obj\x86\Debug\Archangel.csprojResolveAssemblyReference.cache
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Ground.xnb
-C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose SlashD.xnb
-C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character SlashR.xnb
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Hitspark.xnb
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Player Hitspark.xnb
-C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Dash.xnb
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 3.xnb
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Enemy Pose 4.xnb
 C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Main Character Pose 3.xnb
@@ -221,3 +218,10 @@ C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashRight.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashDown.xnb
 C:\Users\mauri_000\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashUp.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\DashLat.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\DashVert.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Whirlwind.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashRight.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashDown.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\SlashUp.xnb
+C:\Users\Brandon\Documents\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Help Screen 2.xnb
