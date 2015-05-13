@@ -153,9 +153,13 @@ namespace Archangel
                     playerSprites[i] = Content.Load<Texture2D>("Player Hitspark");
                     enemySprites[i] = Content.Load<Texture2D>("Enemy Hitspark");
                 }
-                else if (i > 8 && i < 11)
+                else if (i == 9)
                 {
                     playerSprites[i] = Content.Load<Texture2D>("SlashRight");
+                }
+                else if (i == 10)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("SlashLeft");
                 }
                 else if (i == 11)
                 {
