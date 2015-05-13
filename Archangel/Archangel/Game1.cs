@@ -319,24 +319,6 @@ namespace Archangel
                             // Collision detection
                             for (int i = 0; i < enemies.Count; i++) // For each enemy
                             {
-                                if (enemies[i].spritePos.Intersects(player.Platform.spritePos))
-                                {
-                                    switch (enemies[i].direction)
-                                    {
-                                        case 1:
-                                            enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Left - enemies[i].spritePos.Width, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with left side
-                                            break;
-                                        case 3:
-                                            enemies[i].spritePos = new Rectangle(player.Platform.spritePos.Right, enemies[i].spritePos.Y, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with right side
-                                            break;
-                                        case 5:
-                                            enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Bottom, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with bottom
-                                            break;
-                                        default: // Catches both moveDown and falling
-                                            enemies[i].spritePos = new Rectangle(enemies[i].spritePos.X, player.Platform.spritePos.Top - enemies[i].spritePos.Height, enemies[i].spritePos.Width, enemies[i].spritePos.Height); // Collides with top
-                                            break;
-                                    }
-                                }
                                 for (int z = 0; z < player.bullets.Length; z++) // For each player bullet
                                 {
                                     if (player.bullets[z].isActive && enemies[i].spritePos.Intersects(player.bullets[z].spritePos)) // If the bullet is active
@@ -513,7 +495,6 @@ namespace Archangel
                 player.Platform.Draw(spriteBatch);
                 //spriteBatch.Draw(platformSprite, new Rectangle(800, 700, 512, 128), Color.White);
 
-                //spriteBatch.DrawString(mainfont, player.whirlpoolTimer.ToString(), new Vector2(500, 500), Color.Blue);
                 player.Draw(spriteBatch); // Draw player
                 for (int i = 0; i < enemies.Count; i++) // Draw enemies
                 {

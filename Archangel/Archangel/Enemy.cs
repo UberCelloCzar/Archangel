@@ -22,6 +22,7 @@ namespace Archangel
     // T 4/7/15- readded fire method to move bullet to gun's position and character's direction on firing
     // T 4/28/15- fixed gun positions
     // T 5/4/15- fixed draw and gun positions for new sprites
+    // T 5/13/15- fixed enemies hitting the platform
     public class Enemy:Character
     {
         private int deadTime; // Timer for how long enemy is drawn as dead before disappearing
@@ -43,6 +44,7 @@ namespace Archangel
         int archMoveCD = 600;
         int oldMD;
         int moveDecision;
+        bool pointOverride; // Overrides the point setting so enemies don't glitch out
 
         public int deathTimer
         {
@@ -179,10 +181,33 @@ namespace Archangel
                 deadTime++;
                 return; // Don't let the enemy move while dead
             }
-            if(player.OnPlatform == false)
+            if(player.OnPlatform == false && pointOverride == false)
             {
                 pointX = initialX;
                 pointY = initialY;
+            }
+            else if (pointOverride == true)
+            {
+                if ((spritePos.X > pointX - 10 && spritePos.X < pointX + 10) && (spritePos.Y > pointY - 10 && spritePos.Y < pointY + 10))
+                {
+                    pointOverride = false;
+                }
+                else if (spritePos.X > pointX)
+                {
+                    move = 1; // Left
+                }
+                else if (spritePos.X < pointX)
+                {
+                    move = 3; // Right
+                }
+                else if (spritePos.Y > pointY)
+                {
+                    move = 5; // Up
+                }
+                else
+                {
+                    move = 7; // Down
+                }
             }
             else
             {
@@ -228,7 +253,7 @@ namespace Archangel
             }
 
             // determine movement
-            if (archangel == true && archMoveCD <= 0)
+            if (archangel == true && archMoveCD <= 0 && pointOverride == false)
             {
                 oldMD = moveDecision;
                 moveDecision = rand1.Next(1,5);
@@ -261,44 +286,49 @@ namespace Archangel
                 }
                 archMoveCD = 480;
             }
-            else
+            else if (pointOverride == false)
             {
                 archMoveCD--;
             }
             if (player.direction == 4 || player.direction == 5 || player.direction == 6 || player.direction == 7 || player.direction == 16 || player.OnPlatform == true) // if player is faced/moving up or down
             {
-                if (this.spritePos.X - pointX < 120 + swiftDI && this.spritePos.X + this.spritePos.Width < 1730 && leftOrRight == 0)
+                if (pointOverride == false)
                 {
-                    move = 3; // right
-                }
-                else
-                {
-                    leftOrRight = 1;
-                    move = 1; // left
-                    if (this.spritePos.X - pointX <= 0)
+                    if (this.spritePos.X - pointX < 120 + swiftDI && this.spritePos.X + this.spritePos.Width < Game1.clientWidth && leftOrRight == 0)
                     {
-                        leftOrRight = 0;
+                        move = 3; // right
+                    }
+                    else
+                    {
+                        leftOrRight = 1;
+                        move = 1; // left
+                        if (this.spritePos.X - pointX <= 0)
+                        {
+                            leftOrRight = 0;
+                        }
                     }
                 }
             }
             if (player.direction == 0 || player.direction == 1 || player.direction == 2 || player.direction == 3) // if player if faced/moving left or right
             {
-                if (this.spritePos.Y - pointY < 120 + swiftDI && this.spritePos.Y + (this.spritePos.Height * 2) < 1000 && upOrDown == 0)
+                if (pointOverride == false)
                 {
-                    move = 7; // down
-                }
-                else
-                {
-                    upOrDown = 1;
-                    move = 5; // up
-                    if (this.spritePos.Y - pointY <= 0)
+                    if (this.spritePos.Y - pointY < 120 + swiftDI && this.spritePos.Y + (this.spritePos.Height * 2) < Game1.clientHeight && upOrDown == 0)
                     {
-                        upOrDown = 0;
+                        move = 7; // down
+                    }
+                    else
+                    {
+                        upOrDown = 1;
+                        move = 5; // up
+                        if (this.spritePos.Y - pointY <= 0)
+                        {
+                            upOrDown = 0;
+                        }
                     }
                 }
             }
             
-
             switch (move) // Move the sprites
             {
                 case 1: // Move left
@@ -341,6 +371,30 @@ namespace Archangel
             }
 
             cooldown--; // Countdown to fire again
+
+            if (spritePos.Intersects(player.Platform.spritePos))
+            {
+                switch (move)
+                {
+                    case 1:
+                        spritePos = new Rectangle(player.Platform.spritePos.Left - spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with left side
+                        pointY = spritePos.Y - 500;
+                        break;
+                    case 3:
+                        spritePos = new Rectangle(player.Platform.spritePos.Right, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with right side
+                        pointY = spritePos.Y - 500;
+                        break;
+                    case 5:
+                        spritePos = new Rectangle(spritePos.X, player.Platform.spritePos.Bottom, spritePos.Width, spritePos.Height); // Collides with bottom
+                        initialX = spritePos.X + 700;
+                        break;
+                    default: 
+                        spritePos = new Rectangle(spritePos.X, player.Platform.spritePos.Top - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
+                        initialY = spritePos.Y - 500;
+                        break;
+                }
+                pointOverride = true; // Override original destination
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch) // Draws the ememies
