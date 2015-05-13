@@ -103,7 +103,7 @@ namespace Archangel
                         blessingColor = Color.White;
                         break;
                     case 1: // Gifted enemy with more health
-                        blessingColor = Color.DarkGray;
+                        blessingColor = Color.Silver;
                         charHealth = 5;
                         break;
                     case 2: // Swift enemy with more speed and strafe range
@@ -294,7 +294,7 @@ namespace Archangel
             {
                 if (pointOverride == false)
                 {
-                    if (this.spritePos.X - pointX < 120 + swiftDI && this.spritePos.X + this.spritePos.Width < Game1.clientWidth && leftOrRight == 0)
+                    if (this.spritePos.X - pointX < 120 + swiftDI && this.spritePos.X + this.spritePos.Width < Game1.clientWidth + 139 && leftOrRight == 0)
                     {
                         move = 3; // right
                     }
@@ -372,25 +372,25 @@ namespace Archangel
 
             cooldown--; // Countdown to fire again
 
-            if (spritePos.Intersects(player.Platform.spritePos))
+            if (spritePos.Intersects(player.Platform.spritePos) && pointOverride == false)
             {
                 switch (move)
                 {
                     case 1:
                         spritePos = new Rectangle(player.Platform.spritePos.Left - spritePos.Width, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with left side
-                        pointY = spritePos.Y - 500;
+                        pointY = spritePos.Y - 300;
                         break;
                     case 3:
                         spritePos = new Rectangle(player.Platform.spritePos.Right, spritePos.Y, spritePos.Width, spritePos.Height); // Collides with right side
-                        pointY = spritePos.Y - 500;
+                        pointY = spritePos.Y - 300;
                         break;
                     case 5:
                         spritePos = new Rectangle(spritePos.X, player.Platform.spritePos.Bottom, spritePos.Width, spritePos.Height); // Collides with bottom
-                        initialX = spritePos.X + 700;
+                        initialX = spritePos.X + 500;
                         break;
                     default: 
                         spritePos = new Rectangle(spritePos.X, player.Platform.spritePos.Top - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
-                        initialY = spritePos.Y - 500;
+                        initialY = spritePos.Y - 300;
                         break;
                 }
                 pointOverride = true; // Override original destination
