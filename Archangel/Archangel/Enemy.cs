@@ -405,7 +405,7 @@ namespace Archangel
                     spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), color); // Left
                     break;
                 case 2: case 3:
-                    spriteBatch.Draw(spriteArray[0], new Rectangle(spritePos.X, spritePos.Y, spriteArray[0].Width, spriteArray[0].Height), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0); // Right
+                    spriteBatch.Draw(spriteArray[2], new Rectangle(spritePos.X, spritePos.Y, spriteArray[2].Width, spriteArray[2].Height), color); // Right
                     break;
                 case 4: case 5:
                     spriteBatch.Draw(spriteArray[4], new Rectangle(spritePos.X, spritePos.Y, spriteArray[4].Width, spriteArray[4].Height), color); // Up

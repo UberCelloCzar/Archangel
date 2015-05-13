@@ -131,10 +131,17 @@ namespace Archangel
 
             for (int i = 0; i < 17; i++) // For loop populates arrays
             {
-                if (i < 4)
+                if (i < 2)
                 {
                     playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 1"); // Right sprites
                     enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 1"); // Left Sprites
+                    playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
+                    enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
+                }
+                else if (i > 1 && i < 4)
+                {
+                    playerSprites[i] = Content.Load<Texture2D>("Main Character Pose 2"); // Left sprites
+                    enemySprites[i] = Content.Load<Texture2D>("Enemy Pose 2"); // Right Sprites
                     playerSmallBullet[i] = Content.Load<Texture2D>("Player Bullet 1");
                     enemySmallBullet[i] = Content.Load<Texture2D>("Enemy Bullet 1");
                 }
