@@ -37,6 +37,7 @@ namespace Archangel
         bool story = false;
         int storyLine = 31;
         int readTime = 340;
+        int storyNum = 0;
 
         // properties
         public int Thought
@@ -182,7 +183,7 @@ namespace Archangel
             {
                 StreamReader input = new StreamReader("SkyeLines.txt");
                 string line = "";
-                for (int lineread = 1; lineread < 40; lineread++)
+                for (int lineread = 1; lineread < 9999; lineread++)
                 {
                     line = input.ReadLine();
                     if (lineread == this.linenum)
@@ -241,8 +242,13 @@ namespace Archangel
                         readTime--;
                         if (readTime <= 0)
                         {
+                            storyNum++;
                             storyLine++;
-                            readTime = 340;
+                            readTime = 280;
+                            if (storyNum == 4)
+                            {
+                                storyNum = 0;
+                            }
                         }
                         break;
                     }

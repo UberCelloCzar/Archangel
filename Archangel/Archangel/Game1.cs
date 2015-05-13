@@ -254,8 +254,9 @@ namespace Archangel
                             }
                             if (encounterDelay == -5 && encounterNum == 2)
                             {
-                                //hud.Story = true;
+                                hud.Story = true;
                                 encounterDelay = 1200;
+                                player.staminaPause = true;
                             }
                             if (encounterDelay <= 0 && encounterDelay != -5)
                             {
@@ -269,7 +270,7 @@ namespace Archangel
                                 encounter.ReadEncounter(enemySprites, enemySmallBullet, hud);
                                 enemies = encounter.enemies; // Populate the enemy list
                                 
-                                //encounterNum++;
+                                encounterNum++;
                             }
                             else
                             {
