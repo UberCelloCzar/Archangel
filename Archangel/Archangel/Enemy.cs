@@ -231,10 +231,10 @@ namespace Archangel
             if (archangel == true && archMoveCD <= 0)
             {
                 oldMD = moveDecision;
-                moveDecision = rand1.Next();
-                if (rand1.Next() == oldMD)
+                moveDecision = rand1.Next(1,5);
+                if (moveDecision == oldMD)
                 {
-                    moveDecision = rand1.Next();
+                    moveDecision = rand1.Next(1,5);
                 }
                 switch (moveDecision)
                 {
