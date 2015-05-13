@@ -172,8 +172,7 @@ namespace Archangel
         {
             base.Update();
             Random rand2 = new Random();
-            int seed = (int)(10 * rand2.NextDouble());
-            Random rand1 = new Random();
+            Random rand1 = new Random(Guid.NewGuid().GetHashCode()); // Different seed for more randomness
 
             if (direction == 8)
             {

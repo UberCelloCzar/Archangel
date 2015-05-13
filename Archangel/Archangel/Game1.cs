@@ -69,6 +69,8 @@ namespace Archangel
         Menu menuState = new Menu();
         Rectangle backgroundRec1;
         Rectangle backgroundRec2;
+        Random rgen;
+        int randNum;
 
         public Game1():base()
         {
@@ -337,6 +339,28 @@ namespace Archangel
                                         enemies[i].TakeHit(player.bullets[z].damage); //If the bullet is active and the enemy and bullet intersect, take a hit and kill the bullet
                                         player.bullets[z].isActive = false;
                                         player.ReloadBullet(z); // Add the bullet back to the inactive queue
+                                    }
+                                }
+                                if (i == 0 && player.Whirlwind.isActive == true)
+                                {
+                                    for (int z = 0; z < player.bullets.Length; z++) // For each player bullet
+                                    {
+                                        if (player.bullets[z].isActive == true && player.bullets[z].spritePos.Intersects(player.Whirlwind.spritePos))
+                                        {
+                                            rgen = new Random(Guid.NewGuid().GetHashCode()); // Different random seed to avoid single direction reflects
+                                            randNum = rgen.Next(0, 4);
+                                            switch (randNum)
+                                            {
+                                                case 2:
+                                                    if (player.bullets[z].Reflected == false)
+                                                    {
+                                                        player.bullets[z].Reflect(true); // Reflect randomly 25% of the time
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
                                     }
                                 }
 

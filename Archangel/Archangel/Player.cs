@@ -147,6 +147,9 @@ namespace Archangel
                 stamina = 100; // Reset health and position and direction and stamina
                 charHealth = 5; 
                 direction = 8; // Dead sprite
+                dashActive = 0;
+                slashFrame = 0;
+                slashHold = 0;
             }
         }
 
@@ -516,6 +519,7 @@ namespace Archangel
                                 spritePos = new Rectangle(spritePos.X, (platform.spritePos.Top + 18) - spritePos.Height, spritePos.Width, spritePos.Height); // Collides with top
                                 onPlatform = true;
                                 direction = 13;
+                                dashActive = 0;
                             }
                             else
                             {

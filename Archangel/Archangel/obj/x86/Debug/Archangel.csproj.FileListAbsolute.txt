@@ -264,3 +264,4 @@ C:\Users\mauri_000\Downloads\Archangel-master (18)\Archangel-master\Archangel\Ar
 C:\Users\mauri_000\Downloads\Archangel-master (18)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\OpenTK.dll
 C:\Users\mauri_000\Downloads\Archangel-master (18)\Archangel-master\Archangel\Archangel\bin\WindowsGL\Debug\Tao.Sdl.dll
 C:\Users\mauri_000\Downloads\Archangel-master (18)\Archangel-master\Archangel\Archangel\obj\x86\Debug\Archangel.csprojResolveAssemblyReference.cache
+C:\Users\Ubercelloboy\Documents\GitHub\Archangel\Archangel\Archangel\bin\WindowsGL\Debug\Content\Help Screen 2.xnb
