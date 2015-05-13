@@ -1,10 +1,75 @@
-Tip: Use the arrow keys to move
-Tip: Press F to fire
-Tip: Press S to slash
-Tip: Press D to dash
-Tip: Press A to toggle flight
-Tip: When you are low on Stamina, make your way to a platform and toggle off flight to recover.
-Tip: While on a platform, you can shoot heavy artillery up at foes.
-Tip: Slash enemy bullets to reflect them!
-Tip: Instead of moving down, try deactivating flight to go down long distances.
-Tip: Don't die!
+Use the arrow keys to move
+Press F to fire
+Press S to slash
+Press D to dash
+Press A to toggle flight when on a platform
+Land to recover stamina.
+While on a platform, you can shoot heavy artillery up at foes.
+Slash enemy bullets to reflect them!
+Try deactivating flight to go down long distances.
+Slash red enemies to destroy their shields!
+Is that all you've got?!
+You call this 'waging war'?
+*YAWN*... *snore*
+Didn't anyone tell you not to mess with the main characters?
+Ha! I can beat you guys even over my neighbor's terrible wi-fi!
+Git gud
+Main character hax too stronk.
+Top kek
+Hehe...Ha! Ahahah- *covers mouth* OOOHOHOHOHOHO!
+*Fry.jpeg* Not sure if trying to lose...
+This isn't even our final form!
+Imma firein muh lazuhs!
+2 1337 4 U N0085
+public score EnemiesDie(me)
+brb Food. Don't Die, Gust.
+AHH Spider! *crashing noises*
+I lost the spider. ...So this is how I die.
+Hey, I just met you, and this is crazy, but fight this war for me.
+*series of weird sneezes*
+And I was all "Pewpewpew" and they were all "NGRAHHH". Good times...
+Hey, Gust. I uhh... don't think I ever thanked you for doing this.
+Ever since we made contact with the Flying City, my dad, y'know, the president, has been acting strange.
+I get that his job is stressful in this situation, but he's angrier and he looks at me like he doesn't know me.
+If I didn't know any better, I'd say he was an entirely different person. I'm sure the Flying City knows something.
+Here they come!
+What did that enemy mean by we're "fighting the wrong people"? They attacked us first!... R-right? Hold on.
+I'll just hack the security cameras at the bombing site and... Done! *video playing* 
+Wait... Those "terrorists" aren't flyers. Those are... my father's secret service?!
+Th-that can't be! They must have gone rogue. We need to warn my fa-
+GUST, LOOK OUT!
+...I've been thinking and... I don't think the Flying Society is who we think they are.
+They were obviously framed for the bombing and, despite the war, they have taken care not to kill anyone.
+In fact, there have been numerous reports of the enemy saving our soldiers, but they are being covered up.
+They almost seem like guardians rather than aggressors. Then... who is our true enemy?
+Oh great! People with answers! They don't seem to truly die either so fire away!
+I'm sure you've noticed the enemies with colored armor and enhanced abilities by now.
+I've tried giving you the same buffs, but the source doesn't come from the suit or the person.
+It's... almost like magic.
+Magic... You don't think these guys are... WIZARDS?!
+They're here! TEACH US YOUR STRANGE ARTS!
+In retrospect, wizards wouldn't need wings. They're like... wizards.
+Hmm... guardians, wings, magic... Wait, I saw someone praying mid figh-
+Nooooooo no no no no no no no no no no no no, they can't be angels.
+...........we're all going to Hell for this war, aren't we?
+No wonder the enemy numbers don't seem to shrink. They respawn at home immediately! CHEATERS! CHEATER WIZARDS!!!
+That confirms it. These guys are angels and their "Flying Society" is actually Heaven.
+If that's the case, then why would they fight a war with humanity that they don't intend to finish?
+Maybe I'm looking at this the wrong way... Why would they save their enemy and tell no one?
+I'm going to run a search on the people that were saved and see if I can't find more answers.
+AFK. Don't die. That might ruin your weekend plans.
+Alright, so my intel tells me that after being saved by "the enemy", soldiers felt less inclined to fight.
+Their families also reported... oh my god... "angry and stranger-like dispositions" before the war.
+That's just like my dad.
+It says here those symptoms cleared up after being saved, but what caused them?
+AAARRRGGHH I don't sit at my computer all day to be Ace Detective Skye! *furious rustling*
+Demons. Where there's angels, there's demons.
+I think demons are somehow influencing humans to fight a war against Heaven.
+By possessing humans and having them lead the charge, the demons would incur minimal losses.
+Humans can't kill angels though, so they must be looking for an opening to get into Heaven.
+I don't want to know what they'll do once they get there, but it can't be good.
+Gust, we need to go back to the capital, Daedalus. We have to defeat the demon leaders.
+And if my woman's intuition is right, they've possessed the world leaders, including my father.
+No matter how you look at this, you'll be attacking world leaders.
+I know I've dragged you into enough already, but please, help me with this one last task, for mankind.
+Ha! I knew I could count on you! Let's go!

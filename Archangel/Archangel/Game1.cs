@@ -259,7 +259,7 @@ namespace Archangel
                             if (encounterDelay == -5 && encounterNum == 2)
                             {
                                 hud.Story = true;
-                                encounterDelay = 1200;
+                                encounterDelay = 1700;
                                 player.staminaPause = true;
                             }
                             if (encounterDelay <= 0 && encounterDelay != -5)

@@ -35,9 +35,10 @@ namespace Archangel
         Color skyeColor;
         Color backColor;
         bool story = false;
-        int storyLine = 31;
+        int storyLine = 30;
         int readTime = 340;
         int storyNum = 0;
+        int storySet = 31;
 
         // properties
         public int Thought
@@ -196,6 +197,15 @@ namespace Archangel
                             return skyesays;
                         }
                         input.Close();
+
+                        if (storyNum == 5)
+                        {
+                            storyNum = 0;
+                            storySet = storySet + 5;
+                            storyLine = storySet;
+                            thought = 1;
+                            SkyeThink();
+                        }
                         return skyesays;
                     }
                 }
@@ -238,17 +248,17 @@ namespace Archangel
                     }
                 case 4://story
                     {
+                        if(storyLine == 30)
+                        {
+                            storyLine++;
+                        }
                         linenum = storyLine;
                         readTime--;
                         if (readTime <= 0)
                         {
                             storyNum++;
                             storyLine++;
-                            readTime = 280;
-                            if (storyNum == 4)
-                            {
-                                storyNum = 0;
-                            }
+                            readTime = 340;
                         }
                         break;
                     }
